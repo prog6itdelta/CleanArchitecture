@@ -1,0 +1,28 @@
+Utils
+
+Entities
+    Entities
+    DomainServices.Interfaces -> DomainServices.Impl
+
+
+Infrastructure.Interfaces
+    User
+
+UseCases
+    ApplicationServices.Interfaces -> ApplicationServices.Impl
+        PortalService
+            getPortals
+            setPortal
+            currentPortal
+            addUser(user_id, portal_id)
+            deleteUser(user_id, portal_id)
+    UseCases
+        Create Portal
+        * Select Portal
+        Add User to Portal
+        Delete User from Portal
+        Delete Portal
+
+Infrastructure.Impl
+
+Controllers
