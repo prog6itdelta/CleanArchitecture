@@ -21,9 +21,21 @@ class DatabaseSeeder extends Seeder
 //            CommentSeeder::class,
         ]);
 
+        /*
+        * Наполненеие департаментов и связь user & department
+        */
         DB::table('departments')->insert([
             'portal_id' => 1,
             'name' => 'Dep 1',
+        ]);
+        DB::table('departments')->insert([
+            'portal_id' => 1,
+            'name' => 'Dep 2',
+        ]);
+
+        DB::table('department_user')->insert([
+            'department_id' => 1,
+            'user_id' => 1,
         ]);
 
         /*
@@ -80,7 +92,37 @@ class DatabaseSeeder extends Seeder
             'lesson_id' => 2,
         ]);
 
+        DB::table('learn_questions')->insert([
+            'portal_id' => 1,
+            'name' => 'Вопрос 1',
+            'lesson_id' => 1
+        ]);
+        DB::table('learn_questions')->insert([
+            'portal_id' => 1,
+            'name' => 'Вопрос 2',
+            'lesson_id' => 1
+        ]);
 
+        DB::table('learn_answers')->insert([
+            'portal_id' => 1,
+            'name' => 'Ответ 1',
+            'question_id' => 1
+        ]);
+        DB::table('learn_answers')->insert([
+            'portal_id' => 1,
+            'name' => 'Ответ 2',
+            'question_id' => 1
+        ]);
+        DB::table('learn_answers')->insert([
+            'portal_id' => 1,
+            'name' => 'Ответ 1',
+            'question_id' => 2
+        ]);
+        DB::table('learn_answers')->insert([
+            'portal_id' => 1,
+            'name' => 'Ответ 2',
+            'question_id' => 2
+        ]);
 
     }
 }

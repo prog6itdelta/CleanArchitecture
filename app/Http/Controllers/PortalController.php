@@ -31,13 +31,6 @@ class PortalController extends BaseController
         ]);
     }
 
-//    public function selectPortal(int $id)
-//    {
-//        return Inertia::render('Index', [
-//            'portals' => [111, 222]
-//        ]);
-//    }
-
     public function setPortal($id) {
         PortalService::setDefaultPortal($id);
         return Redirect::route('home');

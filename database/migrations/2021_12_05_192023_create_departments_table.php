@@ -25,6 +25,17 @@ class CreateDepartmentsTable extends Migration
             $table->foreign('head')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
             $table->foreign('parent')->references('id')->on('departments')->onDelete('restrict')->onUpdate('cascade');
         });
+
+        Schema::create('department_user', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('department_id');
+            $table->unsignedBigInteger('user_id');
+            $table->timestamps();
+
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
+        });
     }
 
     /**
@@ -36,5 +47,7 @@ class CreateDepartmentsTable extends Migration
     {
 //        $table->dropForeign(['portal_id', 'head', 'parent']);
         Schema::dropIfExists('departments');
+        Schema::dropIfExists('department_user');
+
     }
 }
