@@ -12,40 +12,11 @@ const path = require('path');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+mix.js('resources/js/app.js', 'public/js').react()
     .postCss('resources/css/app.css', 'public/css', [
     require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),
 ])
-.webpackConfig({
-    resolve: {
-        extensions: ['.js', '.svelte'],
-        mainFields: ['svelte', 'browser', 'module', 'main'],
-        alias: {
-            '@': path.resolve('resources/js'),
-        },
-    },
-    module: {
-        rules: [
-            {
-                test: /\.(m?js)$/,
-                resolve: {
-                    fullySpecified: false,
-                },
-            },
-            {
-                test: /\.(svelte)$/,
-                use: {
-                    loader: 'svelte-loader',
-                    options: {
-                        emitCss: true,
-                        hotReload: true,
-                    },
-                },
-            },
-        ],
-    },
-})
 .version()
 .sourceMaps()
