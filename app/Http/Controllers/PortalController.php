@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Packages\UseCases\PortalService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 
-use App\Packages\UseCases\PortalService;
+use App\Packages\UseCases\LearnService;
 
 //use Illuminate\Support\Facades\Auth;
 //use App\Models\User;
@@ -33,6 +34,6 @@ class PortalController extends BaseController
 
     public function setPortal($id) {
         PortalService::setDefaultPortal($id);
-        return Redirect::route('home');
+        return Redirect::route('selectPortal');
     }
 }

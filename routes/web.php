@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LearnController;
 use App\Http\Controllers\PortalController;
-use Inertia\Inertia;
+//use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,17 +16,19 @@ use Inertia\Inertia;
 |
 */
 
-//Route::inertia('/1', 'Index1');
-
-Route::middleware(['auth'])->group(function () {
 //    Route::get('/', function () {
 //        return Inertia::render('Index');
 //    })->name('home');
 
-    Route::get('/', [PortalController::class, 'index'])
-        ->name('home');
+Route::middleware(['auth'])->group(function () {
 
-    Route::post('/setPortal/{id}', [PortalController::class, 'setPortal'])
+    Route::get('/', [LearnController::class, 'index'])
+        ->name('courses');
+
+    Route::get('/portal', [PortalController::class, 'index'])
+        ->name('selectPortal');
+
+    Route::post('/portal/{id}', [PortalController::class, 'setPortal'])
         ->name('setPortal');
 
 });

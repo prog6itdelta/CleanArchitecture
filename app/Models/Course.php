@@ -10,4 +10,9 @@ class Course extends Model
     use HasFactory;
 
     protected $table = 'learn_courses';
+
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class);
+    }
 }

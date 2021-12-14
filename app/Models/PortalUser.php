@@ -1,4 +1,4 @@
-<?php
+<?phpcurriculums
 
 namespace App\Models;
 

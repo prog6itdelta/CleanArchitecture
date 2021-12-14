@@ -1,6 +1,6 @@
 import React from 'react'
 import Layout from './Layout'
-import {InertiaLink} from '@inertiajs/inertia-react'
+import { InertiaLink } from '@inertiajs/inertia-react'
 
 export default function Index({portals, currentPortal}) {
 
