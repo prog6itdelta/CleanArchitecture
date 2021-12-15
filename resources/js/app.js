@@ -1,3 +1,7 @@
+import { createInertiaApp } from '@inertiajs/inertia-react'
+import React from 'react'
+import { render } from 'react-dom'
+
 import { InertiaProgress } from '@inertiajs/progress'
 import Layout from './Pages/Layout'
 
@@ -7,31 +11,16 @@ require('./bootstrap');
 // window.Alpine = Alpine;
 // Alpine.start();
 
-
-// /*createInertiaApp({
-//     // resolve: name => require(`./Pages/${name}.svelte`),
-//     resolve: name => {
-//         const page = require(`./Pages/${name}.svelte`)
-//         page.layout = page.layout || Layout
-//         return page
-//     },
-//     setup({ el, App, props }) {
-//         new App({ target: el, props })
-//     },
-// })*/
-
-import { App } from '@inertiajs/inertia-react'
-import React from 'react'
-import { render } from 'react-dom'
-
-const el = document.getElementById('app')
-
-render(
-    <App
-        initialPage={JSON.parse(el.dataset.page)}
-        resolveComponent={name => require(`./Pages/${name}`).default}
-    />,
-    el
-)
+createInertiaApp({
+    // resolve: name => require(`./Pages/${name}`),
+    resolve: name => {
+        let page = require(`./Pages/${name}`).default
+        page.layout = page.layout || Layout
+        return page
+    },
+    setup({ el, App, props }) {
+        render(<App {...props} />, el)
+    },
+})
 
 InertiaProgress.init()

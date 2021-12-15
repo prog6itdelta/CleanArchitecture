@@ -9,7 +9,7 @@ class Portal extends Model
 {
     use HasFactory;
 
-    protected $table = 'learn_questions';
+    protected $table = 'portals';
 
     public $fillable = [
         'name'

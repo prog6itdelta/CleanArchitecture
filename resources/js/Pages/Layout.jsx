@@ -26,11 +26,10 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Layout({ title, children }) {
-    useEffect(() => {
-        document.title = title;
-    }, [title])
-
+export default function Layout(children) {
+    // useEffect(() => {
+    //     document.title = title;
+    // }, [title])
     return (
         <div className="min-h-screen bg-white">
             <Disclosure as="nav" className="bg-white border-b border-gray-200">
@@ -182,22 +181,7 @@ export default function Layout({ title, children }) {
             </Disclosure>
 
             <div className="py-10">
-                <header>
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <h1 className="text-3xl font-bold leading-tight text-gray-900">Dashboard</h1>
-                    </div>
-                </header>
-                <main>
-                    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        {/* Replace with your content */}
-                        <div className="px-4 py-8 sm:px-0">
-                            <div className="border-4 border-dashed border-gray-200 rounded-lg h-96">
-                                {children}
-                            </div>
-                        </div>
-                        {/* /End replace */}
-                    </div>
-                </main>
+                {children}
             </div>
         </div>
     )

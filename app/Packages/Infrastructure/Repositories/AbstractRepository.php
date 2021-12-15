@@ -12,7 +12,7 @@ abstract class AbstractRepository implements RepositoryInterface
     /**
      * @var App
      */
-    private $app;
+//    private $app;
 
     /**
      * @var
@@ -40,7 +40,9 @@ abstract class AbstractRepository implements RepositoryInterface
      *
      * @return mixed
      */
-    abstract function mapProps($model);
+    function mapProps($model) {
+        return $model->toArray();
+    }
 
     /**
      * @return Model

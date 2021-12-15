@@ -24,11 +24,13 @@ class LearnController extends BaseController
      */
     public function index()
     {
-        $portals = PortalService::getUserPortals();
-        $currentPortal = PortalService::getDefaultPortal();
-        return Inertia::render('Index', [
-            'portals' => $portals,
-            'currentPortal' => $currentPortal
-        ]);
+        $courses = LearnService::getCourses();
+        return Inertia::render('Learning/Courses', compact('courses'));
+    }
+
+    public function course($id)
+    {
+        $course = LearnService::getCourse($id);
+        return Inertia::render('Learning/Course', compact('course'));
     }
 }

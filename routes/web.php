@@ -22,8 +22,17 @@ use App\Http\Controllers\PortalController;
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/', [LearnController::class, 'index'])
-        ->name('courses');
+    Route::get('/', function () {
+        return redirect()->route('courses');
+    })->name('home');
+
+    Route::prefix('learning')->group(function () {
+        Route::get('/courses', [LearnController::class, 'index'])
+            ->name('courses');
+
+        Route::get('/course/{id}', [LearnController::class, 'course'])
+            ->name('course');
+    });
 
     Route::get('/portal', [PortalController::class, 'index'])
         ->name('selectPortal');

@@ -2,20 +2,25 @@
 
 namespace App\Packages\UseCases;
 
-use App\Packages\Infrastructure\DTO\PortalDTO;
-use App\Packages\Infrastructure\Repositories\PortalRepository;
-use App\Packages\Utils\ConfigStorage;
+use App\Packages\Infrastructure\Repositories\CourseRepository;
+use App\Packages\Infrastructure\Repositories\LessonRepository;
 
 class LearnService implements LearnServiceInterface
 {
 
     public static function getCourses(): array
     {
-        // TODO: Implement getCourses() method.
+        $rep = new CourseRepository();
+        $list = $rep->all(['id', 'name', 'description', 'sort', 'image'])->toArray();
+        return $list;
     }
 
     public static function getCourse(int $id): array
     {
-        // TODO: Implement getCourse() method.
+        $rep = new CourseRepository();
+        $result = $rep->find($id, ['id', 'name', 'description', 'image']);
+        $lessons = $rep->lessons($id)->get();
+        $result['lessons'] = $lessons->toArray();
+        return $result;
     }
 }

@@ -3,10 +3,7 @@
 namespace App\Packages\Infrastructure\Repositories;
 
 use App\Packages\Infrastructure\DTO\PortalDTO;
-use App\Models\Portal;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use App\Packages\UseCases\UserService;
 
 class PortalRepository extends AbstractRepository
 {

@@ -11,6 +11,11 @@ class Lesson extends Model
 
     protected $table = 'learn_lessons';
 
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'learn_course_lesson');
+    }
+
     public function questions()
     {
         return $this->hasMany(Question::class);
