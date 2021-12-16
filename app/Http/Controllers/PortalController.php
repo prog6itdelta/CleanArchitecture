@@ -36,4 +36,18 @@ class PortalController extends BaseController
         PortalService::setDefaultPortal($id);
         return Redirect::route('selectPortal');
     }
+
+    public function getSelectForm()
+    {
+        $portals = PortalService::getUserPortals();
+
+        return view('auth.select-portal', compact('portals'));
+    }
+
+    public function firstSelect(Request $request)
+    {
+        $this->setPortal($request->portal);
+
+        return redirect()->route('courses');
+    }
 }

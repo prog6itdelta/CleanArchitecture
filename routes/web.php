@@ -34,6 +34,12 @@ Route::middleware(['auth'])->group(function () {
             ->name('course');
     });
 
+    Route::get('/select/portal', [PortalController::class, 'getSelectForm'])
+        ->name('getSelectForm');
+
+    Route::post('/select/portal', [PortalController::class, 'firstSelect'])
+        ->name('firstSelect');
+
     Route::get('/portal', [PortalController::class, 'index'])
         ->name('selectPortal');
 
