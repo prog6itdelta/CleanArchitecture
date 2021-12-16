@@ -18,7 +18,11 @@ export default function Courses({ courses }) {
               <li key={course.id}>
                 <div className="space-y-4">
                   <div className="aspect-w-3 aspect-h-2">
-                    <img className="object-cover shadow-lg rounded-lg" src={course.image} alt={course.name} />
+                    <img className="object-cover shadow-lg rounded-lg" src={
+                      course.image
+                        ? course.image
+                        : '/img/noimage.jpg'
+                    } alt={course.name} />
                   </div>
 
                   <div className="space-y-2">
