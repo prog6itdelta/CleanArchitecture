@@ -7,23 +7,51 @@ export default function Index({portals, currentPortal}) {
         <div /*title="Добро пожаловать"*/>
 
             <header>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h1 className="text-3xl font-bold leading-tight text-gray-900">Select Portal</h1>
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h1 className="text-3xl font-bold leading-tight text-gray-900 text-center">Select Portal</h1>
                 </div>
             </header>
             <main>
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="px-4 py-8 sm:px-0">
-                        <div className="border-4 border-dashed border-gray-200 rounded-lg h-96">
-                            {portals.map(portal =>
-                                <div key={portal.id}>
-                                    <InertiaLink method="post" href={route('setPortal', portal.id)}>
-                                        {portal.id} - {portal.name}
-                                    </InertiaLink>
-                                </div>
-                            )}
-                            <div>
-                                Current Portal: {currentPortal.id} - {currentPortal.name}
+            <div className="flex flex-col place-items-center">
+                <div className="my-6 overflow-x-auto sm:-mx-6 lg:-mx-8 max-w-2xl">
+                    <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                        <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                            <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-gray-50">
+                            <tr>
+                                <th
+                                    scope="col"
+                                    className="px-20 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                >
+                                    Name
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-20 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                >
+                                    Select
+                                </th>
+                            </tr>
+                            </thead>
+                                <tbody>
+                                    {portals.map((portal, portalIdx) =>
+                                    <tr key={portal.id} className={portalIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center" key={portal.id}>
+                                            <InertiaLink method="post" href={route('setPortal', portal.id)}>
+                                                {portal.name}
+                                            </InertiaLink>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
+                                            <InertiaLink method="post" href={route('setPortal', portal.id)}>
+                                                <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                                                    Select
+                                                </button>
+                                            </InertiaLink>
+                                        </td>
+                                    </tr>
+                                    )}
+                                </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
