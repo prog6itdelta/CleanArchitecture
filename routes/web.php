@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LearnController;
 use App\Http\Controllers\PortalController;
+use App\Http\Controllers\AdminController;
 //use Inertia\Inertia;
 
 /*
@@ -48,4 +49,13 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+// admin panel
+Route::middleware(['auth'])->group(function () {
+
+    Route::prefix('admin')->group(function () {
+        Route::get('/', [AdminController::class, 'index'])
+            ->name('admin.index');
+    });
+
+});
 require __DIR__.'/auth.php';
