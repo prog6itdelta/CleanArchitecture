@@ -16,9 +16,9 @@
             @csrf
 
             <!-- Select Portal -->
-            <x-label class="flex items-center justify-center mt-4" for="portal" :value="__('Select portal')" />
+            <x-label class="flex items-center justify-center mt-4" for="portal" :value="__('Выберите портал')" />
             <div class="flex items-center justify-center mt-4" id="portal">
-                <select name="portal" id="portal">
+                <select class="w-1/2 mt-2" name="portal" id="portal">
                     @foreach ($portals as $portal)
                     <option value="{{$portal->id}}">
                         {{$portal->name}}
@@ -27,9 +27,9 @@
                 </select>
             </div>
 
-            <div class="flex items-center justify-center mt-4">
+            <div class="flex items-center justify-center mt-6">
                 <x-button>
-                    {{ __('Select') }}
+                    {{ __('Выбрать') }}
                 </x-button>
             </div>
         </form>
