@@ -44,7 +44,7 @@ class PortalController extends BaseController
         return view('auth.select-portal', compact('portals'));
     }
 
-    public function firstSelect(Request $request)
+    public function postSelectForm(Request $request)
     {
         $this->setPortal($request->portal);
 

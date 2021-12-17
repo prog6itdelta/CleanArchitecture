@@ -23,7 +23,7 @@ use App\Http\Controllers\PortalController;
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/', function () {
-        return redirect()->route('courses');
+        return redirect()->route('getSelectForm');
     })->name('home');
 
     Route::prefix('learning')->group(function () {
@@ -37,8 +37,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/select/portal', [PortalController::class, 'getSelectForm'])
         ->name('getSelectForm');
 
-    Route::post('/select/portal', [PortalController::class, 'firstSelect'])
-        ->name('firstSelect');
+    Route::post('/select/portal', [PortalController::class, 'postSelectForm'])
+        ->name('postSelectForm');
 
     Route::get('/portal', [PortalController::class, 'index'])
         ->name('selectPortal');
