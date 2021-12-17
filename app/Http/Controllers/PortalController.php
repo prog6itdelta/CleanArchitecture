@@ -26,7 +26,7 @@ class PortalController extends BaseController
     {
         $portals = PortalService::getUserPortals();
         $currentPortal = PortalService::getDefaultPortal();
-        return Inertia::render('Index', [
+        return Inertia::render('Pages/Index', [
             'portals' => $portals,
             'currentPortal' => $currentPortal
         ]);
