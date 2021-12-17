@@ -15,6 +15,9 @@ module.exports = {
         sans: ['Nunito', ...defaultTheme.fontFamily.sans],
       },
     },
+    minWidth: {
+      '1/2': '50%',
+    }
   },
 
   variants: {

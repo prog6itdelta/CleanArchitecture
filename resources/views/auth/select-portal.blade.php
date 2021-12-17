@@ -17,10 +17,10 @@
 
             <!-- Select Portal -->
             <x-label class="flex items-center justify-center mt-4" for="portal" :value="__('Выберите портал')" />
-            <div class="flex items-center justify-center mt-4" id="portal">
-                <select class="w-1/2 mt-2" name="portal" id="portal">
+            <div class="flex items-center max-w-full justify-center mt-4" id="portal">
+                <select class="max-w-full min-w-1/2 mt-2" name="portal" id="portal">
                     @foreach ($portals as $portal)
-                    <option value="{{$portal->id}}">
+                    <option class="max-w-1/2" value="{{$portal->id}}">
                         {{$portal->name}}
                     </option>
                     @endforeach
