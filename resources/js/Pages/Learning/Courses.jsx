@@ -4,14 +4,9 @@ import { InertiaLink } from '@inertiajs/inertia-react';
 import { SearchIcon } from '@heroicons/react/solid';
 
 export default function Courses({ courses }) {
-  const [searchString, setSearchString] = useState('');
+  const [state, setState] = useState({ searchString: '' });
 
-  const handleSearch = (e) => {
-    const val = e.target.value.toLowerCase();
-    if (searchString !== val) {
-      setSearchString(val);
-    }
-  };
+  const handleSearch = (e) => setState({ searchString: e.target.value });
 
   return (
     <div className="bg-white">
@@ -32,6 +27,7 @@ export default function Courses({ courses }) {
                 <input
                   id="search"
                   name="search"
+                  value={state.searchString}
                   className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   placeholder="Поиск по курсам"
                   type="search"
@@ -45,7 +41,7 @@ export default function Courses({ courses }) {
             className="space-y-12 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-3 lg:gap-x-8"
           >
             {courses
-              .filter((course) => course.name.toLowerCase().includes(searchString))
+              .filter((course) => course.name.toLowerCase().includes(state.searchString))
               .map((course) => (
                 <li key={course.id}>
                   <div className="space-y-4">
