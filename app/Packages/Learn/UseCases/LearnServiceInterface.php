@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Packages\UseCases;
-
-use App\Packages\Infrastructure\DTO\PortalDTO;
+namespace App\Packages\Learn\UseCases;
 
 interface LearnServiceInterface
 {

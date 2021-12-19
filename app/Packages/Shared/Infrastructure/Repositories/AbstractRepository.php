@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Packages\Infrastructure\Repositories;
+namespace App\Packages\Shared\Infrastructure\Repositories;
 
 use App\Exceptions\RepositoryException;
-use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 
 abstract class AbstractRepository implements RepositoryInterface
 {
@@ -23,9 +23,24 @@ abstract class AbstractRepository implements RepositoryInterface
      * @param App $app
      * @throws \App\Exceptions\RepositoryException
      */
-    public function __construct(/*?App $app*/) {
+    public function __construct(/*?App $app*/)
+    {
 //        $this->app = $app;
         $this->makeModel();
+    }
+
+    /**
+     * @return Model
+     * @throws RepositoryException
+     */
+    public function makeModel()
+    {
+        $model = App::make($this->model());
+
+        if (!$model instanceof Model)
+            throw new RepositoryException("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
+
+        return $this->model = $model;
     }
 
     /**
@@ -40,28 +55,29 @@ abstract class AbstractRepository implements RepositoryInterface
      *
      * @return mixed
      */
-    function mapProps($model) {
-        return $model->toArray();
-    }
+    abstract function mapProps($model);
 
     /**
-     * @return Model
-     * @throws RepositoryException
+     * Query with callback
+     * @param array $columns
+     * @param array $columns
+     * @return mixed
      */
-    public function makeModel() {
-        $model = App::make($this->model());
-
-        if (!$model instanceof Model)
-            throw new RepositoryException("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
-
-        return $this->model = $model;
+    public function query($applyFilter = null, $columns = array('*'))
+    {
+        $query = $this->model;
+        if (is_callable($applyFilter)) $query = $applyFilter($this->model);
+        return $query->get($columns)->map(function ($item) {
+            return $this->mapProps($item);
+        });
     }
 
     /**
      * @param array $columns
      * @return mixed
      */
-    public function all($columns = array('*')) {
+    public function all($columns = array('*'))
+    {
         return $this->model->get($columns)->map(function ($item) {
             return $this->mapProps($item);
         });
@@ -80,7 +96,8 @@ abstract class AbstractRepository implements RepositoryInterface
      * @param array $data
      * @return mixed
      */
-    public function create(array $data) {
+    public function create(array $data)
+    {
         return $this->mapProps($this->model->create($data));
     }
 
@@ -90,7 +107,8 @@ abstract class AbstractRepository implements RepositoryInterface
      * @param string $attribute
      * @return mixed
      */
-    public function update(array $data, $id, $attribute="id") {
+    public function update(array $data, $id, $attribute = "id")
+    {
         return $this->model->where($attribute, '=', $id)->update($data);
     }
 
@@ -98,7 +116,8 @@ abstract class AbstractRepository implements RepositoryInterface
      * @param $id
      * @return mixed
      */
-    public function delete($id) {
+    public function delete($id)
+    {
         return $this->model->destroy($id);
     }
 
@@ -107,17 +126,19 @@ abstract class AbstractRepository implements RepositoryInterface
      * @param array $columns
      * @return mixed
      */
-    public function find($id, $columns = array('*')) {
+    public function find($id, $columns = array('*'))
+    {
         return $this->mapProps($this->model->find($id, $columns));
     }
 
-    /**
-     * @param $attribute
-     * @param $value
-     * @param array $columns
-     * @return mixed
-     */
-    public function findBy($attribute, $value, $columns = array('*')) {
-        return $this->mapProps($this->model->where($attribute, '=', $value)->first($columns));
-    }
+//    /**
+//     * @param $attribute
+//     * @param $value
+//     * @param array $columns
+//     * @return mixed
+//     */
+//    public function findBy($attribute, $value, $columns = array('*'))
+//    {
+//        return $this->mapProps($this->model->where($attribute, '=', $value)->get($columns));
+//    }
 }

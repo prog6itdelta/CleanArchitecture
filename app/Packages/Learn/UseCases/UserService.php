@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Packages\UseCases;
+namespace App\Packages\Learn\UseCases;
 
+use App\Packages\Shared\Infrastructure\DTO\UserDTO;
 use Illuminate\Support\Facades\Auth;
-use App\Packages\Infrastructure\DTO\UserDTO;
 
 class UserService implements UserServiceInterface
 {

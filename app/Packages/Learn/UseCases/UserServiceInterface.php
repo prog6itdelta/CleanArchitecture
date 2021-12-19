@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Packages\UseCases;
+namespace App\Packages\Learn\UseCases;
 
 interface UserServiceInterface
 {
