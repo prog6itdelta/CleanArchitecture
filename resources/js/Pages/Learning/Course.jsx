@@ -1,7 +1,6 @@
 import React from 'react'
-import { InertiaLink } from '@inertiajs/inertia-react'
 
-export default function Course({ course }) {
+export default function Course({course, lessons}) {
 
     return (
         <div>
@@ -14,7 +13,8 @@ export default function Course({ course }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="px-4 py-8 sm:px-0">
                         <div className="border-4 border-dashed border-gray-200 rounded-lg h-96">
-                            {JSON.stringify(course)}
+                            <div className="py-4">{JSON.stringify(course)}</div>
+                            <div  className="py-4">{JSON.stringify(lessons)}</div>
                         </div>
                     </div>
                 </div>

@@ -19,7 +19,7 @@ const navigation = [
 
 const userNavigation = [
   { name: 'Профайл', href: '#' },
-  { name: 'Настройки', href: '#' },
+  { name: 'Настройки', href: '/admin' },
   { name: 'Выход', href: '/logout' },
 ];
 

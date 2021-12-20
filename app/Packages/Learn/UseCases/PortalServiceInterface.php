@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Packages\UseCases;
+namespace App\Packages\Learn\UseCases;
 
-use App\Packages\Infrastructure\DTO\PortalDTO;
+use App\Packages\Shared\Infrastructure\DTO\PortalDTO;
 
 interface PortalServiceInterface
 {

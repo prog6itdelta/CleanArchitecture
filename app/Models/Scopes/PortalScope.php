@@ -2,11 +2,10 @@
 
 namespace App\Models\Scopes;
 
+use App\Packages\Learn\UseCases\PortalService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use App\Packages\Utils\ConfigStorage;
-use App\Packages\UseCases\PortalService;
 
 class PortalScope implements Scope
 {

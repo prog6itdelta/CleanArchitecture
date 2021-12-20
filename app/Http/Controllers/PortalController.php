@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Packages\UseCases\PortalService;
-use Illuminate\Http\Request;
+use App\Packages\Learn\UseCases\PortalService;
 use Illuminate\Routing\Controller as BaseController;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
-
-use App\Packages\UseCases\LearnService;
+use Inertia\Inertia;
 
 //use Illuminate\Support\Facades\Auth;
 //use App\Models\User;

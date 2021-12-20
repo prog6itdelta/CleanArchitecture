@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Packages\Infrastructure\Repositories;
+namespace App\Packages\Shared\Infrastructure\Repositories;
 
-use App\Packages\Infrastructure\DTO\PortalDTO;
+use App\Packages\Shared\Infrastructure\DTO\PortalDTO;
 use Illuminate\Support\Facades\Auth;
 
 class PortalRepository extends AbstractRepository
@@ -15,8 +15,7 @@ class PortalRepository extends AbstractRepository
 
     function mapProps($model)
     {
-        $portal = new PortalDTO($model->id, $model->name);
-        return $portal;
+        return new PortalDTO($model->id, $model->name);
     }
 
     function getUserPortals(int $user_id):array {
