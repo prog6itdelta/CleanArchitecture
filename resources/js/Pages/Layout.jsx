@@ -11,7 +11,7 @@ const user = {
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 };
 const navigation = [
-  { name: 'Курсы', href: route('courses'), current: true },
+  { name: 'Курсы', href: route('learning'), current: true },
   { name: 'Портал', href: route('selectPortal'), current: false },
   // { name: 'Projects', href: '#', current: false },
   // { name: 'Calendar', href: '#', current: false },
@@ -33,7 +33,7 @@ export default function Layout(children) {
   // }, [title])
   const currentLocation = location.href;
   navigation.forEach((navItem) => {
-    navItem.href === currentLocation
+    currentLocation.includes(navItem.href)
       ? navItem.current = true
       : navItem.current = false;
   });
