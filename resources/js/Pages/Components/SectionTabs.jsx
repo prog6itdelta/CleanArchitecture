@@ -1,15 +1,11 @@
 import React from 'react';
 
-const tabs = [
-  { name: 'Курсы', href: '#', current: true },
-  { name: 'Программы обучения', href: '#', current: false }
-];
+export default function SectionTabs({ tabs, onChange }) {
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(' ');
+  }
+  const handleClick = (e) => onChange(e.target.name);
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
-
-export default function SectionTabs() {
   return (
     <div className="mb-2 sm:mb-0 sm:mt-4 min-w-full sm:min-w-min">
       <div className="sm:hidden">
@@ -23,7 +19,7 @@ export default function SectionTabs() {
           defaultValue={tabs.find((tab) => tab.current).name}
         >
           {tabs.map((tab) => (
-            <option key={tab.name}>{tab.name}</option>
+            <option key={tab.name} name={tab.name} onClick={handleClick}>{tab.name}</option>
           ))}
         </select>
       </div>
@@ -32,7 +28,9 @@ export default function SectionTabs() {
           {tabs.map((tab) => (
             <a
               key={tab.name}
+              name={tab.name}
               href={tab.href}
+              onClick={handleClick}
               className={classNames(
                 tab.current
                   ? 'border-indigo-500 text-indigo-600'
