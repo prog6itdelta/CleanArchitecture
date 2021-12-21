@@ -23,6 +23,23 @@ export default function Courses({ courses }) {
     { id: 1, name: 'Программа 1', courses: [1, 2] },
     { id: 2, name: 'Программа 2', courses: [3] }
   ]);
+  const [coursesGroup, setCoursesGroup] = useState([
+    {
+      id: 1,
+      name: 'Маркетинг',
+      description: 'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.'
+    },
+    {
+      id: 2,
+      name: 'Продажи',
+      description: 'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.'
+    },
+    {
+      id: 3,
+      name: 'Разработка',
+      description: 'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.'
+    }
+  ]);
 
   const handleSearch = (value) => setSearchString(value);
   useEffect(() => {
@@ -34,19 +51,6 @@ export default function Courses({ courses }) {
     });
     setTabs(newTabs);
   }, []);
-  // const handleTabChange = (name) => {
-  //   const newTabs = tabs.map((tab) => {
-  //     tab.name === name
-  //       ? tab.current = true
-  //       : tab.current = false;
-  //     return tab;
-  //   });
-  //   setTabs(newTabs);
-  // };
-
-  // console.log(route('learning'));
-  // console.log(route().current());
-  // console.log(tabs);
 
   return (
 
@@ -64,13 +68,14 @@ export default function Courses({ courses }) {
             />
           </div>
           {(() => {
-            switch (tabs.find((tab) => tab.current).name) {
-              case 'Курсы':
+            switch (tabs.find((tab) => tab.current).href) {
+              case route('courses'):
                 return <List
-                  listItems={courses.filter((course) => course.name.toLowerCase().includes(searchString))}
-                  type="courses"
+                  listItems={coursesGroup}
+                  type="coursesGroups"
+                  courses={courses.filter((course) => course.name.toLowerCase().includes(searchString)) }
                 />;
-              case 'Программы обучения':
+              case route('programs'):
                 return <List
                   listItems={programs.filter((program) => program.name.toLowerCase().includes(searchString))}
                   type="programs"
