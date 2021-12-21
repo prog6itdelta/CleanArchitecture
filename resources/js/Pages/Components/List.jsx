@@ -185,6 +185,51 @@ export default function List({ listItems, type, ...props }) {
       </div>
     );
   };
+
+  const Lessons = () => {
+    return (
+      <div className="bg-gray-50">
+        <div className="mx-auto py-2 sm:py-2">
+          <div className="mx-auto divide-y-2 divide-gray-200">
+            <ul className="space-y-6 divide-y divide-gray-200">
+              {listItems.map((listItem) => (
+                <Disclosure as="li" key={listItem.id} className="pt-5">
+                  {({ open }) => (
+                    <>
+                      <div className="text-lg">
+                        <Disclosure.Button className="text-left w-full flex justify-between items-start text-gray-400">
+                          <span className="font-medium text-gray-900">{listItem.name}</span>
+                          <span className="ml-6 h-7 flex items-center">
+                            <ChevronDownIcon
+                              className={classNames(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform')}
+                              aria-hidden="true"
+                            />
+                          </span>
+                        </Disclosure.Button>
+                      </div>
+                      <Transition
+                        enter="transition duration-100 ease-out"
+                        enterFrom="transform scale-95 opacity-0"
+                        enterTo="transform scale-100 opacity-100"
+                        leave="transition duration-75 ease-out"
+                        leaveFrom="transform scale-100 opacity-100"
+                        leaveTo="transform scale-95 opacity-0"
+                      >
+                        <Disclosure.Panel as="p" className="mt-2 pr-12">
+                          {listItem.description}
+                        </Disclosure.Panel>
+                      </Transition>
+                    </>
+                  )}
+                </Disclosure>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       {(() => {
@@ -195,6 +240,8 @@ export default function List({ listItems, type, ...props }) {
             return <Programs />;
           case 'coursesGroups':
             return <CoursesGroups />;
+          case 'lessons':
+            return <Lessons />;
           default:
             return (
               <ul>{listItems.map((listItem) => (
