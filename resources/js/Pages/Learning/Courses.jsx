@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import SectionTabs from '../Components/SectionTabs.jsx';
 import SearchPanel from '../Components/SearchPanel.jsx';
-import CoursesList from '../Components/CoursesList.jsx';
-import ProgramsList from '../Components/ProgramsList.jsx';
+import List from '../Components/List.jsx';
 
 export default function Courses({ courses }) {
   const [searchString, setSearchString] = useState('');
@@ -37,6 +36,7 @@ export default function Courses({ courses }) {
   };
 
   return (
+
     <div className="bg-white">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="space-y-5">
@@ -53,14 +53,18 @@ export default function Courses({ courses }) {
           {(() => {
             switch (tabs.find((tab) => tab.current).name) {
               case 'Курсы':
-                return <CoursesList courses={ courses.filter((course) => course.name.toLowerCase().includes(searchString)) } />;
+                return <List
+                  listItems={courses.filter((course) => course.name.toLowerCase().includes(searchString))}
+                  type="courses"
+                />;
               case 'Программы обучения':
-                return <ProgramsList
-                  programs={programs.filter((program) => program.name.toLowerCase().includes(searchString)) }
+                return <List
+                  listItems={programs.filter((program) => program.name.toLowerCase().includes(searchString))}
+                  type="programs"
                   courses={courses}
                 />;
               default:
-                return <CoursesList courses={courses} />;
+                return <List listItems={courses} type="courses" />;
             }
           })()}
         </div>
