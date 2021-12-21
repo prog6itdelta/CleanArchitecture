@@ -1,10 +1,16 @@
 import React from 'react';
+import { InertiaLink } from '@inertiajs/inertia-react';
+import { Inertia } from '@inertiajs/inertia';
 
 export default function SectionTabs({ tabs, onChange }) {
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
   }
-  const handleClick = (e) => onChange(e.target.name);
+
+  // FIXME Возможно, костыль. Нужно ревью!
+  const handleClick = (e) => {
+    Inertia.get(e.target.dataset.href);
+  };
 
   return (
     <div className="mb-2 sm:mb-0 sm:mt-4 min-w-full sm:min-w-min">
@@ -19,18 +25,17 @@ export default function SectionTabs({ tabs, onChange }) {
           defaultValue={tabs.find((tab) => tab.current).name}
         >
           {tabs.map((tab) => (
-            <option key={tab.name} name={tab.name} onClick={handleClick}>{tab.name}</option>
+            <option key={tab.name} name={tab.name} data-href={tab.href} onClick={handleClick}>{tab.name}</option>
           ))}
         </select>
       </div>
       <div className="hidden sm:block">
         <nav className="-mb-px flex space-x-8">
           {tabs.map((tab) => (
-            <a
+            <InertiaLink
               key={tab.name}
               name={tab.name}
               href={tab.href}
-              onClick={handleClick}
               className={classNames(
                 tab.current
                   ? 'border-indigo-500 text-indigo-600'
@@ -40,7 +45,7 @@ export default function SectionTabs({ tabs, onChange }) {
               aria-current={tab.current ? 'page' : undefined}
             >
               {tab.name}
-            </a>
+            </InertiaLink>
           ))}
         </nav>
       </div>
