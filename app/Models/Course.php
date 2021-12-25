@@ -20,7 +20,6 @@ class Course extends Model
 
     protected static function booted()
     {
-        static::addGlobalScope(new PortalScope());
         static::addGlobalScope(new ActiveScope());
     }
 }

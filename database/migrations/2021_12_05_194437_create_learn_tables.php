@@ -15,19 +15,15 @@ class CreateLearnTables extends Migration
     {
         Schema::create('learn_course_group', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('portal_id');
             $table->string('name');
             $table->boolean('active')->default(true);
             $table->unsignedInteger('sort')->default(100);
             $table->text('description')->nullable();;
             $table->timestamps();
-
-            $table->foreign('portal_id')->references('id')->on('portals')->onDelete('cascade')->onUpdate('cascade');
         });
 
         Schema::create('learn_courses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('portal_id');
             $table->string('name');
             $table->boolean('active')->default(true);
             $table->unsignedInteger('sort')->default(100);
@@ -37,13 +33,11 @@ class CreateLearnTables extends Migration
             $table->json('options')->nullable();
             $table->timestamps();
 
-            $table->foreign('portal_id')->references('id')->on('portals')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('course_group_id')->references('id')->on('learn_course_group')->onDelete('cascade')->onUpdate('cascade');
         });
 
         Schema::create('learn_lessons', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('portal_id');
             $table->string('name');
             $table->boolean('active')->default(true);
             $table->unsignedInteger('sort')->default(100);
@@ -51,8 +45,6 @@ class CreateLearnTables extends Migration
             $table->text('detail_text')->nullable();
             $table->string('image', 500)->nullable();
             $table->timestamps();
-
-            $table->foreign('portal_id')->references('id')->on('portals')->onDelete('cascade')->onUpdate('cascade');
         });
 
         Schema::create('learn_course_lesson', function (Blueprint $table) {
@@ -68,7 +60,6 @@ class CreateLearnTables extends Migration
 
         Schema::create('learn_questions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('portal_id');
             $table->string('name');
             $table->boolean('active')->default(true);
             $table->unsignedInteger('sort')->default(100);
@@ -77,13 +68,11 @@ class CreateLearnTables extends Migration
             $table->unsignedBigInteger('lesson_id');
             $table->timestamps();
 
-            $table->foreign('portal_id')->references('id')->on('portals')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('lesson_id')->references('id')->on('learn_lessons')->onDelete('cascade')->onUpdate('cascade');
         });
 
         Schema::create('learn_answers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('portal_id');
             $table->string('name');
             $table->boolean('active')->default(true);
             $table->unsignedInteger('sort')->default(100);
@@ -91,21 +80,17 @@ class CreateLearnTables extends Migration
             $table->unsignedBigInteger('question_id');
             $table->timestamps();
 
-            $table->foreign('portal_id')->references('id')->on('portals')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('question_id')->references('id')->on('learn_questions')->onDelete('cascade')->onUpdate('cascade');
         });
 
         // Curriculum,  contains several courses
         Schema::create('learn_curriculums', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('portal_id');
             $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('active')->default(true);
             $table->unsignedInteger('sort')->default(100);
             $table->timestamps();
-
-            $table->foreign('portal_id')->references('id')->on('portals')->onDelete('cascade')->onUpdate('cascade');
         });
 
         Schema::create('learn_course_curriculum', function (Blueprint $table) {

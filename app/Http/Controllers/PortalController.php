@@ -21,16 +21,17 @@ class PortalController extends BaseController
      */
     public function index()
     {
-        $portals = PortalService::getUserPortals();
-        $currentPortal = PortalService::getDefaultPortal();
-        return Inertia::render('Pages/Index', [
-            'portals' => $portals,
-            'currentPortal' => $currentPortal
-        ]);
+//        $portals = PortalService::getUserPortals();
+//        $currentPortal = PortalService::getDefaultPortal();
+//        return Inertia::render('Pages/Index', [
+//            'portals' => $portals,
+//            'currentPortal' => $currentPortal
+//        ]);
+        return Redirect::route('home');
     }
 
     public function setPortal($id) {
-        PortalService::setDefaultPortal($id);
-        return Redirect::route('selectPortal');
+//        PortalService::setDefaultPortal($id);
+        return Redirect::route('home');
     }
 }
