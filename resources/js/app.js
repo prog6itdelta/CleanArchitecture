@@ -8,10 +8,6 @@ import AdminLayout from './Admin/Layout'
 
 require('./bootstrap');
 
-// import Alpine from 'alpinejs';
-// window.Alpine = Alpine;
-// Alpine.start();
-
 createInertiaApp({
     // resolve: name => require(`./Pages/${name}`),
     resolve: name => {

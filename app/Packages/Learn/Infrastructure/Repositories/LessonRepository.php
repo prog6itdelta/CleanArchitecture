@@ -22,7 +22,7 @@ class LessonRepository extends AbstractRepository
             $model->image,
             $model->options,
             $model->group_id,
-            $model->activ,
+            $model->active,
             $model->sort,
             $model->detail_text
         );

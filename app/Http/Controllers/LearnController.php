@@ -22,13 +22,14 @@ class LearnController extends BaseController
     public function index()
     {
         $courses = LearnService::getCourses();
-        return Inertia::render('Pages/Learning/Courses', compact('courses'));
+        $curriculums = LearnService::getCurriculumsFullList();
+        $course_groups = LearnService::getCourseGroups();
+        return Inertia::render('Pages/Learning/Courses', compact('courses', 'curriculums', 'course_groups'));
     }
 
     public function course($id)
     {
         $course = LearnService::getCourse($id);
-//        dd($course);
         return Inertia::render('Pages/Learning/Course', $course);
     }
 }

@@ -9,7 +9,7 @@ class CourseGroup extends Model
 {
     use HasFactory;
 
-    protected $table = 'learn_courses';
+    protected $table = 'learn_course_group';
 
     public function courses()
     {

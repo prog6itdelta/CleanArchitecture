@@ -17,9 +17,9 @@ class CreateLearnTables extends Migration
             $table->id();
             $table->unsignedBigInteger('portal_id');
             $table->string('name');
+            $table->boolean('active')->default(true);
             $table->unsignedInteger('sort')->default(100);
             $table->text('description')->nullable();;
-            $table->string('image', 500)->nullable();;
             $table->timestamps();
 
             $table->foreign('portal_id')->references('id')->on('portals')->onDelete('cascade')->onUpdate('cascade');
@@ -33,14 +33,13 @@ class CreateLearnTables extends Migration
             $table->unsignedInteger('sort')->default(100);
             $table->text('description')->nullable();
             $table->string('image', 500)->nullable();
-            $table->unsignedBigInteger('group_id')->nullable();
+            $table->unsignedBigInteger('course_group_id')->nullable();
             $table->json('options')->nullable();
             $table->timestamps();
 
             $table->foreign('portal_id')->references('id')->on('portals')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('group_id')->references('id')->on('learn_course_group')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('course_group_id')->references('id')->on('learn_course_group')->onDelete('cascade')->onUpdate('cascade');
         });
-
 
         Schema::create('learn_lessons', function (Blueprint $table) {
             $table->id();
@@ -102,12 +101,14 @@ class CreateLearnTables extends Migration
             $table->unsignedBigInteger('portal_id');
             $table->string('name');
             $table->text('description')->nullable();
+            $table->boolean('active')->default(true);
+            $table->unsignedInteger('sort')->default(100);
             $table->timestamps();
 
             $table->foreign('portal_id')->references('id')->on('portals')->onDelete('cascade')->onUpdate('cascade');
         });
 
-        Schema::create('learn_course_curriculums', function (Blueprint $table) {
+        Schema::create('learn_course_curriculum', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('course_id');
             $table->unsignedBigInteger('curriculum_id');

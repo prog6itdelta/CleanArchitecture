@@ -13,6 +13,6 @@ class Curriculum extends Model
 
     public function courses()
     {
-        return $this->hasMany(Course::class);
+        return $this->belongsToMany(Course::class, 'learn_course_curriculum');
     }
 }
