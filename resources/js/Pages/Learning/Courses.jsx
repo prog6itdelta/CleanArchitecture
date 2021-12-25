@@ -1,77 +1,92 @@
-import React, { useState } from 'react';
-// import Layout from './Layout'
-import { InertiaLink } from '@inertiajs/inertia-react';
-import { SearchIcon } from '@heroicons/react/solid';
+import React, { useState, useEffect } from 'react';
+import SectionTabs from '../Components/SectionTabs.jsx';
+import SearchPanel from '../Components/SearchPanel.jsx';
+import List from '../Components/List.jsx';
 
 export default function Courses({ courses }) {
   const [searchString, setSearchString] = useState('');
-
-  const handleSearch = (e) => {
-    const val = e.target.value.toLowerCase();
-    if (searchString !== val) {
-      setSearchString(val);
+  const [tabs, setTabs] = useState([
+    {
+      name: 'Курсы',
+      href: route('courses'),
+      current: true,
+      searchPlaceholder: 'Поиск по курсам'
+    },
+    {
+      name: 'Программы обучения',
+      href: route('programs'),
+      current: false,
+      searchPlaceholder: 'Поиск по программам'
     }
-  };
+  ]);
+  const [programs, setPrograms] = useState([
+    { id: 1, name: 'Программа 1', courses: [1, 2] },
+    { id: 2, name: 'Программа 2', courses: [3] }
+  ]);
+  const [coursesGroup, setCoursesGroup] = useState([
+    {
+      id: 1,
+      name: 'Маркетинг',
+      description: 'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.'
+    },
+    {
+      id: 2,
+      name: 'Продажи',
+      description: 'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.'
+    },
+    {
+      id: 3,
+      name: 'Разработка',
+      description: 'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.'
+    }
+  ]);
+
+  const handleSearch = (value) => setSearchString(value);
+  useEffect(() => {
+    const newTabs = tabs.map((tab) => {
+      tab.href.includes(route().current())
+        ? tab.current = true
+        : tab.current = false;
+      return tab;
+    });
+    setTabs(newTabs);
+  }, []);
 
   return (
+
     <div className="bg-white">
-      <div className="mx-auto px-4 max-w-7xl sm:px-6 lg:px-8">
-        <div className="space-y-12">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <div className="space-y-5">
           <header className="space-y-5 sm:space-y-4 md:max-w-xl lg:max-w-3xl xl:max-w-none">
             <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Учебный центр</h2>
           </header>
-          <div className="flex-1 flex items-center justify-center px-2 lg:justify-end">
-            <div className="container">
-              <label htmlFor="search" className="sr-only">
-                Search
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                  <SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                </div>
-                <input
-                  id="search"
-                  name="search"
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  placeholder="Поиск по курсам"
-                  type="search"
-                  onChange={handleSearch}
-                />
-              </div>
-            </div>
+          <div className="px-2 pb-5 sm:pb-0 border-b border-gray-200 flex-1 flex flex-wrap sm:flex-nowrap items-center justify-around sm:justify-between">
+            <SectionTabs tabs={tabs} />
+            <SearchPanel
+              onChange={handleSearch}
+              placeholder={tabs.find((tab) => tab.current).searchPlaceholder}
+            />
           </div>
-          <ul
-            role="list"
-            className="space-y-12 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-3 lg:gap-x-8"
-          >
-            {courses
-              .filter((course) => course.name.toLowerCase().includes(searchString))
-              .map((course) => (
-                <li key={course.id}>
-                  <div className="space-y-4">
-                    <div className="aspect-w-3 aspect-h-2">
-                      <img className="object-cover shadow-lg rounded-lg" src={
-                        course.image
-                          ? course.image
-                          : '/img/noimage.jpg'
-                      } alt={course.name} />
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="text-lg leading-6 font-medium space-y-1">
-                        <h3 className="hover:text-gray-500">
-                          <InertiaLink href={route('course', course.id)}>
-                            {course.id} - {course.name}
-                          </InertiaLink></h3>
-                        <p className="text-indigo-600">{`${course.description.substr(0, 100)}...`}</p>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              ))}
-          </ul>
+          {(() => {
+            switch (tabs.find((tab) => tab.current).href) {
+              case route('courses'):
+                return <List
+                  listItems={coursesGroup}
+                  type="coursesGroups"
+                  courses={courses.filter((course) => course.name.toLowerCase().includes(searchString)) }
+                />;
+              case route('programs'):
+                return <List
+                  listItems={programs.filter((program) => program.name.toLowerCase().includes(searchString))}
+                  type="programs"
+                  courses={courses}
+                />;
+              default:
+                return <List listItems={courses} type="courses" />;
+            }
+          })()}
         </div>
       </div>
-    </div>
+    </div >
   );
 }

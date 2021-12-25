@@ -1,24 +1,39 @@
-import React from 'react'
+import React from 'react';
+import List from '../Components/List.jsx';
 
-export default function Course({course, lessons}) {
-
-    return (
-        <div>
-            <header>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h1 className="text-3xl font-bold leading-tight text-gray-900">{course.name}</h1>
+export default function Course({ course, lessons }) {
+  return (
+    <div className="bg-white overflow-hidden">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
+          <div className="relative lg:row-start-1 lg:col-start-2">
+            <div className="relative text-base mx-auto max-w-prose lg:max-w-none">
+              <figure>
+                <div className="aspect-w-12 aspect-h-7 lg:aspect-w-1 lg:aspect-h-1">
+                  <img
+                    className="rounded-lg shadow-lg object-cover object-center"
+                    src={course.image}
+                    alt={course.name}
+                  />
                 </div>
-            </header>
-            <main>
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="px-4 py-8 sm:px-0">
-                        <div className="border-4 border-dashed border-gray-200 rounded-lg h-96">
-                            <div className="py-4">{JSON.stringify(course)}</div>
-                            <div  className="py-4">{JSON.stringify(lessons)}</div>
-                        </div>
-                    </div>
-                </div>
-            </main>
+              </figure>
+            </div>
+          </div>
+          <div className="mt-8 lg:mt-0">
+            <div className="text-base max-w-prose mx-auto lg:max-w-none">
+              <header>
+                <h1 className="text-3xl font-bold leading-tight text-gray-900">{course.name}</h1>
+              </header>
+              <main>
+                <p className="text-lg text-gray-500">
+                  {course.description}
+                </p>
+                <List listItems={lessons} type="lessons" />
+              </main>
+            </div>
+          </div>
         </div>
-    )
+      </div>
+    </div>
+  );
 }

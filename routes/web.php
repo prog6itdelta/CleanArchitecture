@@ -31,9 +31,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/courses', [LearnController::class, 'index'])
             ->name('courses');
 
+        Route::get('/programs', [LearnController::class, 'index'])
+        ->name('programs');
+
         Route::get('/course/{id}', [LearnController::class, 'course'])
             ->name('course');
     });
+
+    Route::redirect('/learning', '/learning/courses')->name('learning');
 
     Route::get('/portal', [PortalController::class, 'index'])
         ->name('selectPortal');
