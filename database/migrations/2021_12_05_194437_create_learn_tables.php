@@ -63,7 +63,7 @@ class CreateLearnTables extends Migration
             $table->string('name');
             $table->boolean('active')->default(true);
             $table->unsignedInteger('sort')->default(100);
-            $table->unsignedInteger('type')->default(1);
+            $table->enum('type', ['radio', 'checkbox', 'text']);
             $table->unsignedInteger('point')->default(10);
             $table->unsignedBigInteger('lesson_id');
             $table->timestamps();

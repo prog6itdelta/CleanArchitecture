@@ -1,5 +1,6 @@
 import React from 'react';
 import List from '../Components/List.jsx';
+import {InertiaLink} from "@inertiajs/inertia-react";
 
 export default function Course({ course, lessons }) {
   return (
@@ -30,6 +31,9 @@ export default function Course({ course, lessons }) {
                 </p>
                 <List listItems={lessons} type="lessons" />
               </main>
+              <InertiaLink href={route('lesson', [lessons[0].id])}>
+                RUN !!!
+              </InertiaLink>
             </div>
           </div>
         </div>

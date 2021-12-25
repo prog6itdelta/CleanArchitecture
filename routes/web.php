@@ -36,6 +36,12 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/course/{id}', [LearnController::class, 'course'])
             ->name('course');
+
+        Route::get('/lesson/{id}', [LearnController::class, 'lesson'])
+            ->name('lesson');
+        Route::post('/lesson/{id}', [LearnController::class, 'checkLesson'])
+            ->name('check-lesson');
+
     });
 
     Route::redirect('/learning', '/learning/courses')->name('learning');

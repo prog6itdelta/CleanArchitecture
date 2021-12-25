@@ -2,8 +2,8 @@
 
 namespace App\Packages\Learn\Entities;
 
-use App\Packages\Learn\Infrastructure\Repositories\AbstractRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository;
+
 class CourseGroup
 {
     public $id;

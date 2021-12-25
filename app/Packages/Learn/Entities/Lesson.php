@@ -2,6 +2,8 @@
 
 namespace App\Packages\Learn\Entities;
 
+use App\Packages\Learn\Infrastructure\Repositories\LessonRepository;
+
 class Lesson
 {
     public $id;
@@ -22,6 +24,8 @@ class Lesson
 
     public $detail_text;
 
+    public $questions;
+
 
     /**
      * @param $prop
@@ -33,5 +37,8 @@ class Lesson
         }
     }
 
-
+    function fetchQuestions() {
+        $rep = new LessonRepository();
+        $this->questions = $rep->questions($this->id);
+    }
 }

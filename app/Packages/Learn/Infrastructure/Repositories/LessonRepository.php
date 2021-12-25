@@ -2,6 +2,7 @@
 
 namespace App\Packages\Learn\Infrastructure\Repositories;
 
+use App\Packages\Learn\Entities\Question;
 use App\Packages\Shared\Infrastructure\Repositories\AbstractRepository;
 use App\Packages\Learn\Entities\Lesson;
 
@@ -15,16 +16,13 @@ class LessonRepository extends AbstractRepository
 
     function mapProps($model)
     {
-        return new Lesson(
-            $model->id,
-            $model->name,
-            $model->description,
-            $model->image,
-            $model->options,
-            $model->group_id,
-            $model->active,
-            $model->sort,
-            $model->detail_text
-        );
+        return new Lesson($model->toArray());
+    }
+
+    function questions($lesson_id)
+    {
+        return $this->model->find($lesson_id)->questions()->get()->map(function ($item) {
+            return new Question($item->toArray());
+        })->toArray();
     }
 }

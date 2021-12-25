@@ -2,25 +2,25 @@
 
 namespace App\Packages\Learn\Entities;
 
-use App\Packages\Learn\Infrastructure\Repositories\CourseRepository;
+use App\Packages\Learn\Infrastructure\Repositories\QuestionRepository;
 
-class Course
+class Question
 {
     public $id;
 
     public $name;
 
-    public $description;
+    public $type;
 
-    public $image;
+    public $point;
 
-    public $options;
-
-    public $group_id;
+    public $lesson_id;
 
     public $active;
 
     public $sort;
+
+    public $answers;
 
     /**
      * @param $prop
@@ -32,8 +32,8 @@ class Course
         }
     }
 
-    function lessons() {
-        $rep = new CourseRepository();
-        return $rep->lessons($this->id);
+    function fetchAnswers() {
+        $rep = new QuestionRepository();
+        $this->answers = $rep->answers($this->id);
     }
 }

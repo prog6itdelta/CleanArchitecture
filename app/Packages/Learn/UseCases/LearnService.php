@@ -5,6 +5,7 @@ namespace App\Packages\Learn\UseCases;
 use App\Packages\Learn\Infrastructure\Repositories\CourseRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository;
+use App\Packages\Learn\Infrastructure\Repositories\LessonRepository;
 
 class LearnService implements LearnServiceInterface
 {
@@ -39,4 +40,19 @@ class LearnService implements LearnServiceInterface
         })->toArray();
         return $list;
     }
+
+    public static function runLesson(int $id) {
+        $rep = new LessonRepository();
+        $lesson = $rep->find($id);
+        $lesson->fetchQuestions();
+        foreach ($lesson->questions as $value) {
+            $value->fetchAnswers();
+            // delete right answer from the frontend side
+            foreach ($value->answers as $value) {
+                unset($value->correct);
+            }
+        }
+        return $lesson;
+    }
+
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Packages\Learn\UseCases\LearnService;
-use App\Packages\Learn\UseCases\PortalService;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
 
@@ -31,5 +31,18 @@ class LearnController extends BaseController
     {
         $course = LearnService::getCourse($id);
         return Inertia::render('Pages/Learning/Course', $course);
+    }
+
+    public function lesson($id)
+    {
+        $lesson = LearnService::runLesson($id);
+        dd($lesson);
+//        return Inertia::render('Pages/Learning/Course', $course);
+    }
+
+    public function checkLesson(Request $request, $id)
+    {
+        dd($request);
+//        return Inertia::render('Pages/Learning/Course', $course);
     }
 }
