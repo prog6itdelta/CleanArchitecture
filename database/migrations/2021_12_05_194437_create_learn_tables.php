@@ -95,7 +95,7 @@ class CreateLearnTables extends Migration
             $table->foreign('question_id')->references('id')->on('learn_questions')->onDelete('cascade')->onUpdate('cascade');
         });
 
-        // учебная программа, состоит из нескольких курсов
+        // Curriculum,  contains several courses
         Schema::create('learn_curriculums', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('portal_id');
@@ -118,6 +118,20 @@ class CreateLearnTables extends Migration
             $table->foreign('curriculum_id')->references('id')->on('learn_curriculums')->onDelete('cascade')->onUpdate('cascade');
 
         });
+
+        // Learning journal
+        Schema::create('learn_journal', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('lesson_id');
+            $table->unsignedBigInteger('user_id');
+            $table->enum('status', ['new', 'pending', 'done', 'fail']);
+            $table->timestamps();
+
+            $table->foreign('lesson_id')->references('id')->on('learn_lessons')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
+        });
+
     }
 
     /**
