@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use App\Packages\Learn\Infrastructure\Repositories\LessonRepository;
+use App\Packages\Common\Application\Services\IAuthorisationService;
+use App\Packages\Common\Infrastructure\Services\AuthorisationService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,9 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-//        $this->app->bind(LessonRepository::class, function ($app) {
-//            return new LessonRepository();
-//        });
+        $this->app->bind(IAuthorisationService::class, AuthorisationService::class);
     }
 
     /**

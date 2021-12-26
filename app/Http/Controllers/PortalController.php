@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Packages\Learn\UseCases\PortalService;
+use App\Packages\Common\Application\Services\PortalService;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;

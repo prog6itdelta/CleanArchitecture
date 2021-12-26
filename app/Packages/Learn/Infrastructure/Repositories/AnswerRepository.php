@@ -2,7 +2,7 @@
 
 namespace App\Packages\Learn\Infrastructure\Repositories;
 
-use App\Packages\Shared\Infrastructure\Repositories\AbstractRepository;
+use App\Packages\Common\Infrastructure\Repositories\AbstractRepository;
 
 class AnswerRepository extends AbstractRepository
 {

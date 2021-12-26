@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Packages\Shared\Infrastructure\Repositories;
+namespace App\Packages\Common\Infrastructure\Repositories;
 
 use App\Exceptions\RepositoryException;
 use Illuminate\Database\Eloquent\Model;
@@ -128,7 +128,7 @@ abstract class AbstractRepository implements RepositoryInterface
      */
     public function find($id, $columns = array('*'))
     {
-        return $this->mapProps($this->model->find($id, $columns));
+        return $this->mapProps($this->model->findOrFail($id, $columns));
     }
 
 //    /**

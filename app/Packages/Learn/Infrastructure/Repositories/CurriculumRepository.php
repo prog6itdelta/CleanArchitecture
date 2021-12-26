@@ -2,8 +2,8 @@
 
 namespace App\Packages\Learn\Infrastructure\Repositories;
 
+use App\Packages\Common\Infrastructure\Repositories\AbstractRepository;
 use App\Packages\Learn\Entities\Course;
-use App\Packages\Shared\Infrastructure\Repositories\AbstractRepository;
 use App\Packages\Learn\Entities\Curriculum;
 
 class CurriculumRepository extends AbstractRepository

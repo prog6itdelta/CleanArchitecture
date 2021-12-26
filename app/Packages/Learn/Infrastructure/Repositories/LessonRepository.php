@@ -2,9 +2,9 @@
 
 namespace App\Packages\Learn\Infrastructure\Repositories;
 
-use App\Packages\Learn\Entities\Question;
-use App\Packages\Shared\Infrastructure\Repositories\AbstractRepository;
+use App\Packages\Common\Infrastructure\Repositories\AbstractRepository;
 use App\Packages\Learn\Entities\Lesson;
+use App\Packages\Learn\Entities\Question;
 
 class LessonRepository extends AbstractRepository
 {

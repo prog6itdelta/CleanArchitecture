@@ -31,9 +31,11 @@ export default function Course({ course, lessons }) {
                 </p>
                 <List listItems={lessons} type="lessons" />
               </main>
-              <InertiaLink href={route('lesson', [lessons[0].id])}>
+              {lessons.length > 0 &&
+                <InertiaLink href={route('lesson', [lessons[0].id])}>
                 RUN !!!
-              </InertiaLink>
+                </InertiaLink>
+              }
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Packages\Shared\Infrastructure\DTO;
+namespace App\Packages\Common\Domain;
 
 class UserDTO
 {

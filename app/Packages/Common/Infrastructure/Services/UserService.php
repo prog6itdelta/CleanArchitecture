@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Packages\Learn\UseCases;
+namespace App\Packages\Common\Infrastructure\Services;
 
-use App\Packages\Shared\Infrastructure\DTO\UserDTO;
+use App\Packages\Common\Application\Services\IUserService;
+use App\Packages\Common\Domain\UserDTO;
 use Illuminate\Support\Facades\Auth;
 
-class UserService implements UserServiceInterface
+class UserService implements IUserService
 {
 
     /**
