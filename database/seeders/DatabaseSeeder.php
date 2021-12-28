@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Spatie\Multitenancy\Models\Tenant;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +14,13 @@ class DatabaseSeeder extends Seeder
      * @return void
      */
     public function run()
+    {
+        Tenant::checkCurrent()
+            ? $this->runTenantSpecificSeeders()
+            : $this->runLandlordSpecificSeeders();
+    }
+
+    public function runTenantSpecificSeeders()
     {
 //         \App\Models\User::factory(10)->create();
         $this->call([
@@ -170,5 +178,14 @@ class DatabaseSeeder extends Seeder
             'curriculum_id' => 3
         ]);
 
+    }
+
+    private function runLandlordSpecificSeeders()
+    {
+        DB::table('tenants')->insert([
+            'name' => 'tenant1',
+            'domain' => 'tenant1.localhost',
+            'database' => 'db_tenant1'
+        ]);
     }
 }
