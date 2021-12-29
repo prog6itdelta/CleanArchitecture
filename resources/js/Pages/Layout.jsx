@@ -1,8 +1,8 @@
 /* This example requires Tailwind CSS v2.0+ */
-import React, { Fragment, useEffect } from 'react';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import React, {Fragment} from 'react';
+import {Disclosure, Menu, Transition} from '@headlessui/react';
+import {BellIcon, MenuIcon, XIcon} from '@heroicons/react/outline';
+import {InertiaLink} from '@inertiajs/inertia-react';
 
 const user = {
   name: 'Tom Cook',
@@ -11,16 +11,16 @@ const user = {
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 };
 const navigation = [
-  { name: 'Курсы', href: route('learning'), current: true },
-  { name: 'Портал', href: route('selectPortal'), current: false },
+  {name: 'Курсы', href: route('learning'), current: true},
+  {name: 'Admin', href: route('admin.index'), current: false},
   // { name: 'Projects', href: '#', current: false },
   // { name: 'Calendar', href: '#', current: false },
 ];
 
 const userNavigation = [
-  { name: 'Профайл', href: '#' },
-  { name: 'Настройки', href: '/admin' },
-  { name: 'Выход', href: '/logout' },
+  {name: 'Профайл', href: '#'},
+  {name: 'Настройки', href: '/admin'},
+  {name: 'Выход', href: '/logout'},
 ];
 
 function classNames(...classes) {
@@ -41,22 +41,24 @@ export default function Layout(children) {
   return (
     <div className="min-h-screen bg-white">
       <Disclosure as="nav" className="bg-white border-b border-gray-200">
-        {({ open }) => (
+        {({open}) => (
           <>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between h-16">
                 <div className="flex">
                   <div className="flex-shrink-0 flex items-center">
-                    <img
-                      className="block lg:hidden h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-                      alt="Workflow"
-                    />
-                    <img
-                      className="hidden lg:block h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
-                      alt="Workflow"
-                    />
+                    <InertiaLink href='/'>
+                      <img
+                        className="block lg:hidden h-8 w-auto"
+                        src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+                        alt="Workflow"
+                      />
+                      <img
+                        className="hidden lg:block h-8 w-auto"
+                        src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
+                        alt="Workflow"
+                      />
+                    </InertiaLink>
                   </div>
                   <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                     {navigation.map((item) => (
@@ -74,6 +76,7 @@ export default function Layout(children) {
                         {item.name}
                       </InertiaLink>
                     ))}
+                    <a href="/bitrix24" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Bitrix24</a>
                   </div>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:items-center">
@@ -82,15 +85,16 @@ export default function Layout(children) {
                     className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
                     <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
+                    <BellIcon className="h-6 w-6" aria-hidden="true"/>
                   </button>
 
                   {/* Profile dropdown */}
                   <Menu as="div" className="ml-3 relative">
                     <div>
-                      <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                      <Menu.Button
+                        className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <span className="sr-only">Open user menu</span>
-                        <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                        <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt=""/>
                       </Menu.Button>
                     </div>
                     <Transition
@@ -102,10 +106,11 @@ export default function Layout(children) {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Items
+                        className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                         {userNavigation.map((item) => (
                           <Menu.Item key={item.name}>
-                            {({ active }) => (
+                            {({active}) => (
                               <InertiaLink
                                 href={item.href}
                                 className={classNames(
@@ -124,12 +129,13 @@ export default function Layout(children) {
                 </div>
                 <div className="-mr-2 flex items-center sm:hidden">
                   {/* Mobile menu button */}
-                  <Disclosure.Button className="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  <Disclosure.Button
+                    className="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <span className="sr-only">Open main menu</span>
                     {open ? (
-                      <XIcon className="block h-6 w-6" aria-hidden="true" />
+                      <XIcon className="block h-6 w-6" aria-hidden="true"/>
                     ) : (
-                      <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+                      <MenuIcon className="block h-6 w-6" aria-hidden="true"/>
                     )}
                   </Disclosure.Button>
                 </div>
@@ -157,7 +163,7 @@ export default function Layout(children) {
               <div className="pt-4 pb-3 border-t border-gray-200">
                 <div className="flex items-center px-4">
                   <div className="flex-shrink-0">
-                    <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                    <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt=""/>
                   </div>
                   <div className="ml-3">
                     <div className="text-base font-medium text-gray-800">{user.name}</div>
@@ -168,7 +174,7 @@ export default function Layout(children) {
                     className="ml-auto bg-white flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
                     <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
+                    <BellIcon className="h-6 w-6" aria-hidden="true"/>
                   </button>
                 </div>
                 <div className="mt-3 space-y-1">
