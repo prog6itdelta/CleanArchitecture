@@ -21,46 +21,52 @@ use App\Http\Controllers\AdminController;
 //        return Inertia::render('Index');
 //    })->name('home');
 
-Route::middleware(['auth'])->group(function () {
+//Route::middleware('tenant')->group(function() {
 
-    Route::get('/', function () {
-        return redirect()->route('courses');
-    })->name('home');
+    Route::middleware(['auth'])->group(function () {
 
-    Route::prefix('learning')->group(function () {
-        Route::get('/courses', [LearnController::class, 'index'])
-            ->name('courses');
+        Route::get('/', function () {
+            return redirect()->route('courses');
+        })->name('home');
 
-        Route::get('/programs', [LearnController::class, 'index'])
-        ->name('programs');
+        Route::prefix('learning')->group(function () {
+            Route::get('/courses', [LearnController::class, 'index'])
+                ->name('courses');
 
-        Route::get('/course/{id}', [LearnController::class, 'course'])
-            ->name('course');
+            Route::get('/programs', [LearnController::class, 'index'])
+                ->name('programs');
 
-        Route::get('/lesson/{id}', [LearnController::class, 'lesson'])
-            ->name('lesson');
-        Route::post('/lesson/{id}', [LearnController::class, 'checkLesson'])
-            ->name('check-lesson');
+            Route::get('/course/{id}', [LearnController::class, 'course'])
+                ->name('course');
+
+            Route::get('/lesson/{id}', [LearnController::class, 'lesson'])
+                ->name('lesson');
+            Route::post('/lesson/{id}', [LearnController::class, 'checkLesson'])
+                ->name('check-lesson');
+
+        });
+
+        Route::redirect('/learning', '/learning/courses')->name('learning');
+
+        Route::get('/portal', [PortalController::class, 'index'])
+            ->name('selectPortal');
+
+        Route::post('/portal/{id}', [PortalController::class, 'setPortal'])
+            ->name('setPortal');
 
     });
 
-    Route::redirect('/learning', '/learning/courses')->name('learning');
+    // admin panel
+    Route::middleware(['auth'])->group(function () {
 
-    Route::get('/portal', [PortalController::class, 'index'])
-        ->name('selectPortal');
+        Route::prefix('admin')->group(function () {
+            Route::get('/', [AdminController::class, 'index'])
+                ->name('admin.index');
+        });
 
-    Route::post('/portal/{id}', [PortalController::class, 'setPortal'])
-        ->name('setPortal');
-
-});
-
-// admin panel
-Route::middleware(['auth'])->group(function () {
-
-    Route::prefix('admin')->group(function () {
-        Route::get('/', [AdminController::class, 'index'])
-            ->name('admin.index');
     });
 
-});
-require __DIR__.'/auth.php';
+    require __DIR__.'/auth.php';
+
+//});
+

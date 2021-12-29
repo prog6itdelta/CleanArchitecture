@@ -1,12 +1,25 @@
-composer install
+#Installation
+composer install  
 yarn
 
-create database
-check .env file and set DB options
+add to /etc/hosts   
+127.0.0.1 tenant1.localhost
 
-php artisan key:generate
-php artisan migrate
-php artisan db:seed
+##Database
+CREATE DATABASE landlord DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;  
+CREATE USER 'landlord'@'localhost' IDENTIFIED BY '123';  
+GRANT ALL PRIVILEGES ON landlord.* TO 'landlord'@'localhost';  
+
+CREATE DATABASE db_tenant1 DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;  
+CREATE USER 'tenant_user'@'localhost' IDENTIFIED BY '123';  
+GRANT ALL PRIVILEGES ON db_tenant1.* TO 'tenant_user'@'localhost';  
+
+FLUSH PRIVILEGES;
+
+##Laravel
+php artisan key:generate  
+php artisan migrate --path=database/migrations/landlord --database=landlord --seed
+php artisan tenants:artisan "migrate --database=tenant --seed"
 
 After migration and seeding user is:
 user@aa.com
