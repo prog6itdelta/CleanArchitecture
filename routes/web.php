@@ -2,9 +2,13 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LearnController;
-use App\Http\Controllers\PortalController;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Enforcer;
 
 //use Inertia\Inertia;
 
@@ -55,14 +59,6 @@ Route::middleware(['auth'])->group(function () {
 //    Route::post('/portal/{id}', [PortalController::class, 'setPortal'])
 //        ->name('setPortal');
 
-    // Bitrix24 integration
-    Route::get('/bitrix24', fn() => Socialite::driver('bitrix24')->redirect())
-        ->name('bitrix24');
-    Route::get('/auth/bitrix24/callback', function () {
-        $bitrix24_user = Socialite::driver('bitrix24')->user();
-        dd($bitrix24_user);
-    });
-
 
 
 });
@@ -76,6 +72,31 @@ Route::middleware(['auth'])->group(function () {
     });
 
 });
+
+// Bitrix24 integration
+//Route::get('/bitrix24', fn() => Socialite::driver('bitrix24')->redirect())
+//    ->name('bitrix24');
+Route::get('/auth/bitrix24/callback', function (Request $request) {
+
+    $bitrix24_user = Socialite::driver('bitrix24')->user();
+    $user = User::updateOrCreate(
+        [
+            'email' => $bitrix24_user->email
+        ],
+        [
+            'name'  =>  $bitrix24_user->name,
+            'password' => md5(rand(1, 10000)),
+        ]
+    );
+    Enforcer::addRoleForUser("U$user->id", 'AU');
+
+    Auth::login($user, true);
+    session()->invalidate();
+
+    return redirect()->intended(RouteServiceProvider::HOME);
+
+});
+
 
 require __DIR__ . '/auth.php';
 
