@@ -185,7 +185,20 @@ class DatabaseSeeder extends Seeder
         DB::table('tenants')->insert([
             'name' => 'tenant1',
             'domain' => 'tenant1.localhost',
-            'database' => 'db_tenant1'
+            'database' => 'db_tenant1',
+            'options' => json_encode([
+                'integration' => [
+                    'type' => 'bitrix24',
+                    'endpoint' => env('BITRIX24_ENDPOINT_URI'),
+                    'client_id' => env('BITRIX24_CLIENT_ID'),
+                    'client_secret' => env('BITRIX24_CLIENT_SECRET')
+                ]
+            ])
+        ]);
+        DB::table('tenants')->insert([
+            'name' => 'tenant2',
+            'domain' => 'tenant2.localhost',
+            'database' => 'db_tenant2',
         ]);
     }
 }

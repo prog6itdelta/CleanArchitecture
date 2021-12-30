@@ -20,4 +20,4 @@ mix.js('resources/js/app.js', 'public/js').react()
 ])
 .version()
 .sourceMaps()
-.browserSync('s2.it-delta.ru:8002');
+.browserSync('tenant1.localhost:3000');
