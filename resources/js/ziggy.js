@@ -1,0 +1,7 @@
+const Ziggy = {"url":"http:\/\/tenant1.localhost:3000","port":3000,"defaults":{},"routes":{"home":{"uri":"\/","methods":["GET","HEAD"]},"courses":{"uri":"learning\/courses","methods":["GET","HEAD"]},"programs":{"uri":"learning\/programs","methods":["GET","HEAD"]},"course":{"uri":"learning\/course\/{id}","methods":["GET","HEAD"]},"lesson":{"uri":"learning\/course\/{cid}\/lesson\/{id}","methods":["GET","HEAD"]},"check-lesson":{"uri":"learning\/course\/{cid}\/lesson\/{id}","methods":["POST"]},"learning":{"uri":"learning","methods":["GET","HEAD","POST","PUT","PATCH","DELETE","OPTIONS"]},"profile":{"uri":"profile","methods":["GET","HEAD"]},"admin.index":{"uri":"admin","methods":["GET","HEAD"]},"login":{"uri":"login","methods":["GET","HEAD"]},"logout":{"uri":"logout","methods":["GET","HEAD"]},"password.request":{"uri":"forgot-password","methods":["GET","HEAD"]},"password.email":{"uri":"forgot-password","methods":["POST"]},"password.reset":{"uri":"reset-password\/{token}","methods":["GET","HEAD"]},"password.update":{"uri":"reset-password","methods":["POST"]},"verification.notice":{"uri":"verify-email","methods":["GET","HEAD"]},"verification.verify":{"uri":"verify-email\/{id}\/{hash}","methods":["GET","HEAD"]},"verification.send":{"uri":"email\/verification-notification","methods":["POST"]},"password.confirm":{"uri":"confirm-password","methods":["GET","HEAD"]}}};
+
+if (typeof window !== 'undefined' && typeof window.Ziggy !== 'undefined') {
+    Object.assign(Ziggy.routes, window.Ziggy.routes);
+}
+
+export { Ziggy };

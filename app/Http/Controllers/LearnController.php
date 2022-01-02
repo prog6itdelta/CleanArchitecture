@@ -30,19 +30,28 @@ class LearnController extends BaseController
     public function course($id)
     {
         $course = LearnService::getCourse($id);
-        return Inertia::render('Pages/Learning/Course', $course);
+        return Inertia::render('Pages/Learning/Course', compact('course'));
     }
 
-    public function lesson($id)
+    public function lesson($cid, $id)
     {
         $lesson = LearnService::runLesson($id);
-        dd($lesson);
-//        return Inertia::render('Pages/Learning/Course', $course);
+        return Inertia::render('Pages/Learning/Lesson', [
+            'course_id' => $cid,
+            'lesson' => $lesson
+        ]);
     }
 
-    public function checkLesson(Request $request, $id)
+    public function checkLesson(Request $request, $cid, $id)
     {
-        dd($request);
-//        return Inertia::render('Pages/Learning/Course', $course);
+        $result = LearnService::checkLesson($id, $request->attributes);
+        if ($result) {
+            $nextLesson = LearnService::nextLesson($cid, $id);
+            if ($nextLesson)
+                return redirect()->route('lesson', [$cid, $nextLesson->id]);
+            else
+                return redirect()->route('course', [$cid + 1]);
+        }
+
     }
 }

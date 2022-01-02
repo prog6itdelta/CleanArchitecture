@@ -4,6 +4,7 @@ import { Disclosure, Transition } from '@headlessui/react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
 
 export default function List({ listItems, type, ...props }) {
+
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
   }

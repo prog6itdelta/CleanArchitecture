@@ -2,7 +2,9 @@ import React from 'react';
 import List from '../Components/List.jsx';
 import {InertiaLink} from "@inertiajs/inertia-react";
 
-export default function Course({ course, lessons }) {
+export default function Course({ course }) {
+  let lessons = course.lessons;
+  lessons = Object.values(lessons);
   return (
     <div className="bg-white overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,7 +34,7 @@ export default function Course({ course, lessons }) {
                 <List listItems={lessons} type="lessons" />
               </main>
               {lessons.length > 0 &&
-                <InertiaLink href={route('lesson', [lessons[0].id])}>
+                <InertiaLink href={route('lesson', [course.id, lessons[0].id])}>
                 RUN !!!
                 </InertiaLink>
               }

@@ -20,4 +20,8 @@ mix.js('resources/js/app.js', 'public/js').react()
 ])
 .version()
 .sourceMaps()
-.browserSync('tenant1.localhost:3000');
+.browserSync({
+  proxy: 'tenant1.localhost:8002',
+  // port: 8002,
+  // localOnly: true
+});
