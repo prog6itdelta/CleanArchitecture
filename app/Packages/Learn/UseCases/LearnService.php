@@ -8,7 +8,6 @@ use App\Packages\Learn\Entities\Lesson;
 use App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CourseRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository;
-use App\Packages\Learn\Infrastructure\Repositories\LessonRepository;
 
 class LearnService implements LearnServiceInterface
 {
@@ -66,8 +65,7 @@ class LearnService implements LearnServiceInterface
 
     public static function runLesson(int $id)
     {
-        $rep = new LessonRepository();
-        $lesson = $rep->find($id);
+        $lesson = Lesson::getById($id);
 
         $self = LearnService::getInstance();
         if (!$self->authService::authorized("LL{$lesson->id}", 'read')) {
@@ -85,17 +83,48 @@ class LearnService implements LearnServiceInterface
         return $lesson;
     }
 
-    public static function checkLesson(int $id)
+    public static function checkLesson(int $id, $data)
     {
+        // журнал + проверка
+        $lesson = Lesson::getById($id);
+
+        $self = LearnService::getInstance();
+        if (!$self->authService::authorized("LL{$lesson->id}", 'read')) {
+            throw new \Error('No access');
+        }
+
+        $result = [];
+        $lesson->fetchQuestions();
+        foreach ($lesson->questions as $question) {
+            $question->fetchAnswers();
+            $answer = $data["q$question->id"] ?? false;
+            switch ($question->type) {
+                case 'radio':
+                    $rightAnswer = array_filter($question->answers, fn($item) => ($item->correct));
+                    $rightAnswer = $rightAnswer[0] ?? false;
+                    assert($rightAnswer);
+                    if ($rightAnswer->id != $answer) return false;
+                    break;
+                case 'checkbox':
+                    break;
+                case 'text':
+                    break;
+                default:
+                    assert('Unknown question type.');
+            }
+        }
+//        dd($lesson, $data);
+
         return true;
     }
 
-    public static function nextLesson(int $cid, int $id): Lesson | bool
+    public static function nextLesson(int $cid, int $id): Lesson|bool
     {
+        //todo: move to entity
         $course = self::getCourse($cid);
         $rep = new CourseRepository();
         $lessons = $course->lessons;
-        $lessons_ids = array_map(fn ($e) => ($e->id), $lessons);
+        $lessons_ids = array_map(fn($e) => ($e->id), $lessons);
         $pos = array_search($id, $lessons_ids);
         if (!$pos) throw new \Exception('Error while next lesson finding...');
 
@@ -109,9 +138,9 @@ class LearnService implements LearnServiceInterface
      */
     public static function getCourse(int $id): Course
     {
+        $course = Course::getById($id);
+
         $self = LearnService::getInstance();
-        $rep = new CourseRepository();
-        $course = $rep->find($id);
         if (!$self->authService::authorized("LC{$course->id}", 'read')) {
             throw new \Error('No access');
         }

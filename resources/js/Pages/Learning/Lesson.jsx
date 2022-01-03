@@ -1,32 +1,49 @@
 import React, {useState} from 'react';
-import {RadioGroup} from "@headlessui/react";
-import {ArrowCircleRightIcon} from '@heroicons/react/outline'
-import { Inertia } from '@inertiajs/inertia'
-import {InertiaLink} from '@inertiajs/inertia-react';
+import {ArrowCircleLeftIcon, ArrowCircleRightIcon} from '@heroicons/react/outline'
+import Notification from "../Components/Notification";
+// import {Inertia} from '@inertiajs/inertia'
+import { usePage } from '@inertiajs/inertia-react'
+import { useForm } from '@inertiajs/inertia-react'
 
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-function RadioQuestion({question, onChange}) {
+function RadioQuestion({question, setValues, values}) {
   const {answers} = question;
+  const name = `q${question.id}`;
+
+  const handleChange = (e) => {
+    const key = e.target.name;
+    const value = e.target.value
+    setValues(values => ({
+      ...values,
+      [key]: value,
+    }))
+  }
+
   return (
     <>
       <h3 className="text-xl font-bold leading-tight text-gray-900">{question.name}</h3>
-      {answers.map((answer, idx) => {
-        const name = `q${question.id}`;
-        return (
-          <label key={idx} className="flex flex-col cursor-pointer focus:outline-none">
-            <div className="flex items-center text-sm">
-              <input type="radio" name={name} value={answer.id} id={name} className="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
-                onChange={onChange}/>
-              {/*// <!-- Checked: "text-indigo-900", Not Checked: "text-gray-900" -->*/}
-              <span className="ml-3 font-medium">{answer.name}</span>
-            </div>
-          </label>
-        )
-      })}
+      <fieldset className="space-y-5">
+        <legend className="sr-only">{question.name}</legend>
+        {answers.map((answer, idx) => {
+          return (
+            <label key={idx} className="flex flex-col cursor-pointer focus:outline-none">
+              <div className="flex items-center text-sm">
+                <input type="radio" name={name} value={answer.id} id={name}
+                       className="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
+                       onChange={handleChange}
+                       required
+                />
+                {/*// <!-- Checked: "text-indigo-900", Not Checked: "text-gray-900" -->*/}
+                <span className="ml-3 font-medium">{answer.name}</span>
+              </div>
+            </label>
+          )
+        })}
+      </fieldset>
     </>
   )
 }
@@ -82,8 +99,18 @@ function CheckBoxQuestion({question, setValues, values}) {
   )
 }
 
-function TextQuestion({question, onChange, values}) {
+function TextQuestion({question, setValues, values}) {
   const name = `q${question.id}`;
+
+  const handleChange = (e) => {
+    const key = e.target.name;
+    const value = e.target.value
+    setValues(values => ({
+      ...values,
+      [key]: value,
+    }))
+  }
+
   return (
     <>
       <h3 className="text-xl font-bold leading-tight text-gray-900">{question.name}</h3>
@@ -93,9 +120,10 @@ function TextQuestion({question, onChange, values}) {
         id={name}
         aria-describedby="answer-description"
         name={name}
-        onChange={onChange}
+        onChange={handleChange}
         value={values[name]}
         className="shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md my-3"
+        required
       />
     </>
   )
@@ -103,21 +131,25 @@ function TextQuestion({question, onChange, values}) {
 
 export default function Lesson({course_id, lesson}) {
 
-  const [values, setValues] = useState({})
+  // const [values, setValues] = useState({})
+  // const { errors } = usePage().props
+  const { data, setData, post, processing, errors } = useForm({})
 
-  function handleChange(e) {
-    const key = e.target.name;
-    const value = e.target.value
-    setValues(values => ({
-      ...values,
-      [key]: value,
-    }))
+  function handleBack() {
+    window.history.back();
   }
 
   function handleSubmit(e) {
     e.preventDefault()
-    Inertia.post(route('lesson', [course_id, lesson.id]), values)
+    if (checkTextAnswers())
+      post(route('lesson', [course_id, lesson.id]));
   }
+
+  function checkTextAnswers() {
+    //todo: check if text answers were not filled
+    return true;
+  }
+  console.log(data, errors)
 
   return (
     <div className="bg-white overflow-hidden">
@@ -141,13 +173,13 @@ export default function Lesson({course_id, lesson}) {
                   let component;
                   switch (item.type) {
                     case 'radio':
-                      component = <RadioQuestion question={item} onChange={handleChange} values={values}/>;
+                      component = <RadioQuestion question={item} setValues={setData} values={data}/>;
                       break;
                     case 'checkbox':
-                      component = <CheckBoxQuestion question={item} setValues={setValues} values={values}/>;
+                      component = <CheckBoxQuestion question={item} setValues={setData} values={data}/>;
                       break
                     case 'text':
-                      component = <TextQuestion question={item} onChange={handleChange} values={values}/>;
+                      component = <TextQuestion question={item} setValues={setData} values={data}/>;
                       break;
                   }
                   return (
@@ -157,19 +189,30 @@ export default function Lesson({course_id, lesson}) {
                   )
 
                 })}
-                <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm
+
+                {errors.error && <div>{errors.error}</div>}
+                {errors.error && <Notification position="bottom" type="fail" header="Fail" message="The answers are not right."/>}
+
+                <div className="mt-5 flex">
+                  <button type="button" className="mr-3 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm
                     font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700
                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Check &nbsp;
-                  <ArrowCircleRightIcon className="h-6 w-6"/>
-                </button>
+                          onClick={handleBack}
+                  >
+                    <ArrowCircleLeftIcon className="h-6 w-6"/> &nbsp;
+                    Back
+                  </button>
+                  <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm
+                    font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700
+                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Check &nbsp;
+                    <ArrowCircleRightIcon className="h-6 w-6"/>
+                  </button>
+
+                </div>
               </form>
 
-              {/*<InertiaLink href={route('lesson', lesson.id)} method="post" preserveScroll preserveState*/}
-              {/*             data={{foo: 'bar'}}*/}
-              {/*>*/}
-              {/*</InertiaLink>*/}
             </div>
           </div>
         </div>

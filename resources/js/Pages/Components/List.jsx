@@ -189,12 +189,12 @@ export default function List({ listItems, type, ...props }) {
 
   const Lessons = () => {
     return (
-      <div className="bg-gray-50">
-        <div className="mx-auto py-2 sm:py-2">
+      <div className="mt-5 bg-gray-50">
+        <div className="mx-auto">
           <div className="mx-auto divide-y-2 divide-gray-200">
-            <ul className="space-y-6 divide-y divide-gray-200">
+            <ul className="space-y-3 divide-y divide-gray-200">
               {listItems.map((listItem) => (
-                <Disclosure as="li" key={listItem.id} className="pt-5">
+                <Disclosure as="li" key={listItem.id} className="pt-2 px-2">
                   {({ open }) => (
                     <>
                       <div className="text-lg">

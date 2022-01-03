@@ -142,24 +142,37 @@ class DatabaseSeeder extends Seeder
 
         // Questions
         DB::table('learn_questions')->insert([
-            'name' => 'Question 1',
+            'name' => 'Question 1_1',
             'lesson_id' => 1
         ]);
         DB::table('learn_questions')->insert([
-            'name' => 'Question 2',
+            'name' => 'Question 1_2',
             'lesson_id' => 1,
             'type' => 'checkbox'
         ]);
         DB::table('learn_questions')->insert([
-            'name' => 'Question 3',
+            'name' => 'Question 1_3',
             'lesson_id' => 1,
+            'type' => 'text'
+        ]);
+
+        DB::table('learn_questions')->insert([
+            'name' => 'Question 2_1',
+            'lesson_id' => 2,
+            'type' => 'text'
+        ]);
+
+        DB::table('learn_questions')->insert([
+            'name' => 'Question 4_1',
+            'lesson_id' => 4,
             'type' => 'text'
         ]);
 
         // Answers
         DB::table('learn_answers')->insert([
             'name' => 'Answer 1',
-            'question_id' => 1
+            'question_id' => 1,
+            'correct' => true
         ]);
         DB::table('learn_answers')->insert([
             'name' => 'Answer 2',
@@ -167,11 +180,13 @@ class DatabaseSeeder extends Seeder
         ]);
         DB::table('learn_answers')->insert([
             'name' => 'Answer 1',
-            'question_id' => 2
+            'question_id' => 2,
+            'correct' => true
         ]);
         DB::table('learn_answers')->insert([
             'name' => 'Answer 2',
-            'question_id' => 2
+            'question_id' => 2,
+            'correct' => true
         ]);
 
         /*
