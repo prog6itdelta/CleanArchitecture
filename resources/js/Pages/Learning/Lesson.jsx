@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import {ArrowCircleLeftIcon, ArrowCircleRightIcon} from '@heroicons/react/outline'
 import Notification from "../Components/Notification";
-// import {Inertia} from '@inertiajs/inertia'
-import { usePage } from '@inertiajs/inertia-react'
-import { useForm } from '@inertiajs/inertia-react'
+import {Inertia} from '@inertiajs/inertia'
+// import { usePage } from '@inertiajs/inertia-react'
+import {useForm} from '@inertiajs/inertia-react'
 
 
 function classNames(...classes) {
@@ -36,6 +36,7 @@ function RadioQuestion({question, setValues, values}) {
                        className="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
                        onChange={handleChange}
                        required
+                       checked={(values[name] == answer.id) ? 'checked' : ''}
                 />
                 {/*// <!-- Checked: "text-indigo-900", Not Checked: "text-gray-900" -->*/}
                 <span className="ml-3 font-medium">{answer.name}</span>
@@ -54,7 +55,7 @@ function CheckBoxQuestion({question, setValues, values}) {
 
   const handleChange = (e) => {
     const key = e.target.name;
-    const value = e.target.value;
+    const value = parseInt(e.target.value);
     let arr = values[key] || [];
     if (e.target.checked) {
       arr.push(value);
@@ -72,28 +73,31 @@ function CheckBoxQuestion({question, setValues, values}) {
       <h3 className="text-xl font-bold leading-tight text-gray-900">{question.name}</h3>
       <fieldset className="space-y-5">
         <legend className="sr-only">{question.name}</legend>
-        {answers.map((answer, idx) => (
-          <div className="relative flex items-start" key={idx}>
-            <div className="flex items-center h-5">
-              <input
-                id={name + '-' + answer.id}
-                name={name}
-                value={answer.id}
-                type="checkbox"
-                className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                onChange={handleChange}
-              />
+        {answers.map((answer, idx) => {
+          const checked = values[name]?.includes(answer.id) ? 'checked' : '';
+          return (
+            <div className="relative flex items-start" key={idx}>
+              <div className="flex items-center h-5">
+                <input
+                  id={name + '-' + answer.id}
+                  name={name}
+                  value={answer.id}
+                  type="checkbox"
+                  className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                  onChange={handleChange}
+                  checked={checked}
+                />
+              </div>
+              <div className="ml-3 text-sm">
+                <label htmlFor={name + '-' + answer.id} className="font-medium text-gray-700">
+                  {answer.name}
+                </label>
+                {/*<p id="comments-description" className="text-gray-500">*/}
+                {/*  Get notified when someones posts a comment on a posting.*/}
+                {/*</p>*/}
+              </div>
             </div>
-            <div className="ml-3 text-sm">
-              <label htmlFor={name + '-' + answer.id} className="font-medium text-gray-700">
-                {answer.name}
-              </label>
-              {/*<p id="comments-description" className="text-gray-500">*/}
-              {/*  Get notified when someones posts a comment on a posting.*/}
-              {/*</p>*/}
-            </div>
-          </div>
-        ))}
+          )})}
       </fieldset>
     </>
   )
@@ -110,15 +114,14 @@ function TextQuestion({question, setValues, values}) {
       [key]: value,
     }))
   }
-
   return (
     <>
       <h3 className="text-xl font-bold leading-tight text-gray-900">{question.name}</h3>
       <legend className="sr-only">{question.name}</legend>
       <textarea
+        key={question.id}
         rows="4"
         id={name}
-        aria-describedby="answer-description"
         name={name}
         onChange={handleChange}
         value={values[name]}
@@ -129,11 +132,12 @@ function TextQuestion({question, setValues, values}) {
   )
 }
 
-export default function Lesson({course_id, lesson}) {
+export default function Lesson({course_id, lesson, answers}) {
+  const {data, setData, post, errors, clearErrors} = useForm(answers)
 
-  // const [values, setValues] = useState({})
-  // const { errors } = usePage().props
-  const { data, setData, post, processing, errors } = useForm({})
+  useEffect(() =>{
+    setData(answers);
+  }, [answers])
 
   function handleBack() {
     window.history.back();
@@ -141,19 +145,16 @@ export default function Lesson({course_id, lesson}) {
 
   function handleSubmit(e) {
     e.preventDefault()
-    if (checkTextAnswers())
-      post(route('lesson', [course_id, lesson.id]));
+    clearErrors()
+    post(route('lesson', [course_id, lesson.id]));
   }
-
-  function checkTextAnswers() {
-    //todo: check if text answers were not filled
-    return true;
-  }
-  console.log(data, errors)
 
   return (
     <div className="bg-white overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {errors.error &&
+        <Notification position="bottom" type="fail" header="Fail" message="The answers are not right."/>}
 
         <div className="mt-8 lg:mt-0">
           <div className="text-base max-w-prose mx-auto lg:max-w-none">
@@ -190,9 +191,6 @@ export default function Lesson({course_id, lesson}) {
 
                 })}
 
-                {errors.error && <div>{errors.error}</div>}
-                {errors.error && <Notification position="bottom" type="fail" header="Fail" message="The answers are not right."/>}
-
                 <div className="mt-5 flex">
                   <button type="button" className="mr-3 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm
                     font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700
@@ -209,8 +207,8 @@ export default function Lesson({course_id, lesson}) {
                     Check &nbsp;
                     <ArrowCircleRightIcon className="h-6 w-6"/>
                   </button>
-
                 </div>
+
               </form>
 
             </div>

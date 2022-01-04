@@ -5,6 +5,7 @@ namespace App\Packages\Learn\UseCases;
 use App\Packages\Common\Application\Services\IAuthorisationService;
 use App\Packages\Learn\Entities\Course;
 use App\Packages\Learn\Entities\Lesson;
+use App\Packages\Learn\UseCases\JournalService;
 use App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CourseRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository;
@@ -83,6 +84,12 @@ class LearnService implements LearnServiceInterface
         return $lesson;
     }
 
+    /**
+     * Check the answers of the question and
+     * @param int $id
+     * @param $data
+     * @return bool|void
+     */
     public static function checkLesson(int $id, $data)
     {
         // журнал + проверка
@@ -93,29 +100,41 @@ class LearnService implements LearnServiceInterface
             throw new \Error('No access');
         }
 
-        $result = [];
+        $result = true;
+        $pending = false; // there is a text question, need human check
         $lesson->fetchQuestions();
+        // check all questions
         foreach ($lesson->questions as $question) {
             $question->fetchAnswers();
+            // answer from array of answers
             $answer = $data["q$question->id"] ?? false;
             switch ($question->type) {
                 case 'radio':
                     $rightAnswer = array_filter($question->answers, fn($item) => ($item->correct));
                     $rightAnswer = $rightAnswer[0] ?? false;
                     assert($rightAnswer);
-                    if ($rightAnswer->id != $answer) return false;
+                    // check one correct answer
+                    if ($rightAnswer->id != $answer) $result = false;
                     break;
                 case 'checkbox':
+                    $rightAnswer = array_filter($question->answers, fn($item) => ($item->correct));
+                    if (is_array($answer)) {
+                        // check all correct answers
+                        foreach ($rightAnswer as $value) {
+                            if (!in_array($value->id, $answer)) $result = false;
+                        }
+                    } else $result = false;
                     break;
                 case 'text':
+//                    JournalService::storeAnswers($question->id, $answer);
+                    $pending = true;
                     break;
                 default:
                     assert('Unknown question type.');
             }
         }
-//        dd($lesson, $data);
-
-        return true;
+        JournalService::storeAnswers($id, $data);
+        return $result;
     }
 
     public static function nextLesson(int $cid, int $id): Lesson|bool

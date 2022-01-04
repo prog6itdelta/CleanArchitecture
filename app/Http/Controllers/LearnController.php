@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Packages\Learn\UseCases\JournalService;
 use App\Packages\Learn\UseCases\LearnService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -37,9 +38,13 @@ class LearnController extends BaseController
     public function lesson($cid, $id)
     {
         $lesson = LearnService::runLesson($id);
+        $answers = JournalService::getAnswers($id);
+        debug($lesson->id);
+        debug('answers', $answers);
         return Inertia::render('Pages/Learning/Lesson', [
             'course_id' => $cid,
-            'lesson' => $lesson
+            'lesson' => $lesson,
+            'answers' => $answers
         ]);
     }
 
