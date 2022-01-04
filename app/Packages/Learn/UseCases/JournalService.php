@@ -3,7 +3,9 @@
 namespace App\Packages\Learn\UseCases;
 
 use App\Packages\Learn\Entities\JournalLesson;
+use App\Packages\Learn\Entities\Lesson;
 use App\Packages\Learn\Infrastructure\Repositories\JournalLessonRepository;
+use phpDocumentor\Reflection\Types\Callable_;
 
 class CourseStatus
 {
@@ -14,22 +16,11 @@ class CourseStatus
 
 class LessonStatus
 {
-    public const NEW = "new";
-    public const IN_PROGRESS = "in_progress";
     public const PENDING = "pending";
     public const DONE = "done";
     public const FAIL = "fail";
-}
-
-class QuestionStatus
-{
-    public const NEW = "new";
-    public const PENDING = "pending";
     public const BLOCKED = "blocked";
-    public const DONE = "done";
-    public const FAIL = "fail";
 }
-
 
 class JournalService
 {
@@ -66,7 +57,6 @@ class JournalService
             'lesson_id' => $lid,
             'tries' => $tries,
             'answers' => json_encode($answers),
-            'status' => 'new'
         ];
 
         $rep = new JournalLessonRepository();
@@ -76,18 +66,39 @@ class JournalService
             $rep->update($data, $rec->id);
     }
 
-    public function getCourseStatus(int $id): string
+    public static function getCourseStatus(int $id): string
     {
         return CourseStatus::DONE;
     }
 
-    public function getLessonStatus(int $id): string
+    public static function setCourseStatus(int $id, string $status)
     {
         return LessonStatus::DONE;
     }
 
-    public function getQuestionStatus(int $id): string
+    public static function getLessonStatus(int $lid): string|null
     {
-        return QuestionStatus::DONE;
+        $rec = self::getLesson($lid);
+        return $rec?->status;
     }
+
+    public static function setLessonStatus(int $lid, string $status): void
+    {
+        $rec = self::getLesson($lid);
+        $user_id = auth()->user()->id;
+        $data = [
+            'user_id' => $user_id,
+            'lesson_id' => $lid,
+            'status' => $status
+        ];
+
+        $rep = new JournalLessonRepository();
+        if (!$rec)
+            $rec = $rep->create($data);
+        else {
+            if ($rec->status !== $status)
+                $rec = $rep->update($data, $rec->id);
+        }
+    }
+
 }

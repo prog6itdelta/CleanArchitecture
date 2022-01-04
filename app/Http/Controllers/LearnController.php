@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use phpDocumentor\Reflection\DocBlock\Tags\Reference\Reference;
 
 //use Illuminate\Support\Facades\Auth;
 //use App\Models\User;
@@ -39,12 +40,12 @@ class LearnController extends BaseController
     {
         $lesson = LearnService::runLesson($id);
         $answers = JournalService::getAnswers($id);
-        debug($lesson->id);
-        debug('answers', $answers);
+
         return Inertia::render('Pages/Learning/Lesson', [
             'course_id' => $cid,
             'lesson' => $lesson,
-            'answers' => $answers
+            'answers' => $answers,
+            'status' => JournalService::getLessonStatus($id)
         ]);
     }
 

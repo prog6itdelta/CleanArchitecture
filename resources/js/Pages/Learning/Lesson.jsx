@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import {ArrowCircleLeftIcon, ArrowCircleRightIcon} from '@heroicons/react/outline'
+import React, { useEffect } from 'react';
+import {ArrowCircleLeftIcon, ArrowCircleRightIcon, CheckCircleIcon} from '@heroicons/react/outline'
 import Notification from "../Components/Notification";
-import {Inertia} from '@inertiajs/inertia'
+// import {Inertia} from '@inertiajs/inertia'
 // import { usePage } from '@inertiajs/inertia-react'
 import {useForm} from '@inertiajs/inertia-react'
 
@@ -132,7 +132,7 @@ function TextQuestion({question, setValues, values}) {
   )
 }
 
-export default function Lesson({course_id, lesson, answers}) {
+export default function Lesson({course_id, lesson, answers, status}) {
   const {data, setData, post, errors, clearErrors} = useForm(answers)
 
   useEffect(() =>{
@@ -149,6 +149,14 @@ export default function Lesson({course_id, lesson, answers}) {
     post(route('lesson', [course_id, lesson.id]));
   }
 
+  let color = ''
+  switch (status) {
+    case 'done': color = 'text-green-600'; break;
+    case 'fail': color =  'text-red-600'; break;
+    case 'pending': color =  'text-blue-600'; break;
+    case 'blocked': color =  'text-gray-600'; break;
+  }
+
   return (
     <div className="bg-white overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -159,7 +167,10 @@ export default function Lesson({course_id, lesson, answers}) {
         <div className="mt-8 lg:mt-0">
           <div className="text-base max-w-prose mx-auto lg:max-w-none">
             <header>
-              <h1 className="text-3xl font-bold leading-tight text-gray-900">{lesson.name}</h1>
+              <h1 className="text-3xl leading-tight text-gray-900">{lesson.name}</h1>
+              <div className={classNames('my-2 text-lg font-bold leading-tight', color)}>
+                {status}
+              </div>
             </header>
             <main>
               <p className="text-gray-500">

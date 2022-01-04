@@ -100,7 +100,7 @@ class LearnService implements LearnServiceInterface
             throw new \Error('No access');
         }
 
-        $result = true;
+        $result = 'done';
         $pending = false; // there is a text question, need human check
         $lesson->fetchQuestions();
         // check all questions
@@ -114,27 +114,27 @@ class LearnService implements LearnServiceInterface
                     $rightAnswer = $rightAnswer[0] ?? false;
                     assert($rightAnswer);
                     // check one correct answer
-                    if ($rightAnswer->id != $answer) $result = false;
+                    if ($rightAnswer->id != $answer) $result = 'fail';
                     break;
                 case 'checkbox':
                     $rightAnswer = array_filter($question->answers, fn($item) => ($item->correct));
                     if (is_array($answer)) {
                         // check all correct answers
                         foreach ($rightAnswer as $value) {
-                            if (!in_array($value->id, $answer)) $result = false;
+                            if (!in_array($value->id, $answer)) $result = 'fail';
                         }
                     } else $result = false;
                     break;
                 case 'text':
-//                    JournalService::storeAnswers($question->id, $answer);
-                    $pending = true;
+//                    $result = 'pending';
                     break;
                 default:
                     assert('Unknown question type.');
             }
         }
         JournalService::storeAnswers($id, $data);
-        return $result;
+        JournalService::setLessonStatus($id, $result);
+        return $result == 'done';
     }
 
     public static function nextLesson(int $cid, int $id): Lesson|bool
