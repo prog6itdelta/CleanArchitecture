@@ -3,9 +3,9 @@
 namespace App\Packages\Common\Infrastructure\Repositories;
 
 use App\Exceptions\RepositoryException;
+use App\Packages\Common\Application\Interfaces\RepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
-use App\Packages\Common\Domain\RepositoryInterface;
 
 abstract class AbstractRepository implements RepositoryInterface
 {

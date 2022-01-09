@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Packages\Common\Domain;
+namespace App\Packages\Common\Application\Interfaces;
 
 // https://bosnadev.com/2015/03/07/using-repository-pattern-in-laravel-5/
 

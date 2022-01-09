@@ -6,9 +6,7 @@ use App\Packages\Learn\UseCases\JournalService;
 use App\Packages\Learn\UseCases\LearnService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
-use phpDocumentor\Reflection\DocBlock\Tags\Reference\Reference;
 
 //use Illuminate\Support\Facades\Auth;
 //use App\Models\User;
@@ -36,7 +34,7 @@ class LearnController extends BaseController
         return Inertia::render('Pages/Learning/Course', compact('course'));
     }
 
-    public function lesson($cid, $id)
+    public function lesson(Request $request, $cid, $id)
     {
         $lesson = LearnService::runLesson($id);
         $answers = JournalService::getAnswers($id);
@@ -46,7 +44,7 @@ class LearnController extends BaseController
             'lesson' => $lesson,
             'answers' => $answers,
             'status' => JournalService::getLessonStatus($id)
-        ]);
+        ]);//->toResponse($request)->header('Cache-Control','no-cache, max-age=0, must-revalidate, no-store');
     }
 
     public function checkLesson(Request $request, $cid, $id)

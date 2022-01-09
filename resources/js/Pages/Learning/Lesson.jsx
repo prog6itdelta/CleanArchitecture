@@ -132,21 +132,38 @@ function TextQuestion({question, setValues, values}) {
   )
 }
 
-export default function Lesson({course_id, lesson, answers, status}) {
+export default function Lesson(props) {
   const {data, setData, post, errors, clearErrors} = useForm(answers)
+  const {course_id, lesson, answers, status} = props;
 
   useEffect(() =>{
     setData(answers);
-  }, [answers])
+  }, [answers, status]);
+
+  useEffect(() => {
+    window.addEventListener( "pageshow", function ( event ) {
+      var historyTraversal = event.persisted /*||
+        ( typeof window.performance != "undefined" &&
+          window.performance.navigation.type === 2 );*/
+      if ( historyTraversal ) {
+        // Handle page restore.
+        window.location.reload();
+      }
+      // return () => windows.removeEventListener('pageshow', f);
+    }, { once: false });
+
+  }, [answers, status]);
+
 
   function handleBack() {
     window.history.back();
+    return false;
   }
 
   function handleSubmit(e) {
     e.preventDefault()
     clearErrors()
-    post(route('lesson', [course_id, lesson.id]));
+    post(route('lesson', [course_id, lesson.id]), { preserveState: false , resetOnSuccess: true});
   }
 
   let color = ''

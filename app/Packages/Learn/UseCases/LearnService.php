@@ -92,7 +92,6 @@ class LearnService implements LearnServiceInterface
      */
     public static function checkLesson(int $id, $data)
     {
-        // журнал + проверка
         $lesson = Lesson::getById($id);
 
         $self = LearnService::getInstance();
@@ -126,7 +125,8 @@ class LearnService implements LearnServiceInterface
                     } else $result = false;
                     break;
                 case 'text':
-//                    $result = 'pending';
+                    // needed to check by instructor
+                    $pending = true;
                     break;
                 default:
                     assert('Unknown question type.');
@@ -134,7 +134,10 @@ class LearnService implements LearnServiceInterface
         }
         JournalService::storeAnswers($id, $data);
         JournalService::setLessonStatus($id, $result);
-        return $result == 'done';
+
+        if ($result == 'done' && $pending) $result = 'pending';
+
+        return ($result == 'done') || ($result == 'pending');
     }
 
     public static function nextLesson(int $cid, int $id): Lesson|bool
