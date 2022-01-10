@@ -22,6 +22,8 @@ class Course
 
     public $sort;
 
+    public $lessons;
+
     /**
      * @param $prop
      */
@@ -32,8 +34,23 @@ class Course
         }
     }
 
-    function lessons() {
+    /**
+     * @param int $id
+     * @return Course
+     */
+    public static function getById(int $id): Course
+    {
         $rep = new CourseRepository();
-        return $rep->lessons($this->id);
+        $course = $rep->find($id);
+        return $course;
+    }
+
+    /**
+     *
+     */
+    function fetchLessons()
+    {
+        $rep = new CourseRepository();
+        $this->lessons = $rep->lessons($this->id);
     }
 }

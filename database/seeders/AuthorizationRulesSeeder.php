@@ -32,6 +32,7 @@ class AuthorizationRulesSeeder extends Seeder
         // adds permissions to a rule - lessons
         Enforcer::addPolicy('AU', 'LL1', 'read');
         Enforcer::addPolicy('AU', 'LL2', 'read');
+        Enforcer::addPolicy('AU', 'LL4', 'read');
 
         // adds permissions to a rule - curriculums
         Enforcer::addPolicy('AU', 'LCU1', 'read');

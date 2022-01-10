@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Packages\Learn\UseCases\JournalService;
 use App\Packages\Learn\UseCases\LearnService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use phpDocumentor\Reflection\DocBlock\Tags\Reference\Reference;
 
 //use Illuminate\Support\Facades\Auth;
 //use App\Models\User;
@@ -30,19 +33,33 @@ class LearnController extends BaseController
     public function course($id)
     {
         $course = LearnService::getCourse($id);
-        return Inertia::render('Pages/Learning/Course', $course);
+        return Inertia::render('Pages/Learning/Course', compact('course'));
     }
 
-    public function lesson($id)
+    public function lesson($cid, $id)
     {
         $lesson = LearnService::runLesson($id);
-        dd($lesson);
-//        return Inertia::render('Pages/Learning/Course', $course);
+        $answers = JournalService::getAnswers($id);
+
+        return Inertia::render('Pages/Learning/Lesson', [
+            'course_id' => $cid,
+            'lesson' => $lesson,
+            'answers' => $answers,
+            'status' => JournalService::getLessonStatus($id)
+        ]);
     }
 
-    public function checkLesson(Request $request, $id)
+    public function checkLesson(Request $request, $cid, $id)
     {
-        dd($request);
-//        return Inertia::render('Pages/Learning/Course', $course);
+        $result = LearnService::checkLesson($id, $request->all());
+        if ($result) {
+            $nextLesson = LearnService::nextLesson($cid, $id);
+            if ($nextLesson)
+                return redirect()->route('lesson', [$cid, $nextLesson->id]);
+            else
+                // TODO: Congrat
+                return redirect()->route('course', [$cid + 1]);
+        }
+        throw \Illuminate\Validation\ValidationException::withMessages(['error' => 'Fail']);
     }
 }

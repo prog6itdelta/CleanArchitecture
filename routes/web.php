@@ -29,9 +29,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/course/{id}', [LearnController::class, 'course'])
             ->name('course');
 
-        Route::get('/lesson/{id}', [LearnController::class, 'lesson'])
+        Route::get('/course/{cid}/lesson/{id}', [LearnController::class, 'lesson'])
             ->name('lesson');
-        Route::post('/lesson/{id}', [LearnController::class, 'checkLesson'])
+        Route::post('/course/{cid}/lesson/{id}', [LearnController::class, 'checkLesson'])
             ->name('check-lesson');
 
     });
@@ -62,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
 //Route::get('/bitrix24', fn() => Socialite::driver('bitrix24')->redirect())
 //    ->name('bitrix24');
 Route::get('/auth/bitrix24/callback', function (Request $request) {
-
+    \App\Packages\Common\Infrastructure\Integrations\IntegrationService::setConfig();
     $bitrix24_user = Socialite::driver('bitrix24')->user();
     $user = User::updateOrCreate(
         [

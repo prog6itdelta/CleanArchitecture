@@ -2,19 +2,20 @@
 
 namespace App\Packages\Learn\Infrastructure\Repositories;
 
+use App\Models\Question;
 use App\Packages\Common\Infrastructure\Repositories\AbstractRepository;
-use App\Packages\Learn\Entities\Answer;
 
-class AnswerRepository extends AbstractRepository
+class JournalQuestionsRepository extends AbstractRepository
 {
+
+
     function model()
     {
-        return 'App\Models\Answer';
+        return 'App\Models\JournalQuestion';
     }
 
     function mapProps($model)
     {
-        return new Answer($model->toArray());
+        return new Question($model->toArray());
     }
-
 }

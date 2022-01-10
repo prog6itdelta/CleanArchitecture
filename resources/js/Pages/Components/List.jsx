@@ -4,6 +4,7 @@ import { Disclosure, Transition } from '@headlessui/react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
 
 export default function List({ listItems, type, ...props }) {
+
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
   }
@@ -181,39 +182,45 @@ export default function List({ listItems, type, ...props }) {
 
   const Lessons = () => {
     return (
-      <ul className={disclousureListClasses}>
-        {listItems.map((listItem) => (
-          <Disclosure as="li" key={listItem.id} className={disclosureClasses}>
-            {({ open }) => (
-              <>
-                <div className="text-lg">
-                  <Disclosure.Button className={disclosureButtonClasses}>
-                    <span>{listItem.name}</span>
-                    <span className="ml-6 h-7 flex items-center">
-                      <ChevronDownIcon
-                        className={classNames(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform')}
-                        aria-hidden="true"
-                      />
-                    </span>
-                  </Disclosure.Button>
-                </div>
-                <Transition
-                  enter="transition duration-100 ease-out"
-                  enterFrom="transform scale-95 opacity-0"
-                  enterTo="transform scale-100 opacity-100"
-                  leave="transition duration-75 ease-out"
-                  leaveFrom="transform scale-100 opacity-100"
-                  leaveTo="transform scale-95 opacity-0"
-                >
-                  <Disclosure.Panel className={disclosurePanelClasses}>
-                    {listItem.description}
-                  </Disclosure.Panel>
-                </Transition>
-              </>
-            )}
-          </Disclosure>
-        ))}
-      </ul>
+      <div className="mt-5 bg-gray-50">
+        <div className="mx-auto">
+          <div className="mx-auto divide-y-2 divide-gray-200">
+            <ul className="space-y-3 divide-y divide-gray-200">
+              {listItems.map((listItem) => (
+                <Disclosure as="li" key={listItem.id} className="pt-2 px-2">
+                  {({ open }) => (
+                    <>
+                      <div className="text-lg">
+                        <Disclosure.Button className="text-left w-full flex justify-between items-start text-gray-400">
+                          <span className="font-medium text-gray-900">{listItem.name}</span>
+                          <span className="ml-6 h-7 flex items-center">
+                            <ChevronDownIcon
+                              className={classNames(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform')}
+                              aria-hidden="true"
+                            />
+                          </span>
+                        </Disclosure.Button>
+                      </div>
+                      <Transition
+                        enter="transition duration-100 ease-out"
+                        enterFrom="transform scale-95 opacity-0"
+                        enterTo="transform scale-100 opacity-100"
+                        leave="transition duration-75 ease-out"
+                        leaveFrom="transform scale-100 opacity-100"
+                        leaveTo="transform scale-95 opacity-0"
+                      >
+                        <Disclosure.Panel as="p" className="mt-2 pr-12">
+                          {listItem.description}
+                        </Disclosure.Panel>
+                      </Transition>
+                    </>
+                  )}
+                </Disclosure>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
     );
   };
 

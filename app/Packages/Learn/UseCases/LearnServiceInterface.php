@@ -2,6 +2,8 @@
 
 namespace App\Packages\Learn\UseCases;
 
+use App\Packages\Learn\Entities\Course;
+
 interface LearnServiceInterface
 {
     /**
@@ -16,6 +18,6 @@ interface LearnServiceInterface
      *
      * @param int $id
      */
-    public static function getCourse(int $id): array;
+    public static function getCourse(int $id): Course;
 
 }
