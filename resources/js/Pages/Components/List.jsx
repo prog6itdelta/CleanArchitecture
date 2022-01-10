@@ -185,9 +185,9 @@ export default function List({ listItems, type, ...props }) {
       <div className="mt-5 bg-gray-50">
         <div className="mx-auto">
           <div className="mx-auto divide-y-2 divide-gray-200">
-            <ul className="space-y-3 divide-y divide-gray-200">
+            <ul className="divide-y divide-gray-200">
               {listItems.map((listItem) => (
-                <Disclosure as="li" key={listItem.id} className="pt-2 px-2">
+                <Disclosure as="li" key={listItem.id} className="p-2">
                   {({ open }) => (
                     <>
                       <div className="text-lg">
