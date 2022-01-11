@@ -53,7 +53,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return Inertia::location('/');
+        return Inertia::location('/logout.html');
 //        return redirect('/');
     }
 }

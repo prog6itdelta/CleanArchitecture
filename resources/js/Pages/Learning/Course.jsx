@@ -1,8 +1,11 @@
 import React from 'react';
 import List from '../Components/List.jsx';
 import {InertiaLink} from "@inertiajs/inertia-react";
+import {ArrowCircleRightIcon} from "@heroicons/react/outline";
 
-export default function Course({ course, lessons }) {
+export default function Course({ course }) {
+  let lessons = course.lessons;
+  lessons = Object.values(lessons);
   return (
     <div className="bg-white overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,8 +35,14 @@ export default function Course({ course, lessons }) {
                 <List listItems={lessons} type="lessons" />
               </main>
               {lessons.length > 0 &&
-                <InertiaLink href={route('lesson', [lessons[0].id])}>
-                RUN !!!
+                <InertiaLink href={route('lesson', [course.id, lessons[0].id])}>
+                  <button type="button" className="my-6 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm
+                    font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700
+                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Run &nbsp;
+                    <ArrowCircleRightIcon className="h-6 w-6"/>
+                  </button>
                 </InertiaLink>
               }
             </div>

@@ -1,6 +1,7 @@
 #Installation
 composer install  
 yarn
+yarn watch
 
 add to /etc/hosts   
 127.0.0.1 tenant1.localhost
@@ -29,5 +30,12 @@ php artisan tenants:artisan "migrate --database=tenant --seed"
 After migration and seeding user is:
 user@aa.com
 123
+
+##Bitrix24
+add to .env
+BITRIX24_ENDPOINT_URI='https://itdelta.bitrix24.ru'
+BITRIX24_CLIENT_ID='client_id_here'
+BITRIX24_CLIENT_SECRET='secret_here'
+BITRIX24_REDIRECT_URI='${APP_URL}/auth/bitrix24/callback'
 
 PS. To install php-casbin/laravel-authz I had to remove "psr/log": 2.0.0 from composer.lock

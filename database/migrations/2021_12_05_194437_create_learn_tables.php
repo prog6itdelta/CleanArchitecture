@@ -104,19 +104,6 @@ class CreateLearnTables extends Migration
 
         });
 
-        // Learning journal
-        Schema::create('learn_journal', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('lesson_id');
-            $table->unsignedBigInteger('user_id');
-            $table->enum('status', ['new', 'pending', 'done', 'fail']);
-            $table->timestamps();
-
-            $table->foreign('lesson_id')->references('id')->on('learn_lessons')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-
-        });
-
     }
 
     /**

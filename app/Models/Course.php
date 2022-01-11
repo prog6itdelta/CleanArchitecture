@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Scopes\PortalScope;
+use App\Models\Scopes\SortScope;
 use App\Models\Scopes\ActiveScope;
 
 class Course extends Model
@@ -21,5 +21,6 @@ class Course extends Model
     protected static function booted()
     {
         static::addGlobalScope(new ActiveScope());
+        static::addGlobalScope(new SortScope());
     }
 }

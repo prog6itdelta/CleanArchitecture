@@ -36,4 +36,21 @@ class Question
         $rep = new QuestionRepository();
         $this->answers = $rep->answers($this->id);
     }
+
+    function checkQuestion(Object $answer): bool {
+        if (empty($this->answers)) $this->fetchAnswers();
+
+        return true;
+    }
+
+    /**
+     * @param int $id
+     * @return Question
+     */
+    public static function getById(int $id): Question
+    {
+        $rep = new QuestionRepository();
+        $question = $rep->find($id);
+        return $question;
+    }
 }

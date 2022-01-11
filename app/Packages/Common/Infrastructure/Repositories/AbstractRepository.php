@@ -142,4 +142,5 @@ abstract class AbstractRepository implements RepositoryInterface
 //    {
 //        return $this->mapProps($this->model->where($attribute, '=', $value)->get($columns));
 //    }
+
 }
