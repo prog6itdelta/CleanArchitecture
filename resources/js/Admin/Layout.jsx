@@ -35,7 +35,7 @@ const userNavigation = [
 
 export default function Layout(children) {
   return (
-    <Navigation navigation={navigation} user={user} userNavigation={userNavigation}>
+    <Navigation navigation={navigation}>
       {children}
     </Navigation>
   );

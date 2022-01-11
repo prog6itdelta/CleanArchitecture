@@ -1,8 +1,12 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { Inertia } from '@inertiajs/inertia';
+import { usePage } from '@inertiajs/inertia-react';
 
-export default function Profile({ user }) {
+export default function Profile() {
+  const { auth } = usePage().props;
+  const user = auth.user;
+
   const [editingDisabled, setEditingDisabled] = useState(true);
   const [avatarFormImg, setAvatarFormImg] = useState(user.avatar);
   const [avatar, setAvatar] = useState();
@@ -15,7 +19,6 @@ export default function Profile({ user }) {
 
   const onAvatarChange = (e) => {
     setAvatar(e.target.files[0]);
-    // console.log(e.target);
     const reader = new FileReader();
     reader.onload = function (ev) {
       setAvatarFormImg(ev.target.result);
@@ -46,9 +49,8 @@ export default function Profile({ user }) {
       data: formData,
       config
     }).then((response) => {
-      console.log('FormData resp: ', response);
       setEditingDisabled(true);
-      // Inertia.reload();
+      Inertia.reload();
     });
   };
   return (
@@ -75,7 +77,7 @@ export default function Profile({ user }) {
                       Avatar
                     </label>
                     <div className="mt-1 grid grid-cols-12 gap-x-6 items-center">
-                      <span className="w-14 h-14 flex rounded-full overflow-hidden bg-gray-100 col-span-2">
+                      <span className="w-14 h-14 flex justify-center rounded-full overflow-hidden bg-gray-100 col-span-2">
                         <img src={avatarFormImg} />
                       </span>
                       <input

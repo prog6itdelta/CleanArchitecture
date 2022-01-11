@@ -1,12 +1,15 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 
-export default function Navigation({ navigation, user, userNavigation }) {
+export default function Navigation({ navigation }) {
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
   }
+
+  const { auth, userNavigation } = usePage().props;
+  const user = auth.user;
 
   return (
     <Disclosure as="nav" className="bg-white border-b border-gray-200">
@@ -63,7 +66,7 @@ export default function Navigation({ navigation, user, userNavigation }) {
                     <Menu.Button
                       className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                       <span className="sr-only">Open user menu</span>
-                      <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                      <img className="h-8 w-8 rounded-full" src={user.avatar} alt="" />
                     </Menu.Button>
                   </div>
                   <Transition
@@ -132,7 +135,7 @@ export default function Navigation({ navigation, user, userNavigation }) {
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-4">
                 <div className="flex-shrink-0">
-                  <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                  <img className="h-10 w-10 rounded-full" src={user.avatar} alt="" />
                 </div>
                 <div className="ml-3">
                   <div className="text-base font-medium text-gray-800">{user.name}</div>
