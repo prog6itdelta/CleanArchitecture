@@ -23,7 +23,13 @@ const navigation = [
     icon: HomeIcon,
     href: route('admin.index'),
     current: true
-  }
+  },
+  {
+    name: 'Департаменты',
+    icon: HomeIcon,
+    href: route('admin.departments'),
+    current: true
+  },
   // { name: 'Admin2', href: route('selectPortal'), current: false },
   // { name: 'Projects', href: '#', current: false },
   // { name: 'Calendar', href: '#', current: false },
