@@ -41,6 +41,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [UserController::class, 'profile'])
         ->name('profile');
 
+    Route::post('/profile/edit', [UserController::class, 'edit']);
+
 //    Route::post('/portal/{id}', [UserController::class, 'setPortal'])
 //        ->name('setPortal');
 

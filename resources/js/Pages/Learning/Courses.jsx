@@ -4,7 +4,6 @@ import SearchPanel from '../Components/SearchPanel.jsx';
 import List from '../Components/List.jsx';
 
 export default function Courses({ courses, course_groups: courseGroups, curriculums }) {
-  console.log('curriculums', curriculums);
   const [searchString, setSearchString] = useState('');
   const [tabs, setTabs] = useState([
     {
