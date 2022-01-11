@@ -36,7 +36,7 @@ class UserController extends BaseController
         $editedUser = $request->collect()->map(function ($item){ if ($item === null){$item = '';} return $item;})->all();
         $currentUser = User::updateOrCreate(
             [
-                'id' => 2
+                'id' => $request->id,
             ],
             [
                 'avatar' => $avatarPath,
@@ -46,7 +46,6 @@ class UserController extends BaseController
                 'phone' => $editedUser['phone'],
             ]
         );
-        return $avatarPath;
     }
 
 }
