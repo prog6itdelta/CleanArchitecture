@@ -21,6 +21,7 @@ FLUSH PRIVILEGES;
 php artisan key:generate  
 php artisan migrate --path=database/migrations/landlord --database=landlord --seed
 php artisan tenants:artisan "migrate --database=tenant --seed"
+php artisan storage:link
 
 After migration and seeding user is:
 user@aa.com
