@@ -17,6 +17,11 @@ GRANT ALL PRIVILEGES ON db_tenant1.* TO 'tenant_user'@'localhost';
 
 FLUSH PRIVILEGES;
 
+##ENV
+DB_DATABASE_LANDLORD=Created landlord database
+DB_USERNAME_LANDLORD=Created landlord user
+DB_PASSWORD_LANDLORD=Password for landlord user
+
 ##Laravel
 php artisan key:generate  
 php artisan migrate --path=database/migrations/landlord --database=landlord --seed
