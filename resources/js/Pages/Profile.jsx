@@ -2,12 +2,20 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { Inertia } from '@inertiajs/inertia';
 import { usePage } from '@inertiajs/inertia-react';
+import { ExclamationCircleIcon } from '@heroicons/react/solid';
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
 
 export default function Profile() {
   const { auth } = usePage().props;
   const user = auth.user;
 
   const [editingDisabled, setEditingDisabled] = useState(true);
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
   const [avatarFormImg, setAvatarFormImg] = useState(user.avatar);
   const [avatar, setAvatar] = useState();
   const [name, setName] = useState(user.name);
@@ -30,28 +38,46 @@ export default function Profile() {
   const onEmailChange = (e) => setEmail(e.target.value);
   const onPhoneChange = (e) => setPhone(e.target.value);
   const onEditingChange = () => { setEditingDisabled(!editingDisabled); };
+  const onPasswordChange = (e) => {
+    setPassword(e.target.value);
+    e.target.value === newPassword
+      ? setPasswordsMatch(true)
+      : setPasswordsMatch(false);
+  };
+  const onNewPasswordChange = (e) => {
+    setNewPassword(e.target.value);
+    e.target.value === password
+      ? setPasswordsMatch(true)
+      : setPasswordsMatch(false);
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('id', user.id);
-    formData.append('avatar', user.avatar);
-    formData.append('new_avatar', avatar);
-    formData.append('name', name);
-    formData.append('last_name', lastName);
-    formData.append('email', email);
-    formData.append('phone', phone);
+    if (passwordsMatch) {
+      const formData = new FormData();
+      formData.append('id', user.id);
+      formData.append('avatar', user.avatar);
+      formData.append('new_avatar', avatar);
+      formData.append('name', name);
+      formData.append('last_name', lastName);
+      formData.append('email', email);
+      formData.append('phone', phone);
+      formData.append('password', newPassword);
 
-    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-    axios({
-      url: '/profile/edit',
-      method: 'POST',
-      data: formData,
-      config
-    }).then((response) => {
-      setEditingDisabled(true);
-      Inertia.reload();
-    });
+      const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+      // NB много времени убил на попытки адекватно отправить POST через инерцию,
+      // но постоянно сыпались ошибки, так что решил использовать axios
+      // ! Пока что axios привязан только в виде dev зависимости
+      axios({
+        url: '/profile/edit',
+        method: 'POST',
+        data: formData,
+        config
+      }).then((response) => {
+        setEditingDisabled(true);
+        Inertia.reload();
+      });
+    }
   };
   return (
     <>
@@ -72,12 +98,12 @@ export default function Profile() {
               <div className="space-y-8 divide-y divide-gray-200">
 
                 <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                  <div className="flex flex-wrap sm:col-span-3 sm:row-span-2 content-center">
+                  <div className="flex flex-wrap sm:col-span-6 content-center">
                     <label htmlFor="photo" className="w-full block text-sm font-medium text-gray-700">
                       Avatar
                     </label>
-                    <div className="mt-1 grid grid-cols-12 gap-x-6 items-center">
-                      <span className="w-14 h-14 flex justify-center rounded-full overflow-hidden bg-gray-100 col-span-2">
+                    <div className="mt-1 w-full grid grid-cols-12 gap-x-6 items-center">
+                      <span className="w-10 h-10 flex justify-center rounded-full overflow-hidden bg-gray-100 col-span-2">
                         <img src={avatarFormImg} />
                       </span>
                       <input
@@ -105,6 +131,7 @@ export default function Profile() {
                       />
                     </div>
                   </div>
+
                   <div className="sm:col-span-3">
                     <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
                       First name
@@ -176,6 +203,57 @@ export default function Profile() {
                       />
                     </div>
                   </div>
+
+                  <div className="sm:col-span-3">
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                      New password
+                    </label>
+                    <div className="mt-1 relative">
+                      <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        value={password}
+                        autoComplete="password"
+                        onChange={onPasswordChange}
+                        disabled={editingDisabled}
+                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="sm:col-span-3">
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                      Repeat new password
+                    </label>
+                    <div className="mt-1 relative">
+                      <input
+                        type="password"
+                        name="new_password"
+                        id="new_password"
+                        autoComplete="password"
+                        value={newPassword}
+                        disabled={editingDisabled}
+                        onChange={onNewPasswordChange}
+                        className={classNames(
+                          !passwordsMatch ? 'border-red-300' : 'border-gray-300',
+                          'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-md'
+                        )}
+                        aria-invalid={!passwordsMatch}
+                      />
+                      {!passwordsMatch
+                        && <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                          <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
+                        </div>
+                      }
+                    </div>
+                    {!passwordsMatch
+                      && <p className="mt-2 text-sm text-red-600" id="password-error">
+                        Passwords don't match
+                      </p>
+                    }
+
+                  </div>
                 </div>
               </div>
 
@@ -198,7 +276,11 @@ export default function Profile() {
                     </button>
                       <button
                         type="submit"
-                        className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className={classNames(
+                          passwordsMatch ? '' : 'opacity-50 cursor-not-allowed',
+                          'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                        )}
+                        disabled={!passwordsMatch}
                       >
                         Save
                       </button> </>
