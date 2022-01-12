@@ -12,6 +12,8 @@ export default function Profile() {
   const { auth } = usePage().props;
   const user = auth.user;
 
+  const fileInput = useRef();
+
   const [editingDisabled, setEditingDisabled] = useState(true);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [password, setPassword] = useState('');
@@ -22,8 +24,6 @@ export default function Profile() {
   const [lastName, setLastName] = useState(user.last_name);
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
-
-  const form = useRef(null);
 
   const onAvatarChange = (e) => {
     setAvatar(e.target.files[0]);
@@ -37,7 +37,6 @@ export default function Profile() {
   const onLastNameChange = (e) => setLastName(e.target.value);
   const onEmailChange = (e) => setEmail(e.target.value);
   const onPhoneChange = (e) => setPhone(e.target.value);
-  const onEditingChange = () => { setEditingDisabled(!editingDisabled); };
   const onPasswordChange = (e) => {
     setPassword(e.target.value);
     e.target.value === newPassword
@@ -49,6 +48,21 @@ export default function Profile() {
     e.target.value === password
       ? setPasswordsMatch(true)
       : setPasswordsMatch(false);
+  };
+  const onEditingChange = () => {
+    if (!editingDisabled) {
+      setPasswordsMatch(true);
+      setPassword('');
+      setNewPassword('');
+      setAvatarFormImg(user.avatar);
+      setAvatar();
+      setName(user.name);
+      setLastName(user.last_name);
+      setEmail(user.email);
+      setPhone(user.phone);
+      fileInput.current.value = '';
+    }
+    setEditingDisabled(!editingDisabled);
   };
 
   const onSubmit = (e) => {
@@ -90,7 +104,6 @@ export default function Profile() {
         <div className="flex flex-col place-items-center">
           <div className="my-6 overflow-x-auto sm:-mx-6 lg:-mx-8 max-w-2xl">
             <form
-              ref={form}
               className="space-y-8 divide-y divide-gray-200"
               method="POST"
               onSubmit={onSubmit}
@@ -107,6 +120,7 @@ export default function Profile() {
                         <img src={avatarFormImg} />
                       </span>
                       <input
+                        ref={fileInput}
                         type="file"
                         name="avatar"
                         id="avatar"
