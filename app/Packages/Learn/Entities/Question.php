@@ -2,7 +2,8 @@
 
 namespace App\Packages\Learn\Entities;
 
-use App\Packages\Learn\Infrastructure\Repositories\QuestionRepository;
+use App\Packages\Common\Application\Interfaces\RepositoryInterface;
+//use App\Packages\Learn\Infrastructure\Repositories\QuestionRepository;
 
 class Question
 {
@@ -25,15 +26,17 @@ class Question
     /**
      * @param $prop
      */
-    public function __construct($prop)
+    public function __construct(RepositoryInterface $rep, $prop)
     {
+        $this->rep = $rep;
         foreach ($prop as $key => $value) {
             $this->{$key} = $value;
         }
     }
 
     function fetchAnswers() {
-        $rep = new QuestionRepository();
+//        $rep = new QuestionRepository();
+        $rep = $this->rep;
         $this->answers = $rep->answers($this->id);
     }
 
@@ -46,11 +49,12 @@ class Question
     /**
      * @param int $id
      * @return Question
-     */
-    public static function getById(int $id): Question
-    {
-        $rep = new QuestionRepository();
-        $question = $rep->find($id);
-        return $question;
-    }
+//     */
+//    public static function getById(int $id): Question
+//    {
+//        $rep = new QuestionRepository();
+////        $rep = $this->rep;
+//        $question = $rep->find($id);
+//        return $question;
+//    }
 }

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <meta charset="UTF-8">
+        <title>PHP Clean Architecture -     Utils
+</title>
+
+        <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src="https://kit.fontawesome.com/a2c128da6b.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+              integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+              crossorigin="anonymous">
+        <style>
+            .header {
+                background: mediumpurple;
+                color: #ffffff;
+                font-size: 30px;
+            }
+
+            .home {
+                height: 50px;
+                padding: 0 10px;
+            }
+
+            .home:hover {
+                background: rebeccapurple;
+            }
+
+            .header a, .footer a {
+                color: #ffffff;
+            }
+
+            .header a:hover {
+                text-decoration: none;
+            }
+
+            .header a:hover, .footer a:hover {
+                color: #ffffff;
+            }
+
+            .content {
+                margin: 10px;
+                width: calc(100% - 20px);
+            }
+
+            .breadcrumb-container {
+                width: 100%;
+            }
+
+            .footer {
+                background: mediumpurple;
+                height: 50px;
+                color: #ffffff;
+                padding-top: 13px;
+                margin-top: 10px;
+            }
+
+            .footer i.fab {
+                font-size: 25px;
+                color: black;
+                margin: -2px 10px;
+            }
+
+            #to-top {
+                display: block;
+                position: fixed;
+                right: 20px;
+                bottom: 20px;
+                width: 50px;
+                height: 50px;
+                background: mediumpurple;
+                border: 2px solid rebeccapurple;
+                color: white;
+                padding: 0 13px;
+                font-size: 30px;
+            }
+
+            #to-top:hover {
+                cursor: pointer;
+                background: rebeccapurple;
+                border-color: mediumpurple;
+            }
+        </style>
+    
+    <script type="text/javascript">
+        let dependentComponents = JSON.parse('[]');
+        let dependencyComponents = JSON.parse('[]');
+
+        google.charts.load("current", {packages: ['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            drawCharacteristicsChart();
+            drawAIChart();
+            if (dependentComponents.length > 0) {
+                drawDependenciesChart('Входящие зависимости', 'Кол-во файлов в других компонентах, зависящих от этого компонента', 'input-deps-chart', dependentComponents);
+            }
+            if (dependencyComponents.length > 0) {
+                drawDependenciesChart('Исходящие зависимости', 'Кол-во файлов в этом компоненте, зависящих от других компонентов', 'output-deps-chart', dependencyComponents);
+            }
+        }
+
+        function drawDependenciesChart(title, description, chartType, components) {
+            let container = document.getElementById(chartType);
+            var chart = new google.charts.Bar(container);
+            let chartData = [['Компонент', 'Кол-во файлов']];
+            for (let componentName in components) {
+                if (components.hasOwnProperty(componentName)) {
+                    let component = components[componentName];
+                    chartData.push([component.name, component.units_of_code.length]);
+                }
+            }
+            chartData.sort(function (a, b) {
+                return a[1] < b[1] ? 1 : (a[1] > b[1] ? -1 : 0);
+            });
+            container.style.height = 100 + (35 * chartData.length) + 'px';
+            let chartDataTable = google.visualization.arrayToDataTable(chartData);
+
+            var chartOptions = {
+                title: title,
+                legend: { position: 'none' },
+                chart: {
+                    title: title,
+                    subtitle: description
+                },
+                bars: 'horizontal',
+                axes: {
+                    x: {
+                        0: {side: 'top', label: 'Кол-во файлов'}
+                    }
+                },
+            };
+
+            chart.draw(chartDataTable, chartOptions);
+
+            google.visualization.events.addListener(chart, 'select', function () {
+                Array.from(document.getElementsByClassName('unit-of-code-row ' + chartType)).forEach(function (v, k) {
+                    v.style.display = 'none';
+                });
+
+                var selectedItem = chart.getSelection()[0];
+                if (selectedItem) {
+                    var cls = chartDataTable.getValue(selectedItem.row, 0);
+                    Array.from(document.getElementsByClassName(chartType + ' ' + cls)).forEach(function (v, k) {
+                        v.style.display = 'block';
+                    });
+                }
+            });
+        }
+
+        function drawCharacteristicsChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Характеристика', 'Значение метрики'],
+                ['Примитивность', 1],
+                ['Абстрактность', 0],
+                ['Неустойчивость', 0],
+                ['Расстояние до главной диагонали', 1],
+            ]);
+
+            var options = {
+                title: 'Характеристики',
+                bars: 'horizontal',
+                legend: { position: 'none' }
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('characteristics-chart'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+
+        function drawAIChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Имя', 'Неустойчивость', 'Абстрактность'],
+                ['Utils', 0, 0],
+            ]);
+
+            var options = {
+                title: 'A/I',
+                hAxis: {title: 'Неустойчивость', minValue: 0, maxValue: 1},
+                vAxis: {title: 'Абстрактность', minValue: 0, maxValue: 1},
+                legend: { position: 'none' }
+            };
+
+            var chart = new google.visualization.BubbleChart(document.getElementById('a-i-chart'));
+
+            chart.draw(data, options);
+        }
+    </script>
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        #graph {
+            border: 1px solid mediumpurple;
+            width: 100%;
+            height: 400px;
+        }
+        #a-i-chart, #characteristics-chart {
+            width: 100%;
+            height: 500px;
+        }
+        #output-deps-chart, #input-deps-chart {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid header">
+    <div class="row">
+        <a href="index.html">
+            <div class="home">
+                    Utils
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="container-fluid content">
+    <div class="row">
+        <nav aria-label="breadcrumb" class="breadcrumb-container">
+            <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Главная</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Utils</li>
+            </ol>
+        </nav>
+    </div>
+
+        <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div id="characteristics-chart"></div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div id="a-i-chart"></div>
+        </div>
+    </div>
+    <div class="row">
+        <b>Граф зависимостей</b>
+        <div id="graph"></div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div id="output-deps-chart"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <table class="table table-borderless table-hover">
+                            </table>
+        </div>
+        <div class="col-6">
+            <table class="table table-borderless table-hover">
+                            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div id="input-deps-chart"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-borderless table-hover">
+                            </table>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var container = document.getElementById('graph');
+
+        var nodes = new vis.DataSet([]);
+        var edges = new vis.DataSet([]);
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            nodes: {
+                shape: 'box'
+            },
+            edges: {
+                arrows: 'to'
+            }
+        };
+
+        var network = new vis.Network(container, data, options);
+    </script>
+</div>
+
+<div id="to-top" onclick="window.scrollTo(0, 0);">
+    <i class="fas fa-angle-up" aria-hidden="true"></i>
+</div>
+
+<div class="container-fluid footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div><a href="index.html">PHP Clean Architecture</a></div>
+            <div><a href="https://github.com/Chetkov/php-clean-architecture"><i class="fab fa-github"></i></a></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

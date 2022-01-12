@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <meta charset="UTF-8">
+        <title>PHP Clean Architecture - Главная</title>
+
+        <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src="https://kit.fontawesome.com/a2c128da6b.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+              integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+              crossorigin="anonymous">
+        <style>
+            .header {
+                background: mediumpurple;
+                color: #ffffff;
+                font-size: 30px;
+            }
+
+            .home {
+                height: 50px;
+                padding: 0 10px;
+            }
+
+            .home:hover {
+                background: rebeccapurple;
+            }
+
+            .header a, .footer a {
+                color: #ffffff;
+            }
+
+            .header a:hover {
+                text-decoration: none;
+            }
+
+            .header a:hover, .footer a:hover {
+                color: #ffffff;
+            }
+
+            .content {
+                margin: 10px;
+                width: calc(100% - 20px);
+            }
+
+            .breadcrumb-container {
+                width: 100%;
+            }
+
+            .footer {
+                background: mediumpurple;
+                height: 50px;
+                color: #ffffff;
+                padding-top: 13px;
+                margin-top: 10px;
+            }
+
+            .footer i.fab {
+                font-size: 25px;
+                color: black;
+                margin: -2px 10px;
+            }
+
+            #to-top {
+                display: block;
+                position: fixed;
+                right: 20px;
+                bottom: 20px;
+                width: 50px;
+                height: 50px;
+                background: mediumpurple;
+                border: 2px solid rebeccapurple;
+                color: white;
+                padding: 0 13px;
+                font-size: 30px;
+            }
+
+            #to-top:hover {
+                cursor: pointer;
+                background: rebeccapurple;
+                border-color: mediumpurple;
+            }
+        </style>
+    
+    <script type="text/javascript">
+        google.charts.load("current", {packages: ['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            drawAIChart();
+            drawDChart();
+        }
+
+        function drawAIChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Имя', 'Неустойчивость', 'Абстрактность', 'Тип', 'Зависимостей'],
+                                ['Domen', 0.313, 0, 'Компонент', 2],
+                                ['Application', 0.368, 0.2, 'Компонент', 2],
+                                ['Infrastructure', 0.76, 0.083, 'Компонент', 7],
+                                ['Utils', 0, 0, 'Компонент', 0],
+                            ]);
+
+            var options = {
+                title: 'A/I',
+                hAxis: {title: 'Неустойчивость', minValue: 0, maxValue: 1},
+                vAxis: {title: 'Абстрактность', minValue: 0, maxValue: 1},
+                legend: {
+                    position: 'none'
+                },
+                explorer: {},
+            };
+
+            var chart = new google.visualization.BubbleChart(document.getElementById('a-i-chart'));
+
+            chart.draw(data, options);
+        }
+
+        function drawDChart() {
+            let container = document.getElementById('d-chart');
+            let chartData = [
+                ['Компонент', 'Distance (norma)', 'Distance (overage)'],
+                                    ['Domen', 0.3, 0.387],
+                                    ['Application', 0.3, 0.132],
+                                    ['Infrastructure', 0.157, 0],
+                                    ['Utils', 0.3, 0.7],
+                            ];
+
+            chartData.sort(function (a, b) {
+                return a[2] < b[2] ? 1 : (a[2] > b[2] ? -1 : 0);
+            });
+
+            let containerHeight = 100 + (35 * chartData.length);
+            if (containerHeight > 500) {
+                container.style.height = containerHeight + 'px';
+            }
+
+            var data = google.visualization.arrayToDataTable(chartData);
+
+            var options = {
+                title: 'Расстояние до главной диагонали',
+                bars: 'horizontal',
+                legend: {position: 'none'},
+                isStacked: true,
+            };
+
+            var chart = new google.visualization.BarChart(container);
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+    </script>
+    <style>
+        #graph {
+            border: 1px solid mediumpurple;
+            min-height: 300px;
+            width: 100%;
+            height: 95%;
+        }
+
+        #a-i-chart, #d-chart {
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid header">
+    <div class="row">
+        <a href="index.html">
+            <div class="home">
+                PHP Clean Architecture             </div>
+        </a>
+    </div>
+</div>
+
+<div class="container-fluid content">
+    <div class="row">
+        <nav aria-label="breadcrumb" class="breadcrumb-container">
+            <ol class="breadcrumb">
+                                    <li class="breadcrumb-item active" aria-current="page">Главная</li>
+                            </ol>
+        </nav>
+    </div>
+
+        <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div id="a-i-chart"></div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div id="d-chart"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
+            <b>Компоненты</b>
+            <table class="table table-borderless table-hover">
+                                    <tr>
+                        <td>
+                            <a href="domen.html">Domen</a>
+                        </td>
+                    </tr>
+                                    <tr>
+                        <td>
+                            <a href="application.html">Application</a>
+                        </td>
+                    </tr>
+                                    <tr>
+                        <td>
+                            <a href="infrastructure.html">Infrastructure</a>
+                        </td>
+                    </tr>
+                                    <tr>
+                        <td>
+                            <a href="utils.html">Utils</a>
+                        </td>
+                    </tr>
+                            </table>
+        </div>
+        <div class="col-lg-10 col-md-8 col-sm-6 col-xs-12">
+            <b>Граф зависимостей</b>
+            <div id="graph"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var container = document.getElementById('graph');
+
+        var nodes = new vis.DataSet([{"id":"000000003154b487000000002f15145c","label":"Infrastructure","title":"Abstractness: 0.083, Instability: 0.76, Fan-in: Domen, Application, Fan-out: Application, Domen, illuminate\/macroable, laravel\/socialite, illuminate\/http, *undefined*, illuminate\/database"},{"id":"000000003154b49c000000002f15145c","label":"Domen","title":"Abstractness: 0, Instability: 0.313, Fan-in: Infrastructure, Application, Fan-out: Application, Infrastructure"},{"id":"000000003154b6ba000000002f15145c","label":"Application","title":"Abstractness: 0.2, Instability: 0.368, Fan-in: Domen, Infrastructure, Fan-out: Domen, Infrastructure"},{"id":"000000003154b47b000000002f15145c","label":"illuminate\/macroable","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000003154b5d5000000002f15145c","label":"laravel\/socialite","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000003154b449000000002f15145c","label":"illuminate\/http","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000003154b606000000002f15145c","label":"*undefined*","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000003154b5b9000000002f15145c","label":"illuminate\/database","title":"Abstractness: 1, Instability: 0, Fan-in: Infrastructure, Fan-out: "}]);
+        var edges = new vis.DataSet([{"from":"000000003154b487000000002f15145c","to":"000000003154b49c000000002f15145c","label":"8->8"},{"from":"000000003154b6ba000000002f15145c","to":"000000003154b49c000000002f15145c","label":"3->3"},{"from":"000000003154b49c000000002f15145c","to":"000000003154b6ba000000002f15145c","label":"1->1"},{"from":"000000003154b49c000000002f15145c","to":"000000003154b487000000002f15145c","label":"4->4"},{"from":"000000003154b487000000002f15145c","to":"000000003154b6ba000000002f15145c","label":"11->3"},{"from":"000000003154b6ba000000002f15145c","to":"000000003154b487000000002f15145c","label":"2->4"},{"from":"000000003154b487000000002f15145c","to":"000000003154b47b000000002f15145c","label":"3->3"},{"from":"000000003154b487000000002f15145c","to":"000000003154b5d5000000002f15145c","label":"1->1"},{"from":"000000003154b487000000002f15145c","to":"000000003154b449000000002f15145c","label":"1->1"},{"from":"000000003154b487000000002f15145c","to":"000000003154b606000000002f15145c","label":"2->2"},{"from":"000000003154b487000000002f15145c","to":"000000003154b5b9000000002f15145c","label":"1->1"}]);
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            nodes: {
+                shape: 'box'
+            },
+            edges: {
+                arrows: 'to'
+            }
+        };
+
+        var network = new vis.Network(container, data, options);
+    </script>
+</div>
+
+<div id="to-top" onclick="window.scrollTo(0, 0);">
+    <i class="fas fa-angle-up" aria-hidden="true"></i>
+</div>
+
+<div class="container-fluid footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div><a href="index.html">PHP Clean Architecture</a></div>
+            <div><a href="https://github.com/Chetkov/php-clean-architecture"><i class="fab fa-github"></i></a></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

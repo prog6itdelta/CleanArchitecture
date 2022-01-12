@@ -22,7 +22,8 @@ class LessonRepository extends AbstractRepository
     function questions($lesson_id)
     {
         return $this->model->find($lesson_id)->questions()->get()->map(function ($item) {
-            return new Question($item->toArray());
+//            return new Question($item->toArray());
+            return app()->make(Question::class, ['prop' => $item->toArray()]);
         })->toArray();
     }
 }
