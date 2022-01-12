@@ -105,10 +105,10 @@ class LearnService implements LearnServiceInterface
         // check all questions
         foreach ($lesson->questions as $question) {
             $question->fetchAnswers();
-            // answer from array of answers
-            $answer = $data["q$question->id"] ?? false;
             switch ($question->type) {
                 case 'radio':
+                    // only one answer
+                    $answer = $data["q$question->id"] ?? false;
                     $rightAnswer = array_filter($question->answers, fn($item) => ($item->correct));
                     $rightAnswer = $rightAnswer[0] ?? false;
                     assert($rightAnswer);
@@ -116,13 +116,15 @@ class LearnService implements LearnServiceInterface
                     if ($rightAnswer->id != $answer) $result = 'fail';
                     break;
                 case 'checkbox':
+                    // array of answers or []
+                    $answer = $data["q$question->id"] ?? [];
                     $rightAnswer = array_filter($question->answers, fn($item) => ($item->correct));
-                    if (is_array($answer)) {
+//                    if (is_array($answer)) {
                         // check all correct answers
                         foreach ($rightAnswer as $value) {
                             if (!in_array($value->id, $answer)) $result = 'fail';
                         }
-                    } else $result = false;
+//                    } else $result = false;
                     break;
                 case 'text':
                     // needed to check by instructor

@@ -140,19 +140,19 @@ export default function Lesson(props) {
     setData(answers);
   }, [answers, status]);
 
-  useEffect(() => {
-    window.addEventListener( "pageshow", function ( event ) {
-      var historyTraversal = event.persisted /*||
-        ( typeof window.performance != "undefined" &&
-          window.performance.navigation.type === 2 );*/
-      if ( historyTraversal ) {
-        // Handle page restore.
-        window.location.reload();
-      }
-      // return () => windows.removeEventListener('pageshow', f);
-    }, { once: false });
-
-  }, [answers, status]);
+  // useEffect(() => {
+  //   window.addEventListener( "pageshow", function ( event ) {
+  //     var historyTraversal = event.persisted /*||
+  //       ( typeof window.performance != "undefined" &&
+  //         window.performance.navigation.type === 2 );*/
+  //     if ( historyTraversal ) {
+  //       // Handle page restore.
+  //       window.location.reload();
+  //     }
+  //     // return () => windows.removeEventListener('pageshow', f);
+  //   }, { once: false });
+  //
+  // }, [answers, status]);
 
 
   function handleBack() {
@@ -162,8 +162,8 @@ export default function Lesson(props) {
 
   function handleSubmit(e) {
     e.preventDefault()
-    clearErrors()
-    post(route('lesson', [course_id, lesson.id]), { preserveState: false , resetOnSuccess: true});
+    // clearErrors()
+    post(route('lesson', [course_id, lesson.id]), /*{ preserveState: false , resetOnSuccess: true}*/);
   }
 
   let color = ''
@@ -173,7 +173,7 @@ export default function Lesson(props) {
     case 'pending': color =  'text-blue-600'; break;
     case 'blocked': color =  'text-gray-600'; break;
   }
-
+  console.log(errors)
   return (
     <div className="bg-white overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
