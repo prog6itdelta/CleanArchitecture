@@ -25,14 +25,22 @@
         "tailwindcss": "^2.2.19"
     },
     "dependencies": {
+        "@emotion/react": "^11.7.1",
+        "@emotion/styled": "^11.6.0",
         "@headlessui/react": "^1.4.2",
         "@heroicons/react": "^1.0.5",
         "@inertiajs/inertia": "^0.10.1",
         "@inertiajs/inertia-react": "^0.7.1",
         "@inertiajs/progress": "^0.2.6",
+        "@mui/icons-material": "^5.2.5",
+        "@mui/material": "^5.2.6",
+        "@mui/styled-engine-sc": "^5.1.0",
+        "@mui/styles": "^5.2.3",
+        "@mui/x-data-grid": "^5.2.1",
         "babel-preset-react": "^6.24.1",
         "prettier": "^2.1.1",
         "react": "^17.0.2",
-        "react-dom": "^17.0.2"
+        "react-dom": "^17.0.2",
+        "styled-components": "^5.3.3"
     }
 }
