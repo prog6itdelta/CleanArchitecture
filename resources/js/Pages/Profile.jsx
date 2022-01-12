@@ -73,7 +73,7 @@ export default function Profile() {
         method: 'POST',
         data: formData,
         config
-      }).then((response) => {
+      }).then(() => {
         setEditingDisabled(true);
         Inertia.reload();
       });

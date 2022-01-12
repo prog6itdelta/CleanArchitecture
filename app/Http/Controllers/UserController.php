@@ -31,7 +31,7 @@ class UserController extends BaseController
     {
         $path = 'empty';
         if ($request->hasFile('new_avatar') && $request->file('new_avatar')->isValid()) {
-            $avatarPath = '/' . $request->new_avatar->store('images/avatars');
+            $avatarPath = '/' . $request->new_avatar->store('images/'. explode('.', $_SERVER['HTTP_HOST'])[0].'/avatars');
             User::updateOrCreate(
                 ['id' => $request->id],
                 ['avatar' => $avatarPath]
