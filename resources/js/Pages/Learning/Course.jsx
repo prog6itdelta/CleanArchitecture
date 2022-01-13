@@ -3,13 +3,13 @@ import { Dialog, Transition } from '@headlessui/react';
 import List from '../Components/List.jsx';
 import Layout from '../Layout.jsx';
 import { InertiaLink } from "@inertiajs/inertia-react";
-import { MenuIcon, XIcon, ArrowCircleRightIcon, DotsCircleHorizontalIcon } from '@heroicons/react/outline';
+import { MenuIcon, XIcon, ArrowCircleRightIcon, DotsCircleHorizontalIcon, CheckCircleIcon } from '@heroicons/react/outline';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-const Course = ({ course, ...props }) => {
+const Course = ({ course, passed, ...props }) => {
   let lessons = course.lessons;
   lessons = Object.values(lessons);
   const isCoursePage = typeof props.children !== 'object';
@@ -112,12 +112,16 @@ const Course = ({ course, ...props }) => {
                       <span
                         // TODO add lesson status indicator by adding green bg and CheckCircleIcon
                         className={classNames(
-                          // lesson.iconBackground,
-                          'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white bg-indigo-500'
+                          passed.includes(lesson.id)
+                            ? 'bg-green-500'
+                            : 'bg-indigo-500',
+                          'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white'
                         )}
                       >
-                        {/* <lesson.icon className="h-5 w-5 text-white" aria-hidden="true" /> */}
-                        <ArrowCircleRightIcon className="h-5 w-5 text-white" aria-hidden="true" />
+                        {passed.includes(lesson.id)
+                          ? <CheckCircleIcon className="h-5 w-5 text-white" aria-hidden="true" />
+                          : <ArrowCircleRightIcon className="h-5 w-5 text-white" aria-hidden="true" />
+                        }
                       </span>
                     </div>
                     <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">

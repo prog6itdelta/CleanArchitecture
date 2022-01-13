@@ -134,7 +134,7 @@ function TextQuestion({ question, setValues, values }) {
   );
 }
 
-const Lesson = ({ course_id, lesson, answers, status, course }) => {
+const Lesson = ({ course_id, lesson, answers, status }) => {
   const { data, setData, post, errors, clearErrors } = useForm(answers);
 
   useEffect(() => {
@@ -237,7 +237,7 @@ const Lesson = ({ course_id, lesson, answers, status, course }) => {
 
 Lesson.layout = (page) => (
   <Layout>
-    <Course children={page} course={page.props.course} lessonId={page.props.lesson.id} />
+    <Course children={page} course={page.props.course} lessonId={page.props.lesson.id} passed={page.props.passed} />
   </Layout>
 );
 

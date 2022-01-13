@@ -31,7 +31,8 @@ class LearnController extends BaseController
     public function course($id)
     {
         $course = LearnService::getCourse($id);
-        return Inertia::render('Pages/Learning/Course', compact('course'));
+        $passed = JournalService::getPassedLessons();
+        return Inertia::render('Pages/Learning/Course', compact('course', 'passed'));
     }
 
     public function lesson(Request $request, $cid, $id)
@@ -39,13 +40,15 @@ class LearnController extends BaseController
         $lesson = LearnService::runLesson($id);
         $answers = JournalService::getAnswers($id);
         $course = LearnService::getCourse($cid);
+        $passed = JournalService::getPassedLessons();
 
         return Inertia::render('Pages/Learning/Lesson', [
             'course_id' => $cid,
             'lesson' => $lesson,
             'answers' => $answers,
             'status' => JournalService::getLessonStatus($id),
-            'course' => $course
+            'course' => $course,
+            'passed' => $passed
         ]);//->toResponse($request)->header('Cache-Control','no-cache, max-age=0, must-revalidate, no-store');
     }
 
