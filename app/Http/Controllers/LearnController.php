@@ -38,12 +38,14 @@ class LearnController extends BaseController
     {
         $lesson = LearnService::runLesson($id);
         $answers = JournalService::getAnswers($id);
+        $course = LearnService::getCourse($cid);
 
         return Inertia::render('Pages/Learning/Lesson', [
             'course_id' => $cid,
             'lesson' => $lesson,
             'answers' => $answers,
-            'status' => JournalService::getLessonStatus($id)
+            'status' => JournalService::getLessonStatus($id),
+            'course' => $course
         ]);//->toResponse($request)->header('Cache-Control','no-cache, max-age=0, must-revalidate, no-store');
     }
 

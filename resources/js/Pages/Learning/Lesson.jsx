@@ -1,27 +1,28 @@
 import React, { useEffect } from 'react';
-import {ArrowCircleLeftIcon, ArrowCircleRightIcon, CheckCircleIcon} from '@heroicons/react/outline'
+import { ArrowCircleLeftIcon, ArrowCircleRightIcon, CheckCircleIcon } from '@heroicons/react/outline';
 import Notification from "../Components/Notification";
 // import {Inertia} from '@inertiajs/inertia'
 // import { usePage } from '@inertiajs/inertia-react'
-import {useForm} from '@inertiajs/inertia-react'
-
+import { useForm } from '@inertiajs/inertia-react';
+import Layout from '../Layout.jsx';
+import Course from './Course.jsx';
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
-function RadioQuestion({question, setValues, values}) {
-  const {answers} = question;
+function RadioQuestion({ question, setValues, values }) {
+  const { answers } = question;
   const name = `q${question.id}`;
 
   const handleChange = (e) => {
     const key = e.target.name;
-    const value = e.target.value
+    const value = e.target.value;
     setValues(values => ({
       ...values,
       [key]: value,
-    }))
-  }
+    }));
+  };
 
   return (
     <>
@@ -33,24 +34,24 @@ function RadioQuestion({question, setValues, values}) {
             <label key={idx} className="flex flex-col cursor-pointer focus:outline-none">
               <div className="flex items-center text-sm">
                 <input type="radio" name={name} value={answer.id} id={name}
-                       className="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
-                       onChange={handleChange}
-                       required
-                       checked={(values[name] == answer.id) ? 'checked' : ''}
+                  className="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
+                  onChange={handleChange}
+                  required
+                  checked={(values[name] == answer.id) ? 'checked' : ''}
                 />
                 {/*// <!-- Checked: "text-indigo-900", Not Checked: "text-gray-900" -->*/}
                 <span className="ml-3 font-medium">{answer.name}</span>
               </div>
             </label>
-          )
+          );
         })}
       </fieldset>
     </>
-  )
+  );
 }
 
-function CheckBoxQuestion({question, setValues, values}) {
-  const {answers} = question;
+function CheckBoxQuestion({ question, setValues, values }) {
+  const { answers } = question;
   const name = `q${question.id}`;
 
   const handleChange = (e) => {
@@ -60,13 +61,13 @@ function CheckBoxQuestion({question, setValues, values}) {
     if (e.target.checked) {
       arr.push(value);
     } else {
-      arr = arr.filter(e => e !== value)
+      arr = arr.filter(e => e !== value);
     }
     setValues(val => ({
       ...val,
       [key]: arr,
-    }))
-  }
+    }));
+  };
 
   return (
     <>
@@ -97,23 +98,24 @@ function CheckBoxQuestion({question, setValues, values}) {
                 {/*</p>*/}
               </div>
             </div>
-          )})}
+          );
+        })}
       </fieldset>
     </>
-  )
+  );
 }
 
-function TextQuestion({question, setValues, values}) {
+function TextQuestion({ question, setValues, values }) {
   const name = `q${question.id}`;
 
   const handleChange = (e) => {
     const key = e.target.name;
-    const value = e.target.value
+    const value = e.target.value;
     setValues(values => ({
       ...values,
       [key]: value,
-    }))
-  }
+    }));
+  };
   return (
     <>
       <h3 className="text-xl font-bold leading-tight text-gray-900">{question.name}</h3>
@@ -129,57 +131,42 @@ function TextQuestion({question, setValues, values}) {
         required
       />
     </>
-  )
+  );
 }
 
-export default function Lesson(props) {
-  const {data, setData, post, errors, clearErrors} = useForm(answers)
-  const {course_id, lesson, answers, status} = props;
+const Lesson = ({ course_id, lesson, answers, status, course }) => {
+  const { data, setData, post, errors, clearErrors } = useForm(answers);
 
-  useEffect(() =>{
+  useEffect(() => {
     setData(answers);
-  }, [answers, status]);
-
-  // useEffect(() => {
-  //   window.addEventListener( "pageshow", function ( event ) {
-  //     var historyTraversal = event.persisted /*||
-  //       ( typeof window.performance != "undefined" &&
-  //         window.performance.navigation.type === 2 );*/
-  //     if ( historyTraversal ) {
-  //       // Handle page restore.
-  //       window.location.reload();
-  //     }
-  //     // return () => windows.removeEventListener('pageshow', f);
-  //   }, { once: false });
-  //
-  // }, [answers, status]);
-
+  }, [answers]);
 
   function handleBack() {
     window.history.back();
-    return false;
   }
 
   function handleSubmit(e) {
-    e.preventDefault()
-    // clearErrors()
-    post(route('lesson', [course_id, lesson.id]), /*{ preserveState: false , resetOnSuccess: true}*/);
+    e.preventDefault();
+    clearErrors();
+    post(route('lesson', [course_id, lesson.id]));
   }
 
-  let color = ''
+  let color = '';
   switch (status) {
     case 'done': color = 'text-green-600'; break;
-    case 'fail': color =  'text-red-600'; break;
-    case 'pending': color =  'text-blue-600'; break;
-    case 'blocked': color =  'text-gray-600'; break;
+    case 'fail': color = 'text-red-600'; break;
+    case 'pending': color = 'text-blue-600'; break;
+    case 'blocked': color = 'text-gray-600'; break;
+    default: break;
   }
-  console.log(errors)
-  return (
-    <div className="bg-white overflow-hidden">
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {errors.error &&
-        <Notification position="bottom" type="fail" header="Fail" message="The answers are not right."/>}
+  return (
+    <div className="overflow-hidden">
+      <div className="relative max-w-7xl mx-auto px-4 mt-8 sm:px-6 lg:px-8">
+
+        {errors.error
+          && <Notification position="bottom" type="fail" header="Fail" message="The answers are not right." />
+        }
 
         <div className="mt-8 lg:mt-0">
           <div className="text-base max-w-prose mx-auto lg:max-w-none">
@@ -202,30 +189,30 @@ export default function Lesson(props) {
                   let component;
                   switch (item.type) {
                     case 'radio':
-                      component = <RadioQuestion question={item} setValues={setData} values={data}/>;
+                      component = <RadioQuestion question={item} setValues={setData} values={data} />;
                       break;
                     case 'checkbox':
-                      component = <CheckBoxQuestion question={item} setValues={setData} values={data}/>;
-                      break
-                    case 'text':
-                      component = <TextQuestion question={item} setValues={setData} values={data}/>;
+                      component = <CheckBoxQuestion question={item} setValues={setData} values={data} />;
                       break;
+                    case 'text':
+                      component = <TextQuestion question={item} setValues={setData} values={data} />;
+                      break;
+                    default: break;
                   }
                   return (
                     <div className="my-3" key={idx}>
                       {component}
                     </div>
-                  )
-
+                  );
                 })}
 
                 <div className="mt-5 flex">
                   <button type="button" className="mr-3 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm
                     font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700
                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                          onClick={handleBack}
+                    onClick={handleBack}
                   >
-                    <ArrowCircleLeftIcon className="h-6 w-6"/> &nbsp;
+                    <ArrowCircleLeftIcon className="h-6 w-6" /> &nbsp;
                     Back
                   </button>
                   <button type="submit" className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm
@@ -233,7 +220,7 @@ export default function Lesson(props) {
                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
                     Check &nbsp;
-                    <ArrowCircleRightIcon className="h-6 w-6"/>
+                    <ArrowCircleRightIcon className="h-6 w-6" />
                   </button>
                 </div>
 
@@ -246,4 +233,12 @@ export default function Lesson(props) {
       </div>
     </div>
   );
-}
+};
+
+Lesson.layout = (page) => (
+  <Layout>
+    <Course children={page} course={page.props.course} lessonId={page.props.lesson.id} />
+  </Layout>
+);
+
+export default Lesson;
