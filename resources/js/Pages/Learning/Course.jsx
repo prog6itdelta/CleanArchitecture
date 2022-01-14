@@ -11,17 +11,19 @@ import {
   CheckCircleIcon,
   ClockIcon,
   ExclamationCircleIcon,
-  BanIcon
+  BanIcon,
+  BadgeCheckIcon
 } from '@heroicons/react/outline';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-const Course = ({ course, statuses, ...props }) => {
+const Course = ({ course, statuses, course_completed: isCourseCompleted, ...props }) => {
   let lessons = course.lessons;
   lessons = Object.values(lessons);
-  const isCoursePage = typeof props.children !== 'object';
+  const isCoursePage = route().current() === 'course';
+  const isSuccessPage = route().current() === 'success';
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -71,6 +73,16 @@ const Course = ({ course, statuses, ...props }) => {
     </div>
   );
 
+  const SuccessScreen = () => (
+    <div className="overflow-hidden">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
+          Congratulations!
+        </div>
+      </div>
+    </div>
+  );
+
   const SidebarFeed = () => {
     const getStatusIndicator = (lesson) => {
       const data = statuses.find((item) => item.id === lesson.id);
@@ -83,6 +95,41 @@ const Course = ({ course, statuses, ...props }) => {
         default: return { statusBg: 'bg-indigo-500', statusIcon: <ArrowCircleRightIcon className="h-5 w-5 text-white" aria-hidden="true" /> };
       }
     };
+
+    const SuccessWithoutLink = () => (
+      <div
+        className={classNames(
+          isSuccessPage
+            ? 'bg-gray-200'
+            : 'hover:bg-gray-100',
+          'relative flex space-x-3 cursor-pointer'
+        )}
+      >
+        <div>
+          <span
+            className={classNames(
+              isCourseCompleted
+                ? 'bg-green-500'
+                : 'bg-gray-500',
+              'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white'
+            )}
+          >
+            <BadgeCheckIcon className="h-5 w-5 text-white" aria-hidden="true" />
+          </span>
+        </div>
+        <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+          <p className="text-sm font-medium text-gray-800 hover:text-gray-900">
+            SuccessScreen
+          </p>
+        </div>
+      </div>
+    );
+
+    const SuccessWithLink = () => (
+      <InertiaLink href={route('success', course.id)}>
+        <SuccessWithoutLink />
+      </InertiaLink>
+    );
 
     return (
       <div className="flow-root">
@@ -115,13 +162,12 @@ const Course = ({ course, statuses, ...props }) => {
               </InertiaLink>
             </div>
           </li>
-          {lessons.map((lesson, lessonIdx) => (
+          {lessons.map((lesson) => (
             <li key={lesson.id}>
               <div className="relative pb-8">
-                {lessonIdx !== lessons.length - 1 ? (
-                  <span className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" />
-                ) : null}
-                {/* TODO add active lesson selection by adding bg-gray-200 class */}
+
+                <span className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true" />
+
                 <InertiaLink href={route('lesson', [course.id, lesson.id])}>
                   <div className={classNames(
                     lesson.id === props.lessonId
@@ -141,23 +187,37 @@ const Course = ({ course, statuses, ...props }) => {
                     </div>
                     <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                       <div>
-                        {/* TODO disable unreached lessons */}
                         <p className="text-sm font-medium text-gray-800 hover:text-gray-900">
                           {lesson.name}
                         </p>
                       </div>
-                      {/* <div className="text-right text-sm whitespace-nowrap text-gray-500">
-                      <time dateTime={lesson.datetime}>{lesson.date}</time>
-                    </div> */}
                     </div>
                   </div>
                 </InertiaLink>
               </div>
             </li>
           ))}
+          {course.lessons.length !== 0
+            && (
+              <li key="success">
+                <div className="relative pb-8">
+                {isCourseCompleted
+                  ? <SuccessWithLink />
+                  : <SuccessWithoutLink />
+                }
+                </div>
+              </li>
+            )
+          }
         </ul>
       </div>
     );
+  };
+
+  const getCurrentContent = () => {
+    if (isCoursePage) { return <CourseScreen />; }
+    if (isSuccessPage) { return <SuccessScreen />; }
+    return props.children;
   };
 
   return (
@@ -240,10 +300,7 @@ const Course = ({ course, statuses, ...props }) => {
           <div className="py-6">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
               {/* Replace with your content */}
-              {isCoursePage
-                ? <CourseScreen />
-                : props.children
-              }
+              {getCurrentContent()}
               {/* /End replace */}
             </div>
           </div>

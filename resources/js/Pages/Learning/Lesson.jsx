@@ -135,7 +135,7 @@ function TextQuestion({ question, setValues, values }) {
 }
 
 const Lesson = ({ course_id, lesson, answers, status }) => {
-  const { data, setData, post, errors, clearErrors } = useForm(answers);
+  const { data, setData, post, errors, clearErrors, recentlySuccessful } = useForm(answers);
 
   useEffect(() => {
     setData(answers);
@@ -166,6 +166,9 @@ const Lesson = ({ course_id, lesson, answers, status }) => {
 
         {errors.error
           && <Notification position="bottom" type="fail" header="Fail" message="The answers are not right." />
+        }
+        {recentlySuccessful
+          && <Notification position="bottom" type="success" header="Success" message="The answers are right." />
         }
 
         <div className="mt-8 lg:mt-0">
@@ -237,7 +240,13 @@ const Lesson = ({ course_id, lesson, answers, status }) => {
 
 Lesson.layout = (page) => (
   <Layout>
-    <Course children={page} course={page.props.course} lessonId={page.props.lesson.id} statuses={page.props.statuses} />
+    <Course
+      children={page}
+      course={page.props.course}
+      lessonId={page.props.lesson.id}
+      statuses={page.props.statuses}
+      course_completed={page.props.course_completed}
+    />
   </Layout>
 );
 
