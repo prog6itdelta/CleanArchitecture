@@ -155,7 +155,7 @@ const Lesson = ({ course_id, lesson, answers, status }) => {
   switch (status) {
     case 'done': color = 'text-green-600'; break;
     case 'fail': color = 'text-red-600'; break;
-    case 'pending': color = 'text-blue-600'; break;
+    case 'pending': color = 'text-yellow-600'; break;
     case 'blocked': color = 'text-gray-600'; break;
     default: break;
   }
@@ -237,7 +237,7 @@ const Lesson = ({ course_id, lesson, answers, status }) => {
 
 Lesson.layout = (page) => (
   <Layout>
-    <Course children={page} course={page.props.course} lessonId={page.props.lesson.id} passed={page.props.passed} />
+    <Course children={page} course={page.props.course} lessonId={page.props.lesson.id} statuses={page.props.statuses} />
   </Layout>
 );
 

@@ -8,8 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
-
+use Illuminate\Http\RedirectResponse;
 
 class UserController extends BaseController
 {
@@ -28,10 +27,10 @@ class UserController extends BaseController
     public function edit(Request $request)
     {
         $path = 'empty';
-        if ($request->hasFile('new_avatar') && $request->file('new_avatar')->isValid()) {
-            $avatarPath = '/' . $request->new_avatar->store('images/'. explode('.', $_SERVER['HTTP_HOST'])[0].'/avatars');
+        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
+            $avatarPath = '/' . $request->avatar->store('images/'. explode('.', $_SERVER['HTTP_HOST'])[0].'/avatars');
             User::updateOrCreate(
-                ['id' => $request->id],
+                ['id' => Auth::user()->id],
                 ['avatar' => $avatarPath]
             );
         }
@@ -40,16 +39,18 @@ class UserController extends BaseController
             if ($key !== 'id' && strpos($key, 'avatar') === false && $item !== null) {
                 if ($key === 'password') {
                     User::updateOrCreate(
-                        ['id' => $request->id],
+                        ['id' => Auth::user()->id],
                         [$key => Hash::make($item, ['rounds' => 12])]
                     );
                 } else {
                     User::updateOrCreate(
-                        ['id' => $request->id],
+                        ['id' => Auth::user()->id],
                         [$key => $item]
                     );
                 }
             }
         }
+        return redirect('profile');
+        return $request;
     }
 }

@@ -35,14 +35,13 @@ class JournalService
         return $rec;
     }
 
-    public static function getPassedLessons(): array|null
+    public static function getLessonsStatuses(): array|null
     {
         $user_id = auth()->user()->id;
         $rep = new JournalLessonRepository();
         $rec = $rep->query(fn ($model) => ($model->where([
-            'user_id' => $user_id,
-            'status' => LessonStatus::DONE
-        ])))->map(function ($item) { return $item->lesson_id; })->all();
+            'user_id' => $user_id
+        ])))->map(function ($item) { return ['id' => $item->lesson_id, 'status' => $item-> status]; })->all();
         return $rec;
     }
 

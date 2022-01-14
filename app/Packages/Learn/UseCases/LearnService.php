@@ -134,10 +134,10 @@ class LearnService implements LearnServiceInterface
                     assert('Unknown question type.');
             }
         }
-        JournalService::storeAnswers($id, $data);
-        JournalService::setLessonStatus($id, $result);
 
         if ($result == 'done' && $pending) $result = 'pending';
+        JournalService::storeAnswers($id, $data);
+        JournalService::setLessonStatus($id, $result);
 
         return ($result == 'done') || ($result == 'pending');
     }

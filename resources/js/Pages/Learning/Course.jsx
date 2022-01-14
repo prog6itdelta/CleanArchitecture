@@ -3,13 +3,22 @@ import { Dialog, Transition } from '@headlessui/react';
 import List from '../Components/List.jsx';
 import Layout from '../Layout.jsx';
 import { InertiaLink } from "@inertiajs/inertia-react";
-import { MenuIcon, XIcon, ArrowCircleRightIcon, DotsCircleHorizontalIcon, CheckCircleIcon } from '@heroicons/react/outline';
+import {
+  MenuIcon,
+  XIcon,
+  ArrowCircleRightIcon,
+  DotsCircleHorizontalIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  ExclamationCircleIcon,
+  BanIcon
+} from '@heroicons/react/outline';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-const Course = ({ course, passed, ...props }) => {
+const Course = ({ course, statuses, ...props }) => {
   let lessons = course.lessons;
   lessons = Object.values(lessons);
   const isCoursePage = typeof props.children !== 'object';
@@ -63,6 +72,18 @@ const Course = ({ course, passed, ...props }) => {
   );
 
   const SidebarFeed = () => {
+    const getStatusIndicator = (lesson) => {
+      const data = statuses.find((item) => item.id === lesson.id);
+      const status = data === undefined ? 'undefined' : data.status;
+      switch (status) {
+        case 'done': return { statusBg: 'bg-green-500', statusIcon: <CheckCircleIcon className="h-5 w-5 text-white" aria-hidden="true" /> };
+        case 'pending': return { statusBg: 'bg-yellow-500', statusIcon: <ClockIcon className="h-5 w-5 text-white" aria-hidden="true" /> };
+        case 'fail': return { statusBg: 'bg-red-500', statusIcon: <ExclamationCircleIcon className="h-5 w-5 text-white" aria-hidden="true" /> };
+        case 'blocked': return { statusBg: 'bg-gray-500', statusIcon: <BanIcon className="h-5 w-5 text-white" aria-hidden="true" /> };
+        default: return { statusBg: 'bg-indigo-500', statusIcon: <ArrowCircleRightIcon className="h-5 w-5 text-white" aria-hidden="true" /> };
+      }
+    };
+
     return (
       <div className="flow-root">
         <ul role="list" className="-mb-8">
@@ -110,18 +131,12 @@ const Course = ({ course, passed, ...props }) => {
                   )}>
                     <div>
                       <span
-                        // TODO add lesson status indicator by adding green bg and CheckCircleIcon
                         className={classNames(
-                          passed.includes(lesson.id)
-                            ? 'bg-green-500'
-                            : 'bg-indigo-500',
+                          getStatusIndicator(lesson).statusBg,
                           'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white'
                         )}
                       >
-                        {passed.includes(lesson.id)
-                          ? <CheckCircleIcon className="h-5 w-5 text-white" aria-hidden="true" />
-                          : <ArrowCircleRightIcon className="h-5 w-5 text-white" aria-hidden="true" />
-                        }
+                        {getStatusIndicator(lesson).statusIcon}
                       </span>
                     </div>
                     <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
