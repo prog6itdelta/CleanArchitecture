@@ -1,8 +1,5 @@
 import React, { useEffect } from 'react';
 import { ArrowCircleLeftIcon, ArrowCircleRightIcon, CheckCircleIcon } from '@heroicons/react/outline';
-import Notification from "../Components/Notification";
-// import {Inertia} from '@inertiajs/inertia'
-// import { usePage } from '@inertiajs/inertia-react'
 import { useForm } from '@inertiajs/inertia-react';
 import Layout from '../Layout.jsx';
 import Course from './Course.jsx';
@@ -135,7 +132,7 @@ function TextQuestion({ question, setValues, values }) {
 }
 
 const Lesson = ({ course_id, lesson, answers, status }) => {
-  const { data, setData, post, errors, clearErrors, recentlySuccessful } = useForm(answers);
+  const { data, setData, post, errors, clearErrors } = useForm(answers);
 
   useEffect(() => {
     setData(answers);
@@ -163,13 +160,6 @@ const Lesson = ({ course_id, lesson, answers, status }) => {
   return (
     <div className="overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 mt-8 sm:px-6 lg:px-8">
-
-        {errors.error
-          && <Notification position="bottom" type="fail" header="Fail" message="The answers are not right." />
-        }
-        {recentlySuccessful
-          && <Notification position="bottom" type="success" header="Success" message="The answers are right." />
-        }
 
         <div className="mt-8 lg:mt-0">
           <div className="text-base max-w-prose mx-auto lg:max-w-none">

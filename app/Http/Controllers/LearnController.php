@@ -54,7 +54,9 @@ class LearnController extends BaseController
                 $course_completed = false;
             }
         }
-        if ($course_completed === false) { return redirect()->route('course', $id); }
+        if ($course_completed === false) {
+            return redirect()->route('course', $id);
+        }
 
         return Inertia::render('Pages/Learning/Course', compact('course', 'statuses', 'course_completed'));
     }
@@ -80,31 +82,33 @@ class LearnController extends BaseController
             'course' => $course,
             'statuses' => $statuses,
             'course_completed' => $course_completed
-        ]);//->toResponse($request)->header('Cache-Control','no-cache, max-age=0, must-revalidate, no-store');
+        ]); //->toResponse($request)->header('Cache-Control','no-cache, max-age=0, must-revalidate, no-store');
     }
 
     public function checkLesson(Request $request, $cid, $id)
     {
         $result = LearnService::checkLesson($id, $request->all());
-        $course = LearnService::getCourse($id);
+        $course = LearnService::getCourse($cid);
         $statuses = JournalService::getLessonsStatuses();
 
         $course_completed = true;
-        foreach ($course->lessons as $item) {
-            if (array_search(['id' => $item->id, 'status' => 'done'], $statuses) === false) {
+        foreach ($course->lessons as $item2) {
+            if (array_search(['id' => $item2->id, 'status' => 'done'], $statuses) === false) {
                 $course_completed = false;
             }
         }
 
         if ($result) {
             $nextLesson = LearnService::nextLesson($cid, $id);
-            if ($nextLesson)
-                return redirect()->route('lesson', [$cid, $nextLesson->id]);
-            elseif ($course_completed)
-                return redirect()->route('success', $cid);
-            else
-                return redirect()->route('lesson', [$cid, $id]);
+            if ($course_completed)
+                return redirect()->route('success', $cid)->with(['lessonCheckMessage' => 'done']);
+            elseif ($nextLesson)
+            {
+                return redirect()->route('lesson', [$cid, $nextLesson->id])->with(['lessonCheckMessage' => 'done']);
+            } else {
+                return redirect()->route('lesson', [$cid, $id])->with(['lessonCheckMessage' => 'pending']);
+            }
         }
-        throw \Illuminate\Validation\ValidationException::withMessages(['error' => 'Fail']);
+        return redirect()->route('lesson', [$cid, $id])->with(['lessonCheckMessage' => 'fail']);
     }
 }

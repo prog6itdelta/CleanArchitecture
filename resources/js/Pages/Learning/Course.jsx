@@ -1,8 +1,7 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import List from '../Components/List.jsx';
-import Layout from '../Layout.jsx';
-import { InertiaLink } from "@inertiajs/inertia-react";
+import { Inertia } from '@inertiajs/inertia';
+import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import {
   MenuIcon,
   XIcon,
@@ -14,18 +13,43 @@ import {
   BanIcon,
   BadgeCheckIcon
 } from '@heroicons/react/outline';
+import Layout from '../Layout.jsx';
+import List from '../Components/List.jsx';
+import Notification from '../Components/Notification.jsx';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-const Course = ({ course, statuses, course_completed: isCourseCompleted, ...props }) => {
+const Course = ({
+  course, statuses, course_completed: isCourseCompleted, ...props
+}) => {
   let lessons = course.lessons;
   lessons = Object.values(lessons);
   const isCoursePage = route().current() === 'course';
   const isSuccessPage = route().current() === 'success';
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const [checkStatus, setCheckStatus] = useState(null);
+  const { flash } = usePage().props;
+
+  console.log(flash);
+
+  useEffect(() => {
+    let notificationTimeoutID;
+    if (typeof flash !== 'undefined' && typeof flash.lessonCheckMessage !== 'undefined') {
+      setCheckStatus(flash.lessonCheckMessage);
+      setShowNotification(true);
+      notificationTimeoutID = setTimeout(() => {
+        setShowNotification(false);
+        setCheckStatus(null);
+      }, 3000);
+    }
+    return () => {
+      clearTimeout(notificationTimeoutID);
+    };
+  }, [flash]);
 
   const CourseScreen = () => (
     <div className="overflow-hidden">
@@ -55,8 +79,8 @@ const Course = ({ course, statuses, course_completed: isCourseCompleted, ...prop
                 </p>
                 <List listItems={lessons} type="lessons" />
               </main>
-              {lessons.length > 0 &&
-                <InertiaLink href={route('lesson', [course.id, lessons[0].id])}>
+              {lessons.length > 0
+                && <InertiaLink href={route('lesson', [course.id, lessons[0].id])}>
                   <button type="button" className="my-6 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm
                     font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700
                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -201,10 +225,10 @@ const Course = ({ course, statuses, course_completed: isCourseCompleted, ...prop
             && (
               <li key="success">
                 <div className="relative pb-8">
-                {isCourseCompleted
-                  ? <SuccessWithLink />
-                  : <SuccessWithoutLink />
-                }
+                  {isCourseCompleted
+                    ? <SuccessWithLink />
+                    : <SuccessWithoutLink />
+                  }
                 </div>
               </li>
             )
@@ -218,6 +242,15 @@ const Course = ({ course, statuses, course_completed: isCourseCompleted, ...prop
     if (isCoursePage) { return <CourseScreen />; }
     if (isSuccessPage) { return <SuccessScreen />; }
     return props.children;
+  };
+
+  const notificationPopup = () => {
+    switch (checkStatus) {
+      case 'done': return <Notification position="bottom" type="success" header="Success" message="Your answers are right" />;
+      case 'pending': return <Notification position="bottom" type="info" header="Pending" message="Your answers are pending to check" />;
+      case 'fail': return <Notification position="bottom" type="fail" header="Error" message="Your answers are not right" />;
+      default: return false;
+    }
   };
 
   return (
@@ -301,6 +334,9 @@ const Course = ({ course, statuses, course_completed: isCourseCompleted, ...prop
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
               {/* Replace with your content */}
               {getCurrentContent()}
+              {showNotification
+                && notificationPopup()
+              }
               {/* /End replace */}
             </div>
           </div>
