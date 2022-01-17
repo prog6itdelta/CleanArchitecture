@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { ArrowCircleLeftIcon, ArrowCircleRightIcon, CheckCircleIcon } from '@heroicons/react/outline';
 import { useForm } from '@inertiajs/inertia-react';
+import Inertia from '@inertiajs/inertia';
 import Layout from '../Layout.jsx';
 import Course from './Course.jsx';
 
@@ -145,6 +146,12 @@ const Lesson = ({ course_id, lesson, answers, status }) => {
   function handleSubmit(e) {
     e.preventDefault();
     clearErrors();
+    // let historyState = history.state;
+    // history.state.props.flash.lessonCheckMessage = undefined;
+    // history.state.props.status = '';
+    // // console.log(historyState);
+    // history.pushState(history.state, '');
+    // console.log(history.state);
     post(route('lesson', [course_id, lesson.id]));
   }
 

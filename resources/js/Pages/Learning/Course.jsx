@@ -34,7 +34,9 @@ const Course = ({
   const [checkStatus, setCheckStatus] = useState(null);
   const { flash } = usePage().props;
 
-  console.log(flash);
+  window.addEventListener('popstate', (event) => {
+    Inertia.reload();
+  });
 
   useEffect(() => {
     let notificationTimeoutID;
