@@ -35,7 +35,7 @@ const Course = ({
   const { flash } = usePage().props;
 
   window.addEventListener('popstate', (event) => {
-    Inertia.reload();
+    Inertia.reload({ only: ['statuses', 'status', 'answers', 'flash'] });
   });
 
   useEffect(() => {
