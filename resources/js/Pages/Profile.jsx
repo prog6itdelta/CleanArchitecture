@@ -1,7 +1,5 @@
 import React, { useState, useRef } from 'react';
-import axios from 'axios';
-import { Inertia } from '@inertiajs/inertia';
-import { usePage } from '@inertiajs/inertia-react';
+import { usePage, useForm } from '@inertiajs/inertia-react';
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
 
 function classNames(...classes) {
@@ -14,85 +12,56 @@ export default function Profile() {
 
   const fileInput = useRef();
 
-  const [editingDisabled, setEditingDisabled] = useState(true);
+  const { data, setData, post, reset } = useForm({
+    password: '',
+    avatar: undefined,
+    name: user.name,
+    last_name: user.last_name,
+    email: user.email,
+    phone: user.phone,
+  });
+
   const [passwordsMatch, setPasswordsMatch] = useState(true);
-  const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [avatarFormImg, setAvatarFormImg] = useState(user.avatar);
-  const [avatar, setAvatar] = useState();
-  const [name, setName] = useState(user.name);
-  const [lastName, setLastName] = useState(user.last_name);
-  const [email, setEmail] = useState(user.email);
-  const [phone, setPhone] = useState(user.phone);
 
   const onAvatarChange = (e) => {
-    setAvatar(e.target.files[0]);
+    setData('avatar', e.target.files[0]);
     const reader = new FileReader();
     reader.onload = function (ev) {
       setAvatarFormImg(ev.target.result);
     };
     reader.readAsDataURL(e.target.files[0]);
   };
-  const onNameChange = (e) => setName(e.target.value);
-  const onLastNameChange = (e) => setLastName(e.target.value);
-  const onEmailChange = (e) => setEmail(e.target.value);
-  const onPhoneChange = (e) => setPhone(e.target.value);
+
   const onPasswordChange = (e) => {
-    setPassword(e.target.value);
+    setData('password', e.target.value);
     e.target.value === newPassword
       ? setPasswordsMatch(true)
       : setPasswordsMatch(false);
   };
+
   const onNewPasswordChange = (e) => {
     setNewPassword(e.target.value);
-    e.target.value === password
+    e.target.value === data.password
       ? setPasswordsMatch(true)
       : setPasswordsMatch(false);
   };
-  const onEditingChange = () => {
-    if (!editingDisabled) {
-      setPasswordsMatch(true);
-      setPassword('');
-      setNewPassword('');
-      setAvatarFormImg(user.avatar);
-      setAvatar();
-      setName(user.name);
-      setLastName(user.last_name);
-      setEmail(user.email);
-      setPhone(user.phone);
-      fileInput.current.value = '';
-    }
-    setEditingDisabled(!editingDisabled);
+
+  const onClear = () => {
+    setAvatarFormImg(user.avatar);
+    setNewPassword('');
+    reset();
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (passwordsMatch) {
-      const formData = new FormData();
-      formData.append('id', user.id);
-      formData.append('avatar', user.avatar);
-      formData.append('new_avatar', avatar);
-      formData.append('name', name);
-      formData.append('last_name', lastName);
-      formData.append('email', email);
-      formData.append('phone', phone);
-      formData.append('password', newPassword);
-
-      const config = { headers: { 'Content-Type': 'multipart/form-data' } };
-      // NB много времени убил на попытки адекватно отправить POST через инерцию,
-      // но постоянно сыпались ошибки, так что решил использовать axios
-      // ! Пока что axios привязан только в виде dev зависимости
-      axios({
-        url: '/profile/edit',
-        method: 'POST',
-        data: formData,
-        config
-      }).then(() => {
-        setEditingDisabled(true);
-        Inertia.reload();
-      });
+      post('/profile/edit');
+      onClear();
     }
   };
+
   return (
     <>
       <header>
@@ -125,7 +94,6 @@ export default function Profile() {
                         name="avatar"
                         id="avatar"
                         onChange={onAvatarChange}
-                        disabled={editingDisabled}
                         className="form-control
                           block
                           w-full
@@ -156,9 +124,8 @@ export default function Profile() {
                         name="first-name"
                         id="first-name"
                         autoComplete="given-name"
-                        value={name}
-                        onChange={onNameChange}
-                        disabled={editingDisabled}
+                        value={data.name}
+                        onChange={(e) => setData('name', e.target.value)}
                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                       />
                     </div>
@@ -174,9 +141,8 @@ export default function Profile() {
                         name="last-name"
                         id="last-name"
                         autoComplete="family-name"
-                        value={lastName}
-                        onChange={onLastNameChange}
-                        disabled={editingDisabled}
+                        value={data.last_name}
+                        onChange={(e) => setData('last_name', e.target.value)}
                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                       />
                     </div>
@@ -192,9 +158,8 @@ export default function Profile() {
                         name="email"
                         type="email"
                         autoComplete="email"
-                        value={email}
-                        onChange={onEmailChange}
-                        disabled={editingDisabled}
+                        value={data.email}
+                        onChange={(e) => setData('email', e.target.value)}
                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                       />
                     </div>
@@ -210,9 +175,8 @@ export default function Profile() {
                         name="phone"
                         id="phone"
                         autoComplete="phone"
-                        value={phone}
-                        onChange={onPhoneChange}
-                        disabled={editingDisabled}
+                        value={data.phone}
+                        onChange={(e) => setData('phone', e.target.value)}
                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                       />
                     </div>
@@ -227,10 +191,9 @@ export default function Profile() {
                         type="password"
                         name="password"
                         id="password"
-                        value={password}
+                        value={data.password}
                         autoComplete="password"
                         onChange={onPasswordChange}
-                        disabled={editingDisabled}
                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                       />
                     </div>
@@ -247,7 +210,6 @@ export default function Profile() {
                         id="new_password"
                         autoComplete="password"
                         value={newPassword}
-                        disabled={editingDisabled}
                         onChange={onNewPasswordChange}
                         className={classNames(
                           !passwordsMatch ? 'border-red-300' : 'border-gray-300',
@@ -273,32 +235,23 @@ export default function Profile() {
 
               <div className="pt-5">
                 <div className="flex justify-center py-1">
-                  {editingDisabled
-                    ? <><button
-                      type="button"
-                      className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      onClick={onEditingChange}
-                    >
-                      Edit
-                    </button> </>
-                    : <><button
-                      type="button"
-                      className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      onClick={onEditingChange}
-                    >
-                      Cancel
-                    </button>
-                      <button
-                        type="submit"
-                        className={classNames(
-                          passwordsMatch ? '' : 'opacity-50 cursor-not-allowed',
-                          'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-                        )}
-                        disabled={!passwordsMatch}
-                      >
-                        Save
-                      </button> </>
-                  }
+                  <button
+                    type="button"
+                    className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    onClick={onClear}
+                  >
+                    Clear
+                  </button>
+                  <button
+                    type="submit"
+                    className={classNames(
+                      passwordsMatch ? '' : 'opacity-50 cursor-not-allowed',
+                      'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                    )}
+                    disabled={!passwordsMatch}
+                  >
+                    Save
+                  </button>
                 </div>
               </div>
             </form>

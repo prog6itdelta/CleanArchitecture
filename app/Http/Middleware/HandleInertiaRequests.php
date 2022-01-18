@@ -46,7 +46,10 @@ class HandleInertiaRequests extends Middleware
                 ['name' => 'Профайл', 'href' => '/profile'],
                 ['name' => 'Настройки', 'href' => '/admin'],
                 ['name' => 'Выход', 'href' => '/logout'],
-            ]
+            ],
+            'flash' => [
+                'lessonCheckMessage' => fn () => $request->session()->get('lessonCheckMessage')
+            ],
         ]);
     }
 }

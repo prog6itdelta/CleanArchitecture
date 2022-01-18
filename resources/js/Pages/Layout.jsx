@@ -2,17 +2,9 @@
 import React from 'react';
 import Navigation from './Components/Navigation.jsx';
 
-// const user = {
-//   name: 'Tom Cook',
-//   email: 'tom@example.com',
-//   imageUrl:
-//     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-// };
 const navigation = [
   { name: 'Курсы', href: route('learning'), current: true },
   { name: 'Admin', href: route('admin.index'), current: false },
-  // { name: 'Projects', href: '#', current: false },
-  // { name: 'Calendar', href: '#', current: false },
 ];
 
 const userNavigation = [
@@ -22,9 +14,6 @@ const userNavigation = [
 ];
 
 export default function Layout(children) {
-  // useEffect(() => {
-  //     document.title = title;
-  // }, [title])
   const currentLocation = location.href;
   navigation.forEach((navItem) => {
     currentLocation.includes(navItem.href)
@@ -33,12 +22,14 @@ export default function Layout(children) {
   });
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white grid gap-0 grid-cols-1" style={{ gridTemplateRows: 'min-content auto' }}>
       <Navigation navigation={navigation} userNavigation={userNavigation} />
 
-      <div className="py-10">
-        {children}
-      </div>
+      {typeof children.children === 'object'
+        ? children.children
+        : children
+      }
+
     </div>
   );
 }

@@ -33,7 +33,7 @@ export default function Courses({ courses, course_groups: courseGroups, curricul
 
   return (
 
-    <div className="bg-white">
+    <div className="bg-white py-8">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="space-y-5">
           <header className="space-y-5 sm:space-y-4 md:max-w-xl lg:max-w-3xl xl:max-w-none border-b-2 border-dashed border-gray-200">
