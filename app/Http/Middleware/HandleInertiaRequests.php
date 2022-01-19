@@ -48,7 +48,8 @@ class HandleInertiaRequests extends Middleware
                 ['name' => 'Выход', 'href' => '/logout'],
             ],
             'flash' => [
-                'lessonCheckMessage' => fn () => $request->session()->get('lessonCheckMessage')
+                'lessonCheckMessage' => fn () => $request->session()->get('lessonCheckMessage'),
+                'nextLessonId' => fn () => $request->session()->get('nextLessonId')
             ],
         ]);
     }

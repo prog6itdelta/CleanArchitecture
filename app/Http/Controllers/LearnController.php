@@ -83,7 +83,7 @@ class LearnController extends BaseController
             if ($this->isCourseCompleted($cid))
                 return redirect()->route('success', $cid)->with(['lessonCheckMessage' => 'done']);
             elseif ($nextLesson)
-                return redirect()->route('lesson', [$cid, $nextLesson->id])->with(['lessonCheckMessage' => 'done']);
+                return redirect()->route('lesson', [$cid, $id])->with(['lessonCheckMessage' => 'done', 'nextLessonId' => $nextLesson->id]);
             else
                 return redirect()->route('lesson', [$cid, $id])->with(['lessonCheckMessage' => 'pending']);
         }
