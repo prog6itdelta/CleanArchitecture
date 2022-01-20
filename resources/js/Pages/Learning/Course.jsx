@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useLayoutEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Inertia } from '@inertiajs/inertia';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
@@ -32,26 +32,36 @@ const Course = ({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [checkStatus, setCheckStatus] = useState(null);
-  const { flash } = usePage().props;
 
-  window.addEventListener('popstate', (event) => {
-    Inertia.reload();
-  });
+  useLayoutEffect(() => {
+    return Inertia.on('success', (e) => {
+      const { lessonCheckMessage, nextLessonId } = e.detail.page.props.flash;
 
-  useEffect(() => {
-    let notificationTimeoutID;
-    if (typeof flash !== 'undefined' && typeof flash.lessonCheckMessage !== 'undefined') {
-      setCheckStatus(flash.lessonCheckMessage);
-      setShowNotification(true);
-      notificationTimeoutID = setTimeout(() => {
-        setShowNotification(false);
-        setCheckStatus(null);
-      }, 3000);
-    }
-    return () => {
-      clearTimeout(notificationTimeoutID);
-    };
-  }, [flash]);
+      if (lessonCheckMessage !== null) {
+        setCheckStatus(lessonCheckMessage);
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 3000);
+      }
+
+      if (nextLessonId !== null) {
+        Inertia.get(route('lesson', [course.id, nextLessonId]));
+      }
+    });
+  }, []);
+
+  useLayoutEffect(() => {
+    return Inertia.on('navigate', () => {
+      let isPageWasShown = Inertia.restore('isPageWasShown');
+      if (isPageWasShown === undefined) { isPageWasShown = false; }
+
+      if (isPageWasShown === false) {
+        Inertia.remember(true, 'isPageWasShown');
+      } else {
+        Inertia.remember(false, 'isPageWasShown');
+        Inertia.reload();
+      }
+    });
+  }, []);
 
   const CourseScreen = () => (
     <div className="overflow-hidden">
