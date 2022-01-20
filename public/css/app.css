@@ -32325,6 +32325,18 @@ select {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.resizer {
+  display: inline-block;
+  background:'';
+  width:5px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translateX(50%);
+  z-index: 1;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
@@ -189704,4 +189716,3 @@ select {
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
-

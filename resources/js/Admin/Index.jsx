@@ -1,6 +1,7 @@
 import React from 'react'
 import { InertiaLink } from '@inertiajs/inertia-react'
-
+import Table from './Components/Table'
+import { data, columns } from './TableData'
 export default function Index() {
     return (
         <div /*title="Добро пожаловать"*/>
@@ -10,7 +11,10 @@ export default function Index() {
                     <h1 className="text-3xl font-bold leading-tight text-gray-900 text-center">Админка</h1>
                 </div>
             </header>
-
+            <main className='w-full h-96'
+            style={{height:'700px'}}>
+                <Table dataValue={data} columnsValue={columns} />
+            </main>
         </div>
     )
 }
