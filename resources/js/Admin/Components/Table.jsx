@@ -121,13 +121,76 @@ export default function Table({ dataValue, columnsValue }) {
     if (column.disableFilters !== true) { return <SelectorIcon className={`${className} text-gray-300`} />; }
     return null;
   };
+
+  const VisibleColumnsSelector = () => {
+    const [showColumnSelector, setShowColumnSelector] = useState(false);
+
+    return (
+      <Listbox onChange={() => null}>
+        {({ open }) => (
+          <>
+            <div className="relative flex items-center" style={{ width: '220px' }}>
+              <Listbox.Button
+                className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+              >
+                <span className="block truncate" onClick={(e) => setShowColumnSelector(!showColumnSelector)}>Выбрать столбцы</span>
+                <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                  <SelectorIcon className="h-5 w-5 text-gray-600" aria-hidden="true" />
+                </span>
+              </Listbox.Button>
+
+              <Transition
+                show={showColumnSelector}
+                as={Fragment}
+                leave="transition ease-in duration-100"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <Listbox.Options as="div" className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none text-sm bottom-9">
+                  {allColumns.map((column) => (
+                    <Listbox.Option
+                      as="label"
+                      key={`${column.id}Selector`}
+                      className={({ active }) => `
+                              ${active
+                        ? 'bg-gray-200'
+                        : 'text-gray-900'
+                        } cursor-pointer relative px-4 py-2 min-w-full block`
+                      }
+                      value={column.id}
+                    >
+                      {() => (
+                        <>
+                          <input type="checkbox" className="form-checkbox h-5 w-5 text-gray-600" {...column.getToggleHiddenProps()} />
+                          <span className={
+                            `${column.isVisible
+                              ? 'font-semibold'
+                              : 'font-normal'
+                            } ml-2 truncate text-xs'`
+                          }
+                          >
+                            {column.id}
+                          </span>
+                        </>
+                      )}
+                    </Listbox.Option>
+                  ))}
+                </Listbox.Options>
+              </Transition>
+            </div>
+          </>
+        )}
+      </Listbox>
+    );
+  };
+
   const NumberOfElementsSelector = () => {
     const pSizes = [10, 20, 30, 40, 50, 60];
     return (
       <Listbox value={pageSize} onChange={(e) => { setPageSize(Number(e)); }}>
         {({ open }) => (
           <>
-            <div className="relative flex items-center">
+            <div className="relative flex items-center" style={{ width: '220px' }}>
               <Listbox.Button className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
                 <span className="block truncate">
                   {`Показать ${pageSize} элементов`}
@@ -150,8 +213,8 @@ export default function Table({ dataValue, columnsValue }) {
                       key={`pSize${pSize}`}
                       className={({ active }) => `
                       ${active
-                          ? 'bg-gray-200'
-                          : 'text-gray-900'
+                        ? 'bg-gray-200'
+                        : 'text-gray-900'
                         } cursor-default select-none relative py-2 pl-8 pr-4`
                       }
                       value={pSize}
@@ -193,9 +256,42 @@ export default function Table({ dataValue, columnsValue }) {
     );
   };
 
+  const PageSelector = () => {
+    const [pageToGo, setPageToGo] = useState(pageIndex + 1);
+    return (
+      <div>
+        <label htmlFor="goToPage" className="block text-sm font-medium text-gray-700 max-w-fit">
+          Перейти на страницу
+        </label>
+        <div className="mt-1 flex rounded-md shadow-sm">
+          <div className="relative flex items-stretch flex-grow focus-within:z-10">
+            <input
+              type="number"
+              name="goToPage"
+              value={pageToGo}
+              min={1}
+              max={pageCount}
+              id="goToPage"
+              className="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
+              placeholder="John Doe"
+              onChange={(e) => setPageToGo(e.target.value)}
+            />
+          </div>
+          <button
+            type="button"
+            className="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+            onClick={() => gotoPage(pageToGo - 1)}
+          >
+            <span>Перейти</span>
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   const Pagination = () => {
     return (
-      <div className="px-2 py-3 flex items-center justify-between w-full">
+      <div className="flex items-center justify-between min-w-full">
         <div className="flex-1 flex justify-between sm:hidden">
           <button
             className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
@@ -212,8 +308,8 @@ export default function Table({ dataValue, columnsValue }) {
             Next
           </button>
         </div>
-        <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-          <NumberOfElementsSelector />
+        <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">
+          {/* <NumberOfElementsSelector /> */}
           <div>
             <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
               <button
@@ -269,91 +365,12 @@ export default function Table({ dataValue, columnsValue }) {
     );
   };
 
-  const VisibleColumnsSelector = () => {
-    return (
-      // TODO disable visibility change on option click
-      <Listbox>
-        {({ open }) => (
-          <>
-            <div className="relative flex items-center">
-              <Listbox.Button className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
-                <span className="block truncate">Выбрать столбцы для показа</span>
-                <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                  <SelectorIcon className="h-5 w-5 text-gray-600" aria-hidden="true" />
-                </span>
-              </Listbox.Button>
-
-              <Transition
-                show={open}
-                as={Fragment}
-                leave="transition ease-in duration-100"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <Listbox.Options as="div" className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none text-sm bottom-8">
-                  {allColumns.map((column) => (
-                    <Listbox.Option
-                      as="label"
-                      key={`${column.id}Selector`}
-                      className={({ active }) => `
-                        ${active
-                          ? 'bg-gray-200'
-                          : 'text-gray-900'
-                        } cursor-pointer relative px-4 py-2 min-w-full block`
-                      }
-                      value={column.id}
-                    >
-                      {() => (
-                        <>
-                          <input type="checkbox" className="form-checkbox h-5 w-5 text-gray-600" {...column.getToggleHiddenProps()} />
-                          <span className={
-                            `${column.isVisible
-                              ? 'font-semibold'
-                              : 'font-normal'
-                            } ml-2 truncate text-xs'`
-                          }
-                          >
-                            {column.id}
-                          </span>
-                        </>
-                      )}
-                    </Listbox.Option>
-                  ))}
-                </Listbox.Options>
-              </Transition>
-            </div>
-          </>
-        )}
-      </Listbox>
-    );
-  };
-
-  const PageSelector = () => {
-    return (
-      <div className="bottom-2 ">
-        <span>
-          Перейти на страницу:{' '}
-          <input
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              gotoPage(page);
-            }}
-            style={{ width: '100px' }}
-          />
-        </span>
-      </div>
-    );
-  };
-
   return (
     <>
-      <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-
       <div className="flex flex-col">
         <div className="max-w-full w-full">
           <div className="align-middle inline-block max-w-full w-full border-b border-gray-100 bg-gray-100 sm:rounded-lg shadow overflow-hidden">
+            <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
             <div className="overflow-x-auto">
               <table
                 className="min-w-full divide-y divide-gray-400 border-collapse"
@@ -429,10 +446,16 @@ export default function Table({ dataValue, columnsValue }) {
               </table>
             </div>
 
-            <VisibleColumnsSelector />
-            {/* <PageSelector /> */}
+            <div className="px-2 pt-3 flex flex-wrap items-center justify-center sm:justify-between w-full space-y-2 sm:space-y-0">
+              <VisibleColumnsSelector />
+              <NumberOfElementsSelector />
+            </div>
+            <div className="px-2 py-3 flex flex-wrap items-center justify-center w-full space-y-2">
+              <PageSelector />
+              <Pagination />
+              {/* <PageSelector /> */}
 
-            <Pagination />
+            </div>
           </div>
         </div>
       </div>
