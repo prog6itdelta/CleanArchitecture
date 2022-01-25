@@ -1,5 +1,5 @@
 import React from 'react';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { Inertia } from '@inertiajs/inertia';
 import Table from './Components/Table.jsx';
 // import { data, columns } from './TableData.jsx';
 import ColumnFilter, { SelectColumnFilter } from './Components/ColumnFilter.jsx';
@@ -21,10 +21,18 @@ export default function Index({ courses }) {
 
   const [skipPageReset, setSkipPageReset] = React.useState(false);
   const updateData = (rowIndex, columnId, value) => {
+    const oldValue = courses[rowIndex][columnId];
     setSkipPageReset(true);
-    console.log('oldVal ', courses[rowIndex][columnId]);
-    console.log('newVal ', value);
-    console.log('course ', courses[rowIndex]);
+    if (value !== oldValue) {
+      const oldCourse = courses[rowIndex];
+      console.log('oldCourse: ', oldCourse);
+      const newCourse = {
+        ...oldCourse,
+        [columnId]: value
+      };
+      console.log('newCourse: ', newCourse);
+      Inertia.post(route('admin.changeCourse', newCourse.id), newCourse);
+    }
   };
 
   React.useEffect(() => {

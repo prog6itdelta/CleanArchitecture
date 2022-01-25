@@ -62,6 +62,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/departments', [AdminController::class, 'departments'])
             ->name('admin.departments');
+
+        Route::post('/course/{id}', [AdminController::class, 'changeCourse'])
+            ->name('admin.changeCourse');
     });
 
 });

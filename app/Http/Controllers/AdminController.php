@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Packages\Department\UseCases\DepartmentService;
 use App\Packages\Learn\UseCases\LearnService;
+use App\Packages\Learn\UseCases\JournalService;
+use App\Models\Course;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
 
@@ -36,5 +39,22 @@ class AdminController extends BaseController
         $departments = DepartmentService::getDepartments();
 
         return Inertia::render('Admin/Department', $departments);
+    }
+
+    public function changeCourse (Request $request, $id)
+    {
+        $input = $request->collect();
+        $changedFields = [];
+
+        foreach ($input as $key => $item) {
+            if ($key !== 'id' && $item !== null) {
+                $changedFields[$key] = $item;
+            }
+        }
+        Course::updateOrCreate(
+            ['id' => $id],
+            $changedFields
+        );
+        return redirect()->route('admin.index');
     }
 }
