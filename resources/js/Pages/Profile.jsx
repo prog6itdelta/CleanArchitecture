@@ -21,9 +21,9 @@ export default function Profile() {
     phone: user.phone,
   });
 
-  const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [newPassword, setNewPassword] = useState('');
   const [avatarFormImg, setAvatarFormImg] = useState(user.avatar);
+  const passwordsMatch = () => data.password === newPassword;
 
   const onAvatarChange = (e) => {
     setData('avatar', e.target.files[0]);
@@ -32,20 +32,6 @@ export default function Profile() {
       setAvatarFormImg(ev.target.result);
     };
     reader.readAsDataURL(e.target.files[0]);
-  };
-
-  const onPasswordChange = (e) => {
-    setData('password', e.target.value);
-    e.target.value === newPassword
-      ? setPasswordsMatch(true)
-      : setPasswordsMatch(false);
-  };
-
-  const onNewPasswordChange = (e) => {
-    setNewPassword(e.target.value);
-    e.target.value === data.password
-      ? setPasswordsMatch(true)
-      : setPasswordsMatch(false);
   };
 
   const onClear = () => {
@@ -57,7 +43,7 @@ export default function Profile() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (passwordsMatch) {
+    if (passwordsMatch()) {
       post('/profile/edit');
       onClear();
     }
@@ -194,7 +180,7 @@ export default function Profile() {
                         id="password"
                         value={data.password}
                         autoComplete="password"
-                        onChange={onPasswordChange}
+                        onChange={(e) => setData('password', e.target.value)}
                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                       />
                     </div>
@@ -211,20 +197,20 @@ export default function Profile() {
                         id="new_password"
                         autoComplete="password"
                         value={newPassword}
-                        onChange={onNewPasswordChange}
+                        onChange={(e) => setNewPassword(e.target.value)}
                         className={classNames(
-                          !passwordsMatch ? 'border-red-300' : 'border-gray-300',
+                          !passwordsMatch() ? 'border-red-300' : 'border-gray-300',
                           'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-md'
                         )}
-                        aria-invalid={!passwordsMatch}
+                        aria-invalid={!passwordsMatch()}
                       />
-                      {!passwordsMatch
+                      {!passwordsMatch()
                         && <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                           <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
                         </div>
                       }
                     </div>
-                    {!passwordsMatch
+                    {!passwordsMatch()
                       && <p className="mt-2 text-sm text-red-600" id="password-error">
                         Passwords don't match
                       </p>
@@ -248,10 +234,10 @@ export default function Profile() {
                   <button
                     type='submit'
                     className={classNames(
-                      passwordsMatch ? '' : 'opacity-50 cursor-not-allowed',
+                      passwordsMatch() ? '' : 'opacity-50 cursor-not-allowed',
                       'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
                     )}
-                    disabled={!passwordsMatch}
+                    disabled={!passwordsMatch()}
                   >
                     Save
                   </button>
