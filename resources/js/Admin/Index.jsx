@@ -4,20 +4,67 @@ import Table from './Components/Table.jsx';
 // import { data, columns } from './TableData.jsx';
 import ColumnFilter, { SelectColumnFilter } from './Components/ColumnFilter.jsx';
 import EditableCell from './Components/EditableCell.jsx';
+import OneLineCell from './Components/OneLineCell.jsx';
 
 export default function Index({ courses }) {
   // console.log(courses);
 
-  const columns = Object.keys(courses[0]).map((key) => {
-    const column = {
-      Header: key.toUpperCase(),
-      accessor: key,
-      Filter: key === 'id' ? '' : ColumnFilter,
-      width: key === 'id' ? 50 : 300,
-      Cell: key === 'id' ? ({ value }) => String(value) : EditableCell,
-    };
-    return column;
-  });
+  // const columns = Object.keys(courses[0]).map((key) => {
+  //   const column = {
+  //     Header: key.toUpperCase(),
+  //     accessor: key,
+  //     Filter: key === 'id' ? '' : ColumnFilter,
+  //     width: key === 'id' ? 50 : 300,
+  //     Cell: key === 'id' ? ({ value }) => String(value) : EditableCell,
+  //   };
+  //   return column;
+  // });
+
+  const columns = [
+    {
+      Header: 'ID',
+      accessor: 'id',
+      Filter: '',
+      width: 50,
+      // Cell: EditableCell,
+    },
+    {
+      Header: 'Name',
+      accessor: 'name',
+      Filter: '',
+      width: 250,
+      Cell: EditableCell,
+    },
+    {
+      Header: 'description',
+      accessor: 'description',
+      Filter: '',
+      width: 300,
+      Cell: OneLineCell,
+    },
+    {
+      Header: 'image',
+      accessor: 'image',
+      Filter: '',
+      width: 300,
+      Cell: OneLineCell,
+    },
+    {
+      Header: 'active',
+      accessor: 'active',
+      Filter: '',
+      width: 70,
+      Cell: OneLineCell,
+    },
+  ];
+
+  const tableOptions = {
+    showGlobalFilter: true,
+    showColumnSelection: true,
+    showElementsPerPage: true,
+    showGoToPage: false,
+    showPagination: true,
+  };
 
   const [skipPageReset, setSkipPageReset] = React.useState(false);
   const updateData = (rowIndex, columnId, value) => {
@@ -52,6 +99,7 @@ export default function Index({ courses }) {
           columnsValue={columns}
           skipPageReset={skipPageReset}
           updateData={updateData}
+          options={tableOptions}
         />
       </main>
     </>

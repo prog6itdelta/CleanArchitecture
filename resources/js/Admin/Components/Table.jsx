@@ -24,7 +24,23 @@ import ColumnFilter from './ColumnFilter.jsx';
 import GlobalFilter from './GlobalFilter.jsx';
 import EditableCell from './EditableCell.jsx';
 
-export default function Table({ dataValue, columnsValue, updateData, skipPageReset }) {
+export default function Table({ dataValue, columnsValue, updateData, skipPageReset, ...props }) {
+  const {
+    options: {
+      showGlobalFilter = true,
+      showColumnSelection = true,
+      showElementsPerPage = true,
+      showGoToPage = true,
+      showPagination = true,
+    } = {
+      showGlobalFilter,
+      showColumnSelection,
+      showElementsPerPage,
+      showGoToPage,
+      showPagination,
+    }
+  } = props;
+
   const data = React.useMemo(() => dataValue, []);
   const columns = React.useMemo(() => columnsValue, []);
 
@@ -35,7 +51,7 @@ export default function Table({ dataValue, columnsValue, updateData, skipPageRes
       maxWidth: 400,
       // DefaultFilter
       Filter: ColumnFilter,
-      Cell: EditableCell
+      // Cell: EditableCell
     }),
     []
   );
@@ -119,8 +135,8 @@ export default function Table({ dataValue, columnsValue, updateData, skipPageRes
   const { globalFilter } = state;
   // Update the state when input changes
 
-  const [showColumnSelector, setShowColumnSelector] = useState(false);
-  const onVisibilityChange = () => { setShowColumnSelector(!showColumnSelector); };
+  const [openColumnSelector, setOpenColumnSelector] = useState(false);
+  const onVisibilityChange = () => { setOpenColumnSelector(!openColumnSelector); };
 
   const SortingIndicator = ({ column, className }) => {
     if (column.isSorted) {
@@ -140,8 +156,6 @@ export default function Table({ dataValue, columnsValue, updateData, skipPageRes
             <div className="relative flex items-center" style={{ width: '220px' }}>
               <Listbox.Button
                 className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-pointer focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-                onClick={(e) => console.log(e)}
-                onChange={(e) => console.log(e)}
               >
                 <span className="block truncate -ml-3 -mr-10 -my-2 pl-3 pr-10 py-2" onClick={onVisibilityChange}>Выбрать столбцы</span>
                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -150,7 +164,7 @@ export default function Table({ dataValue, columnsValue, updateData, skipPageRes
               </Listbox.Button>
 
               <Transition
-                show={showColumnSelector}
+                show={openColumnSelector}
                 as={Fragment}
                 leave="transition ease-in duration-100"
                 leaveFrom="opacity-100"
@@ -384,7 +398,7 @@ export default function Table({ dataValue, columnsValue, updateData, skipPageRes
       <div className="flex flex-col">
         <div className="max-w-full w-full">
           <div className="align-middle inline-block max-w-full w-full border-b border-gray-100 bg-gray-100 sm:rounded-lg shadow overflow-hidden">
-            <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+            {showGlobalFilter && <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />}
             <div className="overflow-x-auto">
               <table
                 className="min-w-full divide-y divide-gray-400 border-collapse"
@@ -441,15 +455,10 @@ export default function Table({ dataValue, columnsValue, updateData, skipPageRes
                               // Apply the cell props
                               return (
                                 <td
-                                  className={`p-2 whitespace-nowrap text-sm text-gray-500
-                                  text-center justify-center
-                                  border-r border-gray-300 flex flex-wrap items-center overflow-hidden`}
+                                  className={`p-2 whitespace-nowrap text-sm text-gray-500 justify-center border-r border-gray-300 flex flex-wrap items-center overflow-hidden`}
                                   {...cell.getCellProps()}
                                 >
-                                  {
-                                    // Render the cell contents
-                                    cell.render('Cell')
-                                  }
+                                  {cell.render('Cell')}
                                 </td>
                               );
                             })
@@ -463,13 +472,12 @@ export default function Table({ dataValue, columnsValue, updateData, skipPageRes
             </div>
 
             <div className="px-2 pt-3 flex flex-wrap items-center justify-center sm:justify-between w-full space-y-2 sm:space-y-0">
-              <VisibleColumnsSelector />
-              <NumberOfElementsSelector />
+              {showColumnSelection && <VisibleColumnsSelector />}
+              {showElementsPerPage && <NumberOfElementsSelector />}
             </div>
             <div className="px-2 py-3 flex flex-wrap items-center justify-center w-full space-y-2">
-              <PageSelector />
-              <Pagination />
-              {/* <PageSelector /> */}
+              {showGoToPage && <PageSelector />}
+              {showPagination && <Pagination />}
 
             </div>
           </div>
