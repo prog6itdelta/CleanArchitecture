@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect, useRef } from 'react';
 import {
   useTable,
   useSortBy,
@@ -15,13 +15,74 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   SelectorIcon,
-  CheckIcon
+  CheckIcon,
+  PencilIcon,
+  ClipboardCheckIcon
 } from '@heroicons/react/outline';
 import { Listbox, Transition } from '@headlessui/react';
 import ColumnFilter from './ColumnFilter.jsx';
 import GlobalFilter from './GlobalFilter.jsx';
 
-export default function Table({ dataValue, columnsValue }) {
+const EditableCell = ({
+  value: initialValue,
+  row: { index },
+  column: { id },
+  updateData, // This is a custom function that we supplied to our table instance
+}) => {
+  // We need to keep and update the state of the cell normally
+  const [value, setValue] = React.useState(initialValue === null ? '' : initialValue);
+  const [disabled, setDisabled] = useState(true);
+  const inputEl = useRef(null);
+
+  const onChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  // We'll only update the external data when the input is blurred
+  const onSave = () => {
+    setDisabled(true);
+    updateData(index, id, value);
+  };
+
+  const onEdit = () => {
+    setDisabled(false);
+    inputEl.current.focus();
+  };
+
+  // If the initialValue is changed external, sync it up with our state
+  useEffect(() => {
+    setValue(initialValue === null ? '' : initialValue);
+  }, [initialValue]);
+
+  useEffect(() => inputEl.current.focus(), [disabled]);
+
+  return (
+    <div className="flex">
+      <div className="relative flex items-stretch flex-grow focus-within:z-10">
+        <input
+          type="text"
+          ref={inputEl}
+          value={value}
+          onChange={onChange}
+          className="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-md sm:text-sm border-transparent bg-transparent"
+          disabled={disabled}
+        />
+      </div>
+      <button
+        type="button"
+        className="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+        onClick={disabled ? () => setDisabled(false) : onSave}
+      >
+        {disabled
+          ? <PencilIcon className="w-5 h-5" />
+          : <ClipboardCheckIcon className="w-5 h-5" />
+        }
+      </button>
+    </div>
+  );
+};
+
+export default function Table({ dataValue, columnsValue, updateData, skipPageReset }) {
   const data = React.useMemo(() => dataValue, []);
   const columns = React.useMemo(() => columnsValue, []);
 
@@ -32,6 +93,7 @@ export default function Table({ dataValue, columnsValue }) {
       maxWidth: 400,
       // DefaultFilter
       Filter: ColumnFilter,
+      Cell: EditableCell
     }),
     []
   );
@@ -53,12 +115,34 @@ export default function Table({ dataValue, columnsValue }) {
     }
   );
 
-  const tableInstance = useTable(
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    previousPage,
+    nextPage,
+    allColumns,
+    getToggleHideAllColumnsProps,
+    setPageSize,
+    state,
+    state: { pageIndex, pageSize },
+    selectedFlatRows,
+    setGlobalFilter,
+  } = useTable(
     {
       columns,
       data,
       defaultColumn,
       initialState: { pageIndex: 0 },
+      autoResetPage: !skipPageReset,
+      updateData,
     },
     useGlobalFilter,
     useFilters,
@@ -89,28 +173,12 @@ export default function Table({ dataValue, columnsValue }) {
       ]);
     }
   );
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    previousPage,
-    nextPage,
-    allColumns,
-    getToggleHideAllColumnsProps,
-    setPageSize,
-    state,
-    state: { pageIndex, pageSize },
-    selectedFlatRows,
-    setGlobalFilter,
-  } = tableInstance;
 
   const { globalFilter } = state;
   // Update the state when input changes
+
+  const [showColumnSelector, setShowColumnSelector] = useState(false);
+  const onVisibilityChange = () => { setShowColumnSelector(!showColumnSelector); };
 
   const SortingIndicator = ({ column, className }) => {
     if (column.isSorted) {
@@ -123,17 +191,17 @@ export default function Table({ dataValue, columnsValue }) {
   };
 
   const VisibleColumnsSelector = () => {
-    const [showColumnSelector, setShowColumnSelector] = useState(false);
-
     return (
       <Listbox onChange={() => null}>
         {({ open }) => (
           <>
             <div className="relative flex items-center" style={{ width: '220px' }}>
               <Listbox.Button
-                className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-pointer focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                onClick={(e) => console.log(e)}
+                onChange={(e) => console.log(e)}
               >
-                <span className="block truncate" onClick={(e) => setShowColumnSelector(!showColumnSelector)}>Выбрать столбцы</span>
+                <span className="block truncate -ml-3 -mr-10 -my-2 pl-3 pr-10 py-2" onClick={onVisibilityChange}>Выбрать столбцы</span>
                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                   <SelectorIcon className="h-5 w-5 text-gray-600" aria-hidden="true" />
                 </span>
@@ -153,8 +221,8 @@ export default function Table({ dataValue, columnsValue }) {
                       key={`${column.id}Selector`}
                       className={({ active }) => `
                               ${active
-                        ? 'bg-gray-200'
-                        : 'text-gray-900'
+                          ? 'bg-gray-200'
+                          : 'text-gray-900'
                         } cursor-pointer relative px-4 py-2 min-w-full block`
                       }
                       value={column.id}
@@ -185,15 +253,15 @@ export default function Table({ dataValue, columnsValue }) {
   };
 
   const NumberOfElementsSelector = () => {
-    const pSizes = [10, 20, 30, 40, 50, 60];
+    const pSizes = [10, 20, 50, 100, data.length];
     return (
       <Listbox value={pageSize} onChange={(e) => { setPageSize(Number(e)); }}>
         {({ open }) => (
           <>
             <div className="relative flex items-center" style={{ width: '220px' }}>
-              <Listbox.Button className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+              <Listbox.Button className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-pointer focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
                 <span className="block truncate">
-                  {`Показать ${pageSize} элементов`}
+                  {`Показать ${pageSize === data.length ? `все элементы` : `${pageSize} элементов`}`}
                 </span>
                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                   <SelectorIcon className="h-5 w-5 text-gray-600" aria-hidden="true" />
@@ -210,11 +278,11 @@ export default function Table({ dataValue, columnsValue }) {
                 <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none text-sm bottom-8">
                   {pSizes.map((pSize) => (
                     <Listbox.Option
-                      key={`pSize${pSize}`}
+                      key={`pSize${pSize === data.length ? `All` : pSize}`}
                       className={({ active }) => `
                       ${active
-                        ? 'bg-gray-200'
-                        : 'text-gray-900'
+                          ? 'bg-gray-200'
+                          : 'text-gray-900'
                         } cursor-default select-none relative py-2 pl-8 pr-4`
                       }
                       value={pSize}
@@ -228,7 +296,7 @@ export default function Table({ dataValue, columnsValue }) {
                             } block truncate text-xs'`
                           }
                           >
-                            {`Показать ${pSize} элементов`}
+                            {`Показать ${pSize === data.length ? `все элементы` : `${pSize} элементов`}`}
                           </span>
 
                           {pageSize === pSize ? (
@@ -296,6 +364,7 @@ export default function Table({ dataValue, columnsValue }) {
           <button
             className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
             onClick={previousPage}
+            disabled={!canPreviousPage}
             key='buttonPrev'
           >
             Previous
@@ -303,6 +372,7 @@ export default function Table({ dataValue, columnsValue }) {
           <button
             className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
             onClick={nextPage}
+            disabled={!canNextPage}
             key='buttonNext'
           >
             Next
@@ -315,6 +385,7 @@ export default function Table({ dataValue, columnsValue }) {
               <button
                 className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                 onClick={previousPage}
+                disabled={!canPreviousPage}
                 key='prev'
               >
                 <span className="sr-only">Previous</span>
@@ -353,6 +424,7 @@ export default function Table({ dataValue, columnsValue }) {
               <button
                 className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
                 onClick={nextPage}
+                disabled={!canNextPage}
                 key='next'
               >
                 <span className="sr-only">Next</span>
@@ -427,7 +499,9 @@ export default function Table({ dataValue, columnsValue }) {
                               // Apply the cell props
                               return (
                                 <td
-                                  className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center border-r border-gray-300 flex flex-wrap items-center justify-center"
+                                  className={`p-2 whitespace-nowrap text-sm text-gray-500
+                                  text-center justify-center
+                                  border-r border-gray-300 flex flex-wrap items-center overflow-hidden`}
                                   {...cell.getCellProps()}
                                 >
                                   {

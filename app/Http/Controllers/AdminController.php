@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Packages\Department\UseCases\DepartmentService;
+use App\Packages\Learn\UseCases\LearnService;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
 
@@ -20,7 +21,8 @@ class AdminController extends BaseController
      */
     public function index()
     {
-        return Inertia::render('Admin/Index');
+        $courses = LearnService::getCourses();
+        return Inertia::render('Admin/Index', compact('courses'));
     }
 
     /**

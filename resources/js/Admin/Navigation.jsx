@@ -219,9 +219,9 @@ export default function Navigation({ navigation, children }) {
           </div>
         </div>
 
-        <main className="flex-1 relative overflow-y-auto p-4 sm:p-6 md:p-8 focus:outline-none">
+        <div className="flex-1 relative overflow-y-auto p-4 sm:p-6 md:p-8 focus:outline-none">
           {children}
-        </main>
+        </div>
       </div>
     </div>
   );
