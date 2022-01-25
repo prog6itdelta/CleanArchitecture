@@ -3,25 +3,28 @@ import { InertiaLink } from '@inertiajs/inertia-react';
 import Table from './Components/Table.jsx';
 // import { data, columns } from './TableData.jsx';
 import ColumnFilter, { SelectColumnFilter } from './Components/ColumnFilter.jsx';
+import EditableCell from './Components/EditableCell.jsx';
 
 export default function Index({ courses }) {
   // console.log(courses);
 
   const columns = Object.keys(courses[0]).map((key) => {
-    return {
+    const column = {
       Header: key.toUpperCase(),
       accessor: key,
       Filter: key === 'id' ? '' : ColumnFilter,
-      width: 300,
+      width: key === 'id' ? 50 : 300,
+      Cell: key === 'id' ? ({ value }) => String(value) : EditableCell,
     };
+    return column;
   });
 
   const [skipPageReset, setSkipPageReset] = React.useState(false);
   const updateData = (rowIndex, columnId, value) => {
     setSkipPageReset(true);
-    console.log('rowIndex ', rowIndex);
-    console.log('columnId ', columnId);
-    console.log('value ', value);
+    console.log('oldVal ', courses[rowIndex][columnId]);
+    console.log('newVal ', value);
+    console.log('course ', courses[rowIndex]);
   };
 
   React.useEffect(() => {
