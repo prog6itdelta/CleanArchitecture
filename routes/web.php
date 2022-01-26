@@ -57,14 +57,28 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
 
     Route::prefix('admin')->group(function () {
-        Route::get('/', [AdminController::class, 'index'])
-            ->name('admin.index');
+        Route::get('/', function () {
+            return redirect()->route('admin.courses');
+        })->name('admin.index');
+
+        Route::get('/courses', [AdminController::class, 'courses'])
+            ->name('admin.courses');
+
+        Route::post('/courses/{id}/edit', [AdminController::class, 'editCourse'])
+            ->name('admin.courses.edit');
+
+        Route::get('/lessons', [AdminController::class, 'lessons'])
+        ->name('admin.lessons');
+
+        Route::get('/questions', [AdminController::class, 'questions'])
+            ->name('admin.questions');
+
+        Route::get('/answers', [AdminController::class, 'answers'])
+        ->name('admin.answers');
 
         Route::get('/departments', [AdminController::class, 'departments'])
             ->name('admin.departments');
 
-        Route::post('/course/{id}', [AdminController::class, 'changeCourse'])
-            ->name('admin.changeCourse');
     });
 
 });

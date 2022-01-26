@@ -5,7 +5,11 @@ import {
   CalendarIcon,
   HomeIcon,
   MenuAlt2Icon,
-  XIcon
+  XIcon,
+  AcademicCapIcon,
+  BookOpenIcon,
+  QuestionMarkCircleIcon,
+  ClipboardListIcon
 } from '@heroicons/react/outline';
 import Navigation from './Navigation.jsx';
 
@@ -17,9 +21,27 @@ const user = {
 };
 const navigation = [
   {
-    name: 'Admin1',
-    icon: HomeIcon,
-    href: route('admin.index'),
+    name: 'Курсы',
+    icon: AcademicCapIcon,
+    href: route('admin.courses'),
+    current: true
+  },
+  {
+    name: 'Уроки',
+    icon: BookOpenIcon,
+    href: route('admin.lessons'),
+    current: true
+  },
+  {
+    name: 'Вопросы',
+    icon: QuestionMarkCircleIcon,
+    href: route('admin.questions'),
+    current: true
+  },
+  {
+    name: 'Ответы',
+    icon: ClipboardListIcon,
+    href: route('admin.answers'),
     current: true
   },
   {
@@ -28,9 +50,6 @@ const navigation = [
     href: route('admin.departments'),
     current: true
   },
-  // { name: 'Admin2', href: route('selectPortal'), current: false },
-  // { name: 'Projects', href: '#', current: false },
-  // { name: 'Calendar', href: '#', current: false },
 ];
 
 const userNavigation = [

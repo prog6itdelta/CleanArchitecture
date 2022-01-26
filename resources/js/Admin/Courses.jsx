@@ -1,25 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import Table from './Components/Table.jsx';
-// import { data, columns } from './TableData.jsx';
-import ColumnFilter, { SelectColumnFilter } from './Components/ColumnFilter.jsx';
 import EditableCell from './Components/EditableCell.jsx';
 import OneLineCell from './Components/OneLineCell.jsx';
 
-export default function Index({ courses }) {
-  // console.log(courses);
-
-  // const columns = Object.keys(courses[0]).map((key) => {
-  //   const column = {
-  //     Header: key.toUpperCase(),
-  //     accessor: key,
-  //     Filter: key === 'id' ? '' : ColumnFilter,
-  //     width: key === 'id' ? 50 : 300,
-  //     Cell: key === 'id' ? ({ value }) => String(value) : EditableCell,
-  //   };
-  //   return column;
-  // });
-
+export default function Courses({ courses }) {
   const columns = [
     {
       Header: 'ID',
@@ -67,22 +52,21 @@ export default function Index({ courses }) {
   };
 
   const [skipPageReset, setSkipPageReset] = React.useState(false);
+
   const updateData = (rowIndex, columnId, value) => {
     const oldValue = courses[rowIndex][columnId];
     setSkipPageReset(true);
     if (value !== oldValue) {
       const oldCourse = courses[rowIndex];
-      console.log('oldCourse: ', oldCourse);
       const newCourse = {
         ...oldCourse,
         [columnId]: value
       };
-      console.log('newCourse: ', newCourse);
-      Inertia.post(route('admin.changeCourse', newCourse.id), newCourse);
+      Inertia.post(route('admin.courses.edit', newCourse.id), newCourse);
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     setSkipPageReset(false);
   }, [courses]);
 

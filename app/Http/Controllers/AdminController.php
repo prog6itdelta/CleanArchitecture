@@ -22,10 +22,28 @@ class AdminController extends BaseController
      * @param int $id
      * @return \Inertia\Response
      */
-    public function index()
+    public function courses()
     {
         $courses = LearnService::getCourses();
-        return Inertia::render('Admin/Index', compact('courses'));
+        return Inertia::render('Admin/Courses', compact('courses'));
+    }
+
+    public function lessons()
+    {
+        $lessons = LearnService::getLessons();
+        return Inertia::render('Admin/Lessons', compact('lessons'));
+    }
+
+    public function questions()
+    {
+        $lessons = LearnService::getLessons();
+        return Inertia::render('Admin/Lessons', compact('lessons'));
+    }
+
+    public function answers()
+    {
+        $lessons = LearnService::getLessons();
+        return Inertia::render('Admin/Lessons', compact('lessons'));
     }
 
     /**
@@ -41,7 +59,7 @@ class AdminController extends BaseController
         return Inertia::render('Admin/Department', $departments);
     }
 
-    public function changeCourse (Request $request, $id)
+    public function editCourse(Request $request, $id)
     {
         $input = $request->collect();
         $changedFields = [];
