@@ -61,11 +61,17 @@ class AdminController extends BaseController
 
     public function editCourse(Request $request, $id)
     {
-        $input = $request->collect();
+        $path = 'empty';
         $changedFields = [];
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $imagePath = '/' . $request->image->store('images/'. explode('.', $_SERVER['HTTP_HOST'])[0].'/course_images');
+            $changedFields['image'] = $imagePath;
+        }
+
+        $input = $request->collect();
 
         foreach ($input as $key => $item) {
-            if ($key !== 'id' && $item !== null) {
+            if ($key !== 'id' && strpos($key, 'image') === false && $item !== null) {
                 $changedFields[$key] = $item;
             }
         }
@@ -73,6 +79,6 @@ class AdminController extends BaseController
             ['id' => $id],
             $changedFields
         );
-        return redirect()->route('admin.index');
+        return redirect()->route('admin.index')->with(['dataUpdated' => 'true']);
     }
 }

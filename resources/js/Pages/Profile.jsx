@@ -12,7 +12,7 @@ export default function Profile() {
 
   const fileInput = useRef();
 
-  const { data, setData, post, reset } = useForm({
+  const { data, setData, post } = useForm({
     password: '',
     avatar: undefined,
     name: user.name,
@@ -73,7 +73,7 @@ export default function Profile() {
                     </label>
                     <div className="mt-1 w-full grid grid-cols-12 gap-x-6 items-center">
                       <span className="w-10 h-10 flex justify-center rounded-full overflow-hidden bg-gray-100 col-span-2">
-                        <img src={avatarFormImg} />
+                        <img src={avatarFormImg} alt="avatar" />
                       </span>
                       <input
                         ref={fileInput}

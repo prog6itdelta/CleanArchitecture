@@ -24,7 +24,7 @@ import ColumnFilter from './ColumnFilter.jsx';
 import GlobalFilter from './GlobalFilter.jsx';
 import EditableCell from './EditableCell.jsx';
 
-export default function Table({dataValue, columnsValue, updateData, skipPageReset, ...props}) {
+export default function TableWithManualPagination({dataValue, columnsValue, updateData, skipPageReset, ...props}) {
   const {
     options: {
       showGlobalFilter = true,
