@@ -15,6 +15,7 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
   useEffect(() => {
     setSkipPageReset(false);
   }, [courses]);
+
   const columns = [
     {
       Header: 'ACTIONS',
@@ -219,8 +220,9 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
                   type="text"
                   value={JSON.parse(data.options) !== null ? JSON.parse(data.options).delayTime : '' }
                   onChange={(e) => {
-                    const courseOptions = JSON.parse(data.options);
+                    let courseOptions = JSON.parse(data.options);
                     if (courseOptions !== null) { courseOptions.delayTime = e.target.value; }
+                    else { courseOptions = { delayTime: e.target.value }; }
                     setData('options', JSON.stringify(courseOptions));
                   }}
                   className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
