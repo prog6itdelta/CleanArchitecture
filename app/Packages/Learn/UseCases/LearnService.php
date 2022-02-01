@@ -10,6 +10,7 @@ use App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CourseRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository;
 use App\Packages\Learn\Infrastructure\Repositories\LessonRepository;
+use App\Packages\Learn\Infrastructure\Repositories\QuestionRepository;
 
 class LearnService implements LearnServiceInterface
 {
@@ -181,6 +182,12 @@ class LearnService implements LearnServiceInterface
         $rep = new LessonRepository();
         $lessons = $rep->all();
         return $lessons;
+    }
+
+    public static function getAllQuestions()
+    {
+        $rep = new QuestionRepository();
+        return $rep->all();
     }
 
 }

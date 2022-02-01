@@ -76,6 +76,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/questions', [AdminController::class, 'questions'])
             ->name('admin.questions');
 
+        Route::post('/questions/{id}/edit', [AdminController::class, 'editQuestion'])
+            ->name('admin.questions.edit');
+
         Route::get('/answers', [AdminController::class, 'answers'])
             ->name('admin.answers');
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Question;
 use App\Packages\Department\UseCases\DepartmentService;
 use App\Packages\Learn\UseCases\LearnService;
 use App\Packages\Learn\UseCases\JournalService;
@@ -64,7 +65,7 @@ class AdminController extends BaseController
         $input = $request->collect();
 
         foreach ($input as $key => $item) {
-            if ($key !== 'id' && strpos($key, 'image') === false && $item !== null) {
+            if ($key !== 'id' && $item !== null) {
                 $changedFields[$key] = $item;
             }
         }
@@ -77,8 +78,25 @@ class AdminController extends BaseController
 
     public function questions()
     {
-        $lessons = LearnService::getLessons();
-        return Inertia::render('Admin/Lessons', compact('lessons'));
+        $questions = LearnService::getAllQuestions();
+        return Inertia::render('Admin/Questions', compact('questions'));
+    }
+
+    public function editQuestion(Request $request, $id)
+    {
+        $changedFields = [];
+        $input = $request->collect();
+
+        foreach ($input as $key => $item) {
+            if ($key !== 'id' && $item !== null) {
+                $changedFields[$key] = $item;
+            }
+        }
+        Question::updateOrCreate(
+            ['id' => $id],
+            $changedFields
+        );
+        return redirect()->route('admin.questions');
     }
 
     public function answers()

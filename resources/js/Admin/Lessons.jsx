@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch } from '@headlessui/react';
@@ -104,14 +104,11 @@ export default function Lessons({ lessons, page_count: controlledPageCount }) {
   };
 
   const EditLessonForm = () => {
-    const [lessonImg, setLessonImg] = useState(editedLesson.image);
-    const lessonImgInput = useRef();
     const { data, setData, post } = useForm({
       name: editedLesson.name,
       active: editedLesson.active,
       description: editedLesson.description,
-      detail_text: editedLesson.detail_text,
-      options: editedLesson.options
+      detail_text: editedLesson.detail_text
     });
 
     return (
@@ -119,7 +116,6 @@ export default function Lessons({ lessons, page_count: controlledPageCount }) {
         <div className="bg-white -mx-6 -mt-5 shadow overflow-hidden">
           <div className="px-4 py-5 sm:px-6">
             <h3 className="text-lg leading-6 font-medium text-gray-900">Редактирование урока: {data.name}</h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p>
           </div>
           <div className="border-t border-gray-200">
             <ul>
@@ -202,7 +198,7 @@ export default function Lessons({ lessons, page_count: controlledPageCount }) {
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
             onClick={() => {
               post(route('admin.lessons.edit', editedLesson.id),
-                { data, onSuccess: (res) => {Inertia.get(route(route().current()));} });
+                { data, onSuccess: () => {Inertia.get(route(route().current()));} });
               setShowModal(false);
 
             }}
