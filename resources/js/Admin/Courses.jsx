@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch } from '@headlessui/react';
-import TableWithManualPagination from './Components/TableWithManualPagination.jsx';
+import Table from './Components/Table.jsx';
 import EditableCell from './Components/EditableCell.jsx';
 import OneLineCell from './Components/OneLineCell.jsx';
 import ActionsCell from './Components/ActionsCell.jsx';
@@ -99,7 +99,7 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
         ...oldCourse,
         [columnId]: value
       };
-      Inertia.post(route('admin.courses.edit', newCourse.id), newCourse);
+      Inertia.post(route('admin.course.edit', newCourse.id), newCourse);
     }
   };
 
@@ -236,7 +236,7 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
             onClick={() => {
-              post(route('admin.courses.edit', editedCourse.id),
+              post(route('admin.course.edit', editedCourse.id),
                 { data, onSuccess: (res) => {Inertia.get(route(route().current()));} });
               setShowModal(false);
 
@@ -264,7 +264,7 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
         </div>
       </header>
       <main className="w-full h-fit">
-        <TableWithManualPagination
+        <Table
           dataValue={tableData}
           columnsValue={columns}
           skipPageReset={skipPageReset}

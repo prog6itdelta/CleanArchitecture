@@ -65,16 +65,19 @@ Route::middleware(['auth'])->group(function () {
             ->name('admin.courses');
 
         Route::post('/courses/{id}/edit', [AdminController::class, 'editCourse'])
-            ->name('admin.courses.edit');
+            ->name('admin.course.edit');
 
         Route::get('/lessons', [AdminController::class, 'lessons'])
-        ->name('admin.lessons');
+            ->name('admin.lessons');
+
+        Route::post('/lessons/{id}/edit', [AdminController::class, 'editLesson'])
+            ->name('admin.lessons.edit');
 
         Route::get('/questions', [AdminController::class, 'questions'])
             ->name('admin.questions');
 
         Route::get('/answers', [AdminController::class, 'answers'])
-        ->name('admin.answers');
+            ->name('admin.answers');
 
         Route::get('/departments', [AdminController::class, 'departments'])
             ->name('admin.departments');
