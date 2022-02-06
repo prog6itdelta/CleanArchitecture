@@ -27,29 +27,26 @@ class UserController extends BaseController
     public function edit(Request $request)
     {
         $path = 'empty';
+        $changedFields = [];
         if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
             $avatarPath = '/' . $request->avatar->store('images/'. explode('.', $_SERVER['HTTP_HOST'])[0].'/avatars');
-            User::updateOrCreate(
-                ['id' => Auth::user()->id],
-                ['avatar' => $avatarPath]
-            );
+            $changedFields['avatar'] = $avatarPath;
         }
         $input = $request->collect();
+
         foreach ($input as $key => $item) {
             if ($key !== 'id' && strpos($key, 'avatar') === false && $item !== null) {
                 if ($key === 'password') {
-                    User::updateOrCreate(
-                        ['id' => Auth::user()->id],
-                        [$key => Hash::make($item, ['rounds' => 12])]
-                    );
+                    $changedFields[$key] = Hash::make($item, ['rounds' => 12]);
                 } else {
-                    User::updateOrCreate(
-                        ['id' => Auth::user()->id],
-                        [$key => $item]
-                    );
+                    $changedFields[$key] = $item;
                 }
             }
         }
+        User::updateOrCreate(
+            ['id' => Auth::user()->id],
+            $changedFields
+        );
         return redirect('profile');
         return $request;
     }

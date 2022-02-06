@@ -9,6 +9,7 @@ use App\Packages\Learn\UseCases\JournalService;
 use App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CourseRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository;
+use App\Packages\Learn\Infrastructure\Repositories\LessonRepository;
 
 class LearnService implements LearnServiceInterface
 {
@@ -173,6 +174,13 @@ class LearnService implements LearnServiceInterface
         $course->lessons = array_filter($course->lessons, fn($item) => ($self->authService::authorized("LL{$item->id}", 'read')));
 
         return $course;
+    }
+
+    public static function getLessons()
+    {
+        $rep = new LessonRepository();
+        $lessons = $rep->all();
+        return $lessons;
     }
 
 }
