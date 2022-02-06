@@ -9,6 +9,7 @@ use App\Packages\Learn\UseCases\JournalService;
 use App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CourseRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository;
+use App\Packages\Learn\Infrastructure\Repositories\LessonRepository;
 
 class LearnService implements LearnServiceInterface
 {
@@ -105,10 +106,10 @@ class LearnService implements LearnServiceInterface
         // check all questions
         foreach ($lesson->questions as $question) {
             $question->fetchAnswers();
-            // answer from array of answers
-            $answer = $data["q$question->id"] ?? false;
             switch ($question->type) {
                 case 'radio':
+                    // only one answer
+                    $answer = $data["q$question->id"] ?? false;
                     $rightAnswer = array_filter($question->answers, fn($item) => ($item->correct));
                     $rightAnswer = $rightAnswer[0] ?? false;
                     assert($rightAnswer);
@@ -116,13 +117,15 @@ class LearnService implements LearnServiceInterface
                     if ($rightAnswer->id != $answer) $result = 'fail';
                     break;
                 case 'checkbox':
+                    // array of answers or []
+                    $answer = $data["q$question->id"] ?? [];
                     $rightAnswer = array_filter($question->answers, fn($item) => ($item->correct));
-                    if (is_array($answer)) {
+//                    if (is_array($answer)) {
                         // check all correct answers
                         foreach ($rightAnswer as $value) {
                             if (!in_array($value->id, $answer)) $result = 'fail';
                         }
-                    } else $result = false;
+//                    } else $result = false;
                     break;
                 case 'text':
                     // needed to check by instructor
@@ -132,10 +135,10 @@ class LearnService implements LearnServiceInterface
                     assert('Unknown question type.');
             }
         }
-        JournalService::storeAnswers($id, $data);
-        JournalService::setLessonStatus($id, $result);
 
         if ($result == 'done' && $pending) $result = 'pending';
+        JournalService::storeAnswers($id, $data);
+        JournalService::setLessonStatus($id, $result);
 
         return ($result == 'done') || ($result == 'pending');
     }
@@ -171,6 +174,13 @@ class LearnService implements LearnServiceInterface
         $course->lessons = array_filter($course->lessons, fn($item) => ($self->authService::authorized("LL{$item->id}", 'read')));
 
         return $course;
+    }
+
+    public static function getLessons()
+    {
+        $rep = new LessonRepository();
+        $lessons = $rep->all();
+        return $lessons;
     }
 
 }

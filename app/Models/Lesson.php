@@ -13,6 +13,14 @@ class Lesson extends Model
 
     protected $table = 'learn_lessons';
 
+    protected $fillable = [
+        'name',
+        'active',
+        'description',
+        'detail_text',
+        'options',
+    ];
+
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'learn_course_lesson');

@@ -31,33 +31,76 @@ class LearnController extends BaseController
     public function course($id)
     {
         $course = LearnService::getCourse($id);
-        return Inertia::render('Pages/Learning/Course', compact('course'));
+        $statuses = JournalService::getLessonsStatuses();
+
+        $course_completed = true;
+        foreach ($course->lessons as $item) {
+            if (array_search(['id' => $item->id, 'status' => 'done'], $statuses) === false) {
+                $course_completed = false;
+            }
+        }
+
+        return Inertia::render('Pages/Learning/Course', compact('course', 'statuses', 'course_completed'));
+    }
+
+    public function success($id)
+    {
+        $course = LearnService::getCourse($id);
+        $statuses = JournalService::getLessonsStatuses();
+        $course_completed = $this->isCourseCompleted($id);
+
+        if ($course_completed === false) {
+            return redirect()->route('course', $id);
+        }
+
+        return Inertia::render('Pages/Learning/Course', compact('course', 'statuses', 'course_completed'));
     }
 
     public function lesson(Request $request, $cid, $id)
     {
         $lesson = LearnService::runLesson($id);
         $answers = JournalService::getAnswers($id);
+        $course = LearnService::getCourse($cid);
+        $statuses = JournalService::getLessonsStatuses();
 
         return Inertia::render('Pages/Learning/Lesson', [
             'course_id' => $cid,
             'lesson' => $lesson,
             'answers' => $answers,
-            'status' => JournalService::getLessonStatus($id)
-        ]);//->toResponse($request)->header('Cache-Control','no-cache, max-age=0, must-revalidate, no-store');
+            'status' => JournalService::getLessonStatus($id),
+            'course' => $course,
+            'statuses' => $statuses,
+            'course_completed' => $this->isCourseCompleted($cid)
+        ]); //->toResponse($request)->header('Cache-Control','no-cache, max-age=0, must-revalidate, no-store');
     }
 
     public function checkLesson(Request $request, $cid, $id)
     {
         $result = LearnService::checkLesson($id, $request->all());
+
         if ($result) {
             $nextLesson = LearnService::nextLesson($cid, $id);
-            if ($nextLesson)
-                return redirect()->route('lesson', [$cid, $nextLesson->id]);
+            if ($this->isCourseCompleted($cid))
+                return redirect()->route('success', $cid)->with(['lessonCheckMessage' => 'done']);
+            elseif ($nextLesson)
+                return redirect()->route('lesson', [$cid, $id])->with(['lessonCheckMessage' => 'done', 'nextLessonId' => $nextLesson->id]);
             else
-                // TODO: Congrat
-                return redirect()->route('course', [$cid + 1]);
+                return redirect()->route('lesson', [$cid, $id])->with(['lessonCheckMessage' => 'pending']);
         }
-        throw \Illuminate\Validation\ValidationException::withMessages(['error' => 'Fail']);
+
+        return redirect()->route('lesson', [$cid, $id])->with(['lessonCheckMessage' => 'fail']);
+    }
+
+    private function isCourseCompleted($cid) {
+        $course = LearnService::getCourse($cid);
+        $statuses = JournalService::getLessonsStatuses();
+
+        $course_completed = true;
+        foreach ($course->lessons as $item) {
+            if (array_search(['id' => $item->id, 'status' => 'done'], $statuses) === false) {
+                $course_completed = false;
+            }
+        }
+        return $course_completed;
     }
 }
