@@ -18,6 +18,7 @@ export const initialState = {
         name: null
       },
     },
+  pageHeader: 'Админка',
 };
 
 export const resetState = (state) => state;
@@ -56,6 +57,11 @@ export const adminReducer = (state, action) => {
             name: action.payload.name ?? ''
           },
         }
+      };
+    case 'CHANGE_HEADER':
+      return {
+        ...state,
+        pageHeader: action.payload
       };
     case 'RESET':
       return resetState(action.payload);

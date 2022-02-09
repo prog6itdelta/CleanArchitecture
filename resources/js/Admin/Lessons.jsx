@@ -19,15 +19,21 @@ export default function Lessons({ lessons, page_count: controlledPageCount }) {
   }, [lessons]);
 
   const showLessonQuestions = (lesson) => {
-    dispatch({
-      type: 'CHOSE_LESSON',
-      payload: {
-        id: lesson.id,
-        name: lesson.name
+    dispatch(
+      {
+        type: 'CHOSE_LESSON',
+        payload: {
+          id: editedLesson.id,
+          name: editedLesson.name
+        }
+      },
+      {
+        type: 'CHANGE_HEADER',
+        payload: `Админка`
       }
-    });
+    );
 
-    Inertia.post(route('admin.questions', [nav.currentCourse.id, lesson.id]));
+    Inertia.post(route('admin.questions', [nav.currentCourse.id, editedLesson.id]));
   };
 
   const columns = [

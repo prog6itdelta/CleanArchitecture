@@ -3,30 +3,33 @@ import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch } from '@headlessui/react';
 import Table from './Components/Table.jsx';
-import EditableCell from './Components/EditableCell.jsx';
 import OneLineCell from './Components/OneLineCell.jsx';
 import ActionsCell from './Components/ActionsCell.jsx';
-import Modal from './Components/Modal.jsx';
 import { AdminContext } from './reducer.jsx';
 
 export default function Courses({ courses, page_count: controlledPageCount }) {
-  const [showModal, setShowModal] = useState(false);
-  const [skipPageReset, setSkipPageReset] = React.useState(false);
+  const [skipPageReset, setSkipPageReset] = useState(false);
   const [editedCourse, setEditedCourse] = useState(null);
-  const {state, dispatch} = useContext(AdminContext);
+  const { state, dispatch } = useContext(AdminContext);
   useEffect(() => {
     setSkipPageReset(false);
   }, [courses]);
 
-  const showCourseLessons = (course) => {
-    dispatch({
-      type: 'CHOSE_COURSE',
-      payload: {
-        id: course.id,
-        name: course.name
+  const showCourseLessons = () => {
+    dispatch(
+      {
+        type: 'CHOSE_COURSE',
+        payload: {
+          id: editedCourse.id,
+          name: editedCourse.name
+        }
+      },
+      {
+        type: 'CHANGE_HEADER',
+        payload: `Админка`
       }
-    });
-    Inertia.post(route('admin.lessons', course.id));
+    );
+    Inertia.post(route('admin.lessons', editedCourse.id));
   };
 
   const columns = [
@@ -50,7 +53,7 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
       accessor: 'name',
       Filter: '',
       width: 250,
-      Cell: EditableCell,
+      Cell: OneLineCell,
     },
     {
       Header: 'description',
@@ -83,14 +86,12 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
           type: 'edit',
           action: () => {
             setEditedCourse(course);
-            setShowModal(true);
+            dispatch({
+              type: 'CHANGE_HEADER',
+              payload: `Редактирование курса ${course.name}`
+            });
           },
           disabled: false,
-        },
-        {
-          name: 'Открыть',
-          type: 'open',
-          action: () => showCourseLessons(course),
         },
         {
           name: 'delete',
@@ -143,10 +144,7 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
 
     return (
       <>
-        <div className="bg-white -mx-6 -mt-5 shadow overflow-hidden">
-          <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">Редактирование курса: {data.name}</h3>
-          </div>
+        <div className="bg-white shadow overflow-hidden rounded-md">
           <div className="border-t border-gray-200">
             <ul>
               <li className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -158,12 +156,12 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
                   className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
                 />
               </li>
-              <li className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <span className="text-sm font-medium text-gray-500">Статус</span>
+              <li className="bg-white px-4 py-5 grid grid-cols-2 sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <span className="text-sm font-medium text-gray-500 flex items-center sm:block">Статус</span>
                 <span className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                   <Switch
                     checked={Boolean(data.active)}
-                    onChange={(e) => {setData('active', Number(e))}}
+                    onChange={(e) => {setData('active', Number(e));}}
                     className={`
                     ${Boolean(data.active) ? 'bg-indigo-600' : 'bg-gray-200'} relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
                     `}
@@ -235,11 +233,10 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
                 <span className="text-sm font-medium text-gray-500">Время между попытками</span>
                 <input
                   type="text"
-                  value={JSON.parse(data.options) !== null ? JSON.parse(data.options).delayTime : '' }
+                  value={JSON.parse(data.options) !== null ? JSON.parse(data.options).delayTime : ''}
                   onChange={(e) => {
                     let courseOptions = JSON.parse(data.options);
-                    if (courseOptions !== null) { courseOptions.delayTime = e.target.value; }
-                    else { courseOptions = { delayTime: e.target.value }; }
+                    if (courseOptions !== null) { courseOptions.delayTime = e.target.value; } else { courseOptions = { delayTime: e.target.value }; }
                     setData('options', JSON.stringify(courseOptions));
                   }}
                   className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
@@ -248,14 +245,22 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
             </ul>
           </div>
         </div>
-        <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+        <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-3 sm:gap-3 sm:grid-flow-row-dense">
           <button
             type="button"
-            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-3 sm:text-sm"
             onClick={() => {
               post(route('admin.course.edit', editedCourse.id),
-                { data, onSuccess: (res) => {Inertia.get(route(route().current()));} });
-              setShowModal(false);
+                {
+                  data, onSuccess: (res) => {
+                    dispatch({
+                      type: 'CHANGE_HEADER',
+                      payload: `Админка`
+                    });
+                    Inertia.get(route(route().current()));
+                  }
+                });
+              setEditedCourse(null);
 
             }}
           >
@@ -263,8 +268,21 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
           </button>
           <button
             type="button"
+            className="mt-3 sm:mt-0 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+            onClick={showCourseLessons}
+          >
+            Показать уроки
+          </button>
+          <button
+            type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
-            onClick={() => setShowModal(false)}
+            onClick={() => {
+              setEditedCourse(null);
+              dispatch({
+                type: 'CHANGE_HEADER',
+                payload: `Админка`
+              });
+            }}
           >
             Отмена
           </button>
@@ -274,14 +292,10 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
   };
 
   return (
-    <>
-      <header>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold leading-tight text-gray-900 text-center">Админка</h1>
-        </div>
-      </header>
-      <main className="w-full h-fit">
-        <Table
+    <main className="w-full h-fit">
+
+      {editedCourse === null
+        ? <Table
           dataValue={tableData}
           columnsValue={columns}
           skipPageReset={skipPageReset}
@@ -289,13 +303,8 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
           options={tableOptions}
           controlledPageCount={controlledPageCount}
         />
-        <Modal
-          open={showModal}
-          onClose={() => setShowModal(false)}
-        >
-          <EditCourseForm/>
-        </Modal>
-      </main>
-    </>
+        : <EditCourseForm/>
+      }
+    </main>
   );
 }
