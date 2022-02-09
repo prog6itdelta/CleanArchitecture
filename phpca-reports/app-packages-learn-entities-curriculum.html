@@ -95,7 +95,7 @@
             var data = google.visualization.arrayToDataTable([
                 ['Характеристика', 'Значение'],
                 ['Примитивность', 0],
-                ['Неустойчивость', 0.5],
+                ['Неустойчивость', 0],
             ]);
 
             var options = {
@@ -147,7 +147,7 @@
                 <li>Публичный: Да</li>
                 <li>Абстрактный: Нет</li>
                 <li>Примитивность: 0</li>
-                <li>Неустойчивость: 0.5</li>
+                <li>Неустойчивость: 0</li>
             </ul>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -165,12 +165,6 @@
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <b>Исходящие зависимости</b>
             <table class="table table-borderless table-hover">
-                                    <tr class="">
-                        <td>
-                            App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository
-                                                            <a href="app-packages-learn-infrastructure-repositories-curriculumrepository.html">подробнее</a>
-                                                    </td>
-                    </tr>
                             </table>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -189,8 +183,8 @@
     <script type="text/javascript">
         var container = document.getElementById('graph');
 
-        var nodes = new vis.DataSet([{"id":"000000003154b6f2000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CurriculumRepository"},{"id":"000000003154b6fb000000002f15145c","label":"App\\Packages\\Learn\\Entities\\Curriculum"}]);
-        var edges = new vis.DataSet([{"from":"000000003154b6f2000000002f15145c","to":"000000003154b6fb000000002f15145c"},{"from":"000000003154b6fb000000002f15145c","to":"000000003154b6f2000000002f15145c"}]);
+        var nodes = new vis.DataSet([{"id":"000000000e3ea8ce00000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CurriculumRepository"},{"id":"000000000e3ea8d800000000266d6599","label":"App\\Packages\\Learn\\Entities\\Curriculum"}]);
+        var edges = new vis.DataSet([{"from":"000000000e3ea8ce00000000266d6599","to":"000000000e3ea8d800000000266d6599"}]);
         var data = {
             nodes: nodes,
             edges: edges

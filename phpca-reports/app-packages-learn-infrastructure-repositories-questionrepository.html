@@ -95,7 +95,7 @@
             var data = google.visualization.arrayToDataTable([
                 ['Характеристика', 'Значение'],
                 ['Примитивность', 0.2],
-                ['Неустойчивость', 1],
+                ['Неустойчивость', 0.833],
             ]);
 
             var options = {
@@ -147,7 +147,7 @@
                 <li>Публичный: Да</li>
                 <li>Абстрактный: Нет</li>
                 <li>Примитивность: 0.2</li>
-                <li>Неустойчивость: 1</li>
+                <li>Неустойчивость: 0.833</li>
             </ul>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -173,8 +173,8 @@
                     </tr>
                                     <tr class="">
                         <td>
-                            App\Packages\Common\Application\Interfaces\RepositoryInterface
-                                                            <a href="app-packages-common-application-interfaces-repositoryinterface.html">подробнее</a>
+                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
+                                                            <a href="app-packages-common-domain-interfaces-repositoryinterface.html">подробнее</a>
                                                     </td>
                     </tr>
                                     <tr class="">
@@ -199,6 +199,12 @@
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <b>Входящие зависимости</b>
             <table class="table table-borderless table-hover">
+                                    <tr class="">
+                        <td>
+                            App\Packages\Learn\UseCases\LearnService
+                                                            <a href="app-packages-learn-usecases-learnservice.html">подробнее</a>
+                                                    </td>
+                    </tr>
                             </table>
         </div>
     </div>
@@ -206,8 +212,8 @@
     <script type="text/javascript">
         var container = document.getElementById('graph');
 
-        var nodes = new vis.DataSet([{"id":"000000003154b60d000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\QuestionRepository"},{"id":"000000003154b61f000000002f15145c","label":"App\\Packages\\Common\\Infrastructure\\Repositories\\AbstractRepository"},{"id":"000000003154b6f4000000002f15145c","label":"App\\Packages\\Common\\Application\\Interfaces\\RepositoryInterface"},{"id":"000000003154b6fd000000002f15145c","label":"array"},{"id":"000000003154b6dc000000002f15145c","label":"App\\Packages\\Learn\\Entities\\Answer"},{"id":"000000003154b6cd000000002f15145c","label":"App\\Packages\\Learn\\Entities\\Question"}]);
-        var edges = new vis.DataSet([{"from":"000000003154b60d000000002f15145c","to":"000000003154b61f000000002f15145c"},{"from":"000000003154b60d000000002f15145c","to":"000000003154b6f4000000002f15145c"},{"from":"000000003154b60d000000002f15145c","to":"000000003154b6fd000000002f15145c"},{"from":"000000003154b60d000000002f15145c","to":"000000003154b6dc000000002f15145c"},{"from":"000000003154b60d000000002f15145c","to":"000000003154b6cd000000002f15145c"}]);
+        var nodes = new vis.DataSet([{"id":"000000000e3ea8c300000000266d6599","label":"App\\Packages\\Learn\\UseCases\\LearnService"},{"id":"000000000e3ea8e600000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\QuestionRepository"},{"id":"000000000e3ea83300000000266d6599","label":"App\\Packages\\Common\\Infrastructure\\Repositories\\AbstractRepository"},{"id":"000000000e3ea82c00000000266d6599","label":"App\\Packages\\Common\\Domain\\Interfaces\\RepositoryInterface"},{"id":"000000000e3ea8d300000000266d6599","label":"array"},{"id":"000000000e3ea8f500000000266d6599","label":"App\\Packages\\Learn\\Entities\\Answer"},{"id":"000000000e3ea8e500000000266d6599","label":"App\\Packages\\Learn\\Entities\\Question"}]);
+        var edges = new vis.DataSet([{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8e600000000266d6599"},{"from":"000000000e3ea8e600000000266d6599","to":"000000000e3ea83300000000266d6599"},{"from":"000000000e3ea8e600000000266d6599","to":"000000000e3ea82c00000000266d6599"},{"from":"000000000e3ea8e600000000266d6599","to":"000000000e3ea8d300000000266d6599"},{"from":"000000000e3ea8e600000000266d6599","to":"000000000e3ea8f500000000266d6599"},{"from":"000000000e3ea8e600000000266d6599","to":"000000000e3ea8e500000000266d6599"}]);
         var data = {
             nodes: nodes,
             edges: edges

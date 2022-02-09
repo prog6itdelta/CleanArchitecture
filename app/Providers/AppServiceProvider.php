@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Packages\Common\Application\Interfaces\RepositoryInterface;
+use App\Packages\Common\Domain\Interfaces\RepositoryInterface;
 use App\Packages\Common\Application\Services\IAuthorisationService;
 use App\Packages\Common\Infrastructure\Services\AuthorisationService;
 use App\Packages\Learn\Entities\Question;
@@ -20,11 +20,11 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(IAuthorisationService::class, AuthorisationService::class);
 
-        $this->app->when(Question::class)
-            ->needs(RepositoryInterface::class)
-            ->give(function () {
-                return new QuestionRepository();
-            });
+//        $this->app->when(Question::class)
+//            ->needs(RepositoryInterface::class)
+//            ->give(function () {
+//                return new QuestionRepository();
+//            });
     }
 
     /**

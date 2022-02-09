@@ -94,9 +94,9 @@
         function drawAIChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Имя', 'Неустойчивость', 'Абстрактность', 'Тип', 'Зависимостей'],
-                                ['Domen', 0.313, 0, 'Компонент', 2],
-                                ['Application', 0.368, 0.2, 'Компонент', 2],
-                                ['Infrastructure', 0.76, 0.083, 'Компонент', 7],
+                                ['Domen', 0, 0.1, 'Компонент', 0],
+                                ['Application', 0.818, 0.2, 'Компонент', 2],
+                                ['Infrastructure', 0.905, 0.083, 'Компонент', 7],
                                 ['Utils', 0, 0, 'Компонент', 0],
                             ]);
 
@@ -119,9 +119,9 @@
             let container = document.getElementById('d-chart');
             let chartData = [
                 ['Компонент', 'Distance (norma)', 'Distance (overage)'],
-                                    ['Domen', 0.3, 0.387],
-                                    ['Application', 0.3, 0.132],
-                                    ['Infrastructure', 0.157, 0],
+                                    ['Domen', 0.3, 0.6],
+                                    ['Application', 0.018, 0],
+                                    ['Infrastructure', 0.012, 0],
                                     ['Utils', 0.3, 0.7],
                             ];
 
@@ -225,8 +225,8 @@
     <script type="text/javascript">
         var container = document.getElementById('graph');
 
-        var nodes = new vis.DataSet([{"id":"000000003154b487000000002f15145c","label":"Infrastructure","title":"Abstractness: 0.083, Instability: 0.76, Fan-in: Domen, Application, Fan-out: Application, Domen, illuminate\/macroable, laravel\/socialite, illuminate\/http, *undefined*, illuminate\/database"},{"id":"000000003154b49c000000002f15145c","label":"Domen","title":"Abstractness: 0, Instability: 0.313, Fan-in: Infrastructure, Application, Fan-out: Application, Infrastructure"},{"id":"000000003154b6ba000000002f15145c","label":"Application","title":"Abstractness: 0.2, Instability: 0.368, Fan-in: Domen, Infrastructure, Fan-out: Domen, Infrastructure"},{"id":"000000003154b47b000000002f15145c","label":"illuminate\/macroable","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000003154b5d5000000002f15145c","label":"laravel\/socialite","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000003154b449000000002f15145c","label":"illuminate\/http","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000003154b606000000002f15145c","label":"*undefined*","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000003154b5b9000000002f15145c","label":"illuminate\/database","title":"Abstractness: 1, Instability: 0, Fan-in: Infrastructure, Fan-out: "}]);
-        var edges = new vis.DataSet([{"from":"000000003154b487000000002f15145c","to":"000000003154b49c000000002f15145c","label":"8->8"},{"from":"000000003154b6ba000000002f15145c","to":"000000003154b49c000000002f15145c","label":"3->3"},{"from":"000000003154b49c000000002f15145c","to":"000000003154b6ba000000002f15145c","label":"1->1"},{"from":"000000003154b49c000000002f15145c","to":"000000003154b487000000002f15145c","label":"4->4"},{"from":"000000003154b487000000002f15145c","to":"000000003154b6ba000000002f15145c","label":"11->3"},{"from":"000000003154b6ba000000002f15145c","to":"000000003154b487000000002f15145c","label":"2->4"},{"from":"000000003154b487000000002f15145c","to":"000000003154b47b000000002f15145c","label":"3->3"},{"from":"000000003154b487000000002f15145c","to":"000000003154b5d5000000002f15145c","label":"1->1"},{"from":"000000003154b487000000002f15145c","to":"000000003154b449000000002f15145c","label":"1->1"},{"from":"000000003154b487000000002f15145c","to":"000000003154b606000000002f15145c","label":"2->2"},{"from":"000000003154b487000000002f15145c","to":"000000003154b5b9000000002f15145c","label":"1->1"}]);
+        var nodes = new vis.DataSet([{"id":"000000000e3eaaa800000000266d6599","label":"Infrastructure","title":"Abstractness: 0.083, Instability: 0.905, Fan-in: Application, Fan-out: Domen, illuminate\/macroable, laravel\/socialite, illuminate\/http, Application, *undefined*, illuminate\/database"},{"id":"000000000e3eaab300000000266d6599","label":"Domen","title":"Abstractness: 0.1, Instability: 0, Fan-in: Infrastructure, Application, Fan-out: "},{"id":"000000000e3ea89500000000266d6599","label":"Application","title":"Abstractness: 0.2, Instability: 0.818, Fan-in: Infrastructure, Fan-out: Domen, Infrastructure"},{"id":"000000000e3eaa5400000000266d6599","label":"illuminate\/macroable","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000000e3eabfa00000000266d6599","label":"laravel\/socialite","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000000e3eaa6600000000266d6599","label":"illuminate\/http","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000000e3ea83800000000266d6599","label":"*undefined*","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000000e3eab9600000000266d6599","label":"illuminate\/database","title":"Abstractness: 1, Instability: 0, Fan-in: Infrastructure, Fan-out: "}]);
+        var edges = new vis.DataSet([{"from":"000000000e3eaaa800000000266d6599","to":"000000000e3eaab300000000266d6599","label":"10->9"},{"from":"000000000e3ea89500000000266d6599","to":"000000000e3eaab300000000266d6599","label":"3->3"},{"from":"000000000e3eaaa800000000266d6599","to":"000000000e3ea89500000000266d6599","label":"2->2"},{"from":"000000000e3ea89500000000266d6599","to":"000000000e3eaaa800000000266d6599","label":"2->6"},{"from":"000000000e3eaaa800000000266d6599","to":"000000000e3eaa5400000000266d6599","label":"3->3"},{"from":"000000000e3eaaa800000000266d6599","to":"000000000e3eabfa00000000266d6599","label":"1->1"},{"from":"000000000e3eaaa800000000266d6599","to":"000000000e3eaa6600000000266d6599","label":"1->1"},{"from":"000000000e3eaaa800000000266d6599","to":"000000000e3ea83800000000266d6599","label":"2->2"},{"from":"000000000e3eaaa800000000266d6599","to":"000000000e3eab9600000000266d6599","label":"1->1"}]);
         var data = {
             nodes: nodes,
             edges: edges

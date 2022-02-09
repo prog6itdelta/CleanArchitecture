@@ -94,8 +94,8 @@
         function drawCharacteristicsChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Характеристика', 'Значение'],
-                ['Примитивность', 0.6],
-                ['Неустойчивость', 0.5],
+                ['Примитивность', 0.75],
+                ['Неустойчивость', 0.444],
             ]);
 
             var options = {
@@ -146,8 +146,8 @@
                 <li>Тип: Класс</li>
                 <li>Публичный: Да</li>
                 <li>Абстрактный: Нет</li>
-                <li>Примитивность: 0.6</li>
-                <li>Неустойчивость: 0.5</li>
+                <li>Примитивность: 0.75</li>
+                <li>Неустойчивость: 0.444</li>
             </ul>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -177,19 +177,13 @@
                     </tr>
                                     <tr class="">
                         <td>
-                            App\Packages\Learn\Entities\Lesson
-                                                            <a href="app-packages-learn-entities-lesson.html">подробнее</a>
-                                                    </td>
-                    </tr>
-                                    <tr class="">
-                        <td>
                             int
                                                     </td>
                     </tr>
                                     <tr class="">
                         <td>
-                            App\Packages\Learn\Infrastructure\Repositories\LessonRepository
-                                                            <a href="app-packages-learn-infrastructure-repositories-lessonrepository.html">подробнее</a>
+                            App\Packages\Learn\Entities\Lesson
+                                                            <a href="app-packages-learn-entities-lesson.html">подробнее</a>
                                                     </td>
                     </tr>
                             </table>
@@ -234,8 +228,8 @@
     <script type="text/javascript">
         var container = document.getElementById('graph');
 
-        var nodes = new vis.DataSet([{"id":"000000003154b6fc000000002f15145c","label":"App\\Packages\\Learn\\Entities\\Lesson"},{"id":"000000003154b6ca000000002f15145c","label":"App\\Packages\\Learn\\UseCases\\JournalService"},{"id":"000000003154b6c9000000002f15145c","label":"App\\Packages\\Learn\\UseCases\\LearnService"},{"id":"000000003154b6f5000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CourseRepository"},{"id":"000000003154b6e7000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\LessonRepository"},{"id":"000000003154b6c8000000002f15145c","label":"bool"},{"id":"000000003154b6cb000000002f15145c","label":"object"},{"id":"000000003154b6c3000000002f15145c","label":"int"}]);
-        var edges = new vis.DataSet([{"from":"000000003154b6fc000000002f15145c","to":"000000003154b6fc000000002f15145c"},{"from":"000000003154b6ca000000002f15145c","to":"000000003154b6fc000000002f15145c"},{"from":"000000003154b6c9000000002f15145c","to":"000000003154b6fc000000002f15145c"},{"from":"000000003154b6f5000000002f15145c","to":"000000003154b6fc000000002f15145c"},{"from":"000000003154b6e7000000002f15145c","to":"000000003154b6fc000000002f15145c"},{"from":"000000003154b6fc000000002f15145c","to":"000000003154b6c8000000002f15145c"},{"from":"000000003154b6fc000000002f15145c","to":"000000003154b6cb000000002f15145c"},{"from":"000000003154b6fc000000002f15145c","to":"000000003154b6c3000000002f15145c"},{"from":"000000003154b6fc000000002f15145c","to":"000000003154b6e7000000002f15145c"}]);
+        var nodes = new vis.DataSet([{"id":"000000000e3ea8d400000000266d6599","label":"App\\Packages\\Learn\\Entities\\Lesson"},{"id":"000000000e3ea8c500000000266d6599","label":"App\\Packages\\Learn\\UseCases\\JournalService"},{"id":"000000000e3ea8c300000000266d6599","label":"App\\Packages\\Learn\\UseCases\\LearnService"},{"id":"000000000e3ea8c100000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CourseRepository"},{"id":"000000000e3ea8c900000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\LessonRepository"},{"id":"000000000e3ea8d900000000266d6599","label":"bool"},{"id":"000000000e3ea8e700000000266d6599","label":"object"},{"id":"000000000e3ea8ef00000000266d6599","label":"int"}]);
+        var edges = new vis.DataSet([{"from":"000000000e3ea8d400000000266d6599","to":"000000000e3ea8d400000000266d6599"},{"from":"000000000e3ea8c500000000266d6599","to":"000000000e3ea8d400000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8d400000000266d6599"},{"from":"000000000e3ea8c100000000266d6599","to":"000000000e3ea8d400000000266d6599"},{"from":"000000000e3ea8c900000000266d6599","to":"000000000e3ea8d400000000266d6599"},{"from":"000000000e3ea8d400000000266d6599","to":"000000000e3ea8d900000000266d6599"},{"from":"000000000e3ea8d400000000266d6599","to":"000000000e3ea8e700000000266d6599"},{"from":"000000000e3ea8d400000000266d6599","to":"000000000e3ea8ef00000000266d6599"}]);
         var data = {
             nodes: nodes,
             edges: edges

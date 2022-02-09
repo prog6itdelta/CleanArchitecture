@@ -94,8 +94,8 @@
         function drawCharacteristicsChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Характеристика', 'Значение'],
-                ['Примитивность', 0.214],
-                ['Неустойчивость', 0.933],
+                ['Примитивность', 0.188],
+                ['Неустойчивость', 0.941],
             ]);
 
             var options = {
@@ -146,8 +146,8 @@
                 <li>Тип: Класс</li>
                 <li>Публичный: Да</li>
                 <li>Абстрактный: Нет</li>
-                <li>Примитивность: 0.214</li>
-                <li>Неустойчивость: 0.933</li>
+                <li>Примитивность: 0.188</li>
+                <li>Неустойчивость: 0.941</li>
             </ul>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -201,30 +201,6 @@
                     </tr>
                                     <tr class="">
                         <td>
-                            App\Packages\Learn\UseCases\JournalService
-                                                            <a href="app-packages-learn-usecases-journalservice.html">подробнее</a>
-                                                    </td>
-                    </tr>
-                                    <tr class="">
-                        <td>
-                            App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository
-                                                            <a href="app-packages-learn-infrastructure-repositories-coursegrouprepository.html">подробнее</a>
-                                                    </td>
-                    </tr>
-                                    <tr class="">
-                        <td>
-                            App\Packages\Learn\Infrastructure\Repositories\CourseRepository
-                                                            <a href="app-packages-learn-infrastructure-repositories-courserepository.html">подробнее</a>
-                                                    </td>
-                    </tr>
-                                    <tr class="">
-                        <td>
-                            App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository
-                                                            <a href="app-packages-learn-infrastructure-repositories-curriculumrepository.html">подробнее</a>
-                                                    </td>
-                    </tr>
-                                    <tr class="">
-                        <td>
                             Error
                                                     </td>
                     </tr>
@@ -240,8 +216,44 @@
                     </tr>
                                     <tr class="">
                         <td>
+                            App\Packages\Learn\Infrastructure\Repositories\CourseRepository
+                                                            <a href="app-packages-learn-infrastructure-repositories-courserepository.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository
+                                                            <a href="app-packages-learn-infrastructure-repositories-coursegrouprepository.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository
+                                                            <a href="app-packages-learn-infrastructure-repositories-curriculumrepository.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            App\Packages\Learn\Infrastructure\Repositories\LessonRepository
+                                                            <a href="app-packages-learn-infrastructure-repositories-lessonrepository.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            App\Packages\Learn\Infrastructure\Repositories\QuestionRepository
+                                                            <a href="app-packages-learn-infrastructure-repositories-questionrepository.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
                             App\Packages\Learn\UseCases\LearnService
                                                             <a href="app-packages-learn-usecases-learnservice.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            App\Packages\Learn\UseCases\JournalService
+                                                            <a href="app-packages-learn-usecases-journalservice.html">подробнее</a>
                                                     </td>
                     </tr>
                             </table>
@@ -262,8 +274,8 @@
     <script type="text/javascript">
         var container = document.getElementById('graph');
 
-        var nodes = new vis.DataSet([{"id":"000000003154b6c9000000002f15145c","label":"App\\Packages\\Learn\\UseCases\\LearnService"},{"id":"000000003154b613000000002f15145c","label":"App\\Packages\\Learn\\UseCases\\LearnServiceInterface"},{"id":"000000003154b6fd000000002f15145c","label":"array"},{"id":"000000003154b6c3000000002f15145c","label":"int"},{"id":"000000003154b6c5000000002f15145c","label":"App\\Packages\\Learn\\Entities\\Course"},{"id":"000000003154b6d8000000002f15145c","label":"App\\Packages\\Common\\Application\\Services\\IAuthorisationService"},{"id":"000000003154b6fc000000002f15145c","label":"App\\Packages\\Learn\\Entities\\Lesson"},{"id":"000000003154b6ca000000002f15145c","label":"App\\Packages\\Learn\\UseCases\\JournalService"},{"id":"000000003154b6f0000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CourseGroupRepository"},{"id":"000000003154b6f5000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CourseRepository"},{"id":"000000003154b6f2000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CurriculumRepository"},{"id":"000000003154b617000000002f15145c","label":"Error"},{"id":"000000003154b6ea000000002f15145c","label":"Exception"},{"id":"000000003154b6c8000000002f15145c","label":"bool"}]);
-        var edges = new vis.DataSet([{"from":"000000003154b6c9000000002f15145c","to":"000000003154b6c9000000002f15145c"},{"from":"000000003154b6c9000000002f15145c","to":"000000003154b613000000002f15145c"},{"from":"000000003154b6c9000000002f15145c","to":"000000003154b6fd000000002f15145c"},{"from":"000000003154b6c9000000002f15145c","to":"000000003154b6c3000000002f15145c"},{"from":"000000003154b6c9000000002f15145c","to":"000000003154b6c5000000002f15145c"},{"from":"000000003154b6c9000000002f15145c","to":"000000003154b6d8000000002f15145c"},{"from":"000000003154b6c9000000002f15145c","to":"000000003154b6fc000000002f15145c"},{"from":"000000003154b6c9000000002f15145c","to":"000000003154b6ca000000002f15145c"},{"from":"000000003154b6c9000000002f15145c","to":"000000003154b6f0000000002f15145c"},{"from":"000000003154b6c9000000002f15145c","to":"000000003154b6f5000000002f15145c"},{"from":"000000003154b6c9000000002f15145c","to":"000000003154b6f2000000002f15145c"},{"from":"000000003154b6c9000000002f15145c","to":"000000003154b617000000002f15145c"},{"from":"000000003154b6c9000000002f15145c","to":"000000003154b6ea000000002f15145c"},{"from":"000000003154b6c9000000002f15145c","to":"000000003154b6c8000000002f15145c"}]);
+        var nodes = new vis.DataSet([{"id":"000000000e3ea8c300000000266d6599","label":"App\\Packages\\Learn\\UseCases\\LearnService"},{"id":"000000000e3ea83b00000000266d6599","label":"App\\Packages\\Learn\\UseCases\\LearnServiceInterface"},{"id":"000000000e3ea8d300000000266d6599","label":"array"},{"id":"000000000e3ea8ef00000000266d6599","label":"int"},{"id":"000000000e3ea8ed00000000266d6599","label":"App\\Packages\\Learn\\Entities\\Course"},{"id":"000000000e3ea8f700000000266d6599","label":"App\\Packages\\Common\\Application\\Services\\IAuthorisationService"},{"id":"000000000e3ea8d400000000266d6599","label":"App\\Packages\\Learn\\Entities\\Lesson"},{"id":"000000000e3ea8c700000000266d6599","label":"Error"},{"id":"000000000e3ea8c400000000266d6599","label":"Exception"},{"id":"000000000e3ea8d900000000266d6599","label":"bool"},{"id":"000000000e3ea8c100000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CourseRepository"},{"id":"000000000e3ea8c000000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CourseGroupRepository"},{"id":"000000000e3ea8ce00000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CurriculumRepository"},{"id":"000000000e3ea8c900000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\LessonRepository"},{"id":"000000000e3ea8e600000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\QuestionRepository"},{"id":"000000000e3ea8c500000000266d6599","label":"App\\Packages\\Learn\\UseCases\\JournalService"}]);
+        var edges = new vis.DataSet([{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8c300000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea83b00000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8d300000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8ef00000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8ed00000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8f700000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8d400000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8c700000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8c400000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8d900000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8c100000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8c000000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8ce00000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8c900000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8e600000000266d6599"},{"from":"000000000e3ea8c300000000266d6599","to":"000000000e3ea8c500000000266d6599"}]);
         var data = {
             nodes: nodes,
             edges: edges

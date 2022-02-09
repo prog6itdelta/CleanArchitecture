@@ -84,8 +84,8 @@
         </style>
     
     <script type="text/javascript">
-        let dependentComponents = JSON.parse('[{"name":"domen","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\CourseGroup","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseGroupRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-coursegroup"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","is_allowed":true,"in_allowed_state":false},{"name":"int","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-course"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Lesson","dependencies":[{"name":"bool","is_allowed":true,"in_allowed_state":false},{"name":"object","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Lesson","is_allowed":true,"in_allowed_state":false},{"name":"int","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\LessonRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-lesson"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Curriculum","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CurriculumRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-curriculum"}],"reverted_units_of_code":[]},{"name":"application","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Learn\\\\UseCases\\\\JournalService","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\JournalLesson","is_allowed":true,"in_allowed_state":false},{"name":"int","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"string","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Lesson","is_allowed":true,"in_allowed_state":false},{"name":"stdClass","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalLessonRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\UseCases\\\\CourseStatus","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\UseCases\\\\LessonStatus","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-usecases-journalservice"},{"name":"App\\\\Packages\\\\Learn\\\\UseCases\\\\LearnService","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\UseCases\\\\LearnServiceInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"int","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Services\\\\IAuthorisationService","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Lesson","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\UseCases\\\\JournalService","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseGroupRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CurriculumRepository","is_allowed":true,"in_allowed_state":false},{"name":"Error","is_allowed":true,"in_allowed_state":false},{"name":"Exception","is_allowed":true,"in_allowed_state":false},{"name":"bool","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\UseCases\\\\LearnService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-usecases-learnservice"}],"reverted_units_of_code":[]}]');
-        let dependencyComponents = JSON.parse('[{"name":"application","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseGroupRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\CourseGroup","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-coursegrouprepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Lesson","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-courserepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\LessonRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Lesson","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Question","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-lessonrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CurriculumRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Curriculum","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-curriculumrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalLessonRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\JournalLesson","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-journallessonrepository"},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\AuthorisationService","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Services\\\\IAuthorisationService","is_allowed":true,"in_allowed_state":false},{"name":"bool","is_allowed":true,"in_allowed_state":false},{"name":"string","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\AuthorisationService","is_allowed":true,"in_allowed_state":false},{"name":"Enforcer","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-services-authorisationservice"},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\UserService","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Services\\\\IUserService","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\UserDTO","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\Auth","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-services-userservice"},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"int","is_allowed":true,"in_allowed_state":false},{"name":"string","is_allowed":true,"in_allowed_state":false},{"name":"mixed","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Exceptions\\\\RepositoryException","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\App","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Database\\\\Eloquent\\\\Model","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-repositories-abstractrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalQuestionsRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Models\\\\Question","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-journalquestionsrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\QuestionRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Answer","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Question","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-questionrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\AnswerRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Answer","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-answerrepository"}],"reverted_units_of_code":[{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseGroupRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalLessonRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalQuestionsRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CurriculumRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\QuestionRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\LessonRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\AnswerRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-application-interfaces-repositoryinterface"},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Services\\\\IAuthorisationService","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\AuthorisationService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-application-services-iauthorisationservice"},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Services\\\\IUserService","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\UserService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-application-services-iuserservice"}]},{"name":"domen","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseGroupRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\CourseGroup","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-coursegrouprepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Lesson","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-courserepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\LessonRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Lesson","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Question","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-lessonrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CurriculumRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Curriculum","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-curriculumrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalLessonRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\JournalLesson","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-journallessonrepository"},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\UserService","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Services\\\\IUserService","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\UserDTO","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\Auth","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-services-userservice"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\QuestionRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Answer","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Question","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-questionrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\AnswerRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Answer","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-answerrepository"}],"reverted_units_of_code":[{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseGroupRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CurriculumRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-course"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\CourseGroup","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseGroupRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-coursegroup"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Lesson","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\LessonRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-lesson"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Question","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\QuestionRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\LessonRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-question"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Curriculum","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CurriculumRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-curriculum"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\JournalLesson","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalLessonRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-journallesson"},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\UserDTO","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\UserService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-domain-userdto"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Answer","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\QuestionRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\AnswerRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-answer"}]},{"name":"illuminate-macroable","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","dependencies":[{"name":"Illuminate\\\\Support\\\\Facades\\\\Config","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","is_allowed":true,"in_allowed_state":false},{"name":"Laravel\\\\Socialite\\\\Facades\\\\Socialite","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Http\\\\RedirectResponse","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-integrations-integrationservice"},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\UserService","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Services\\\\IUserService","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\UserDTO","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\Auth","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-services-userservice"},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"int","is_allowed":true,"in_allowed_state":false},{"name":"string","is_allowed":true,"in_allowed_state":false},{"name":"mixed","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Exceptions\\\\RepositoryException","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\App","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Database\\\\Eloquent\\\\Model","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-repositories-abstractrepository"}],"reverted_units_of_code":[{"name":"Illuminate\\\\Support\\\\Facades\\\\Config","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\Auth","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\UserService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\App","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false}]},{"name":"laravel-socialite","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","dependencies":[{"name":"Illuminate\\\\Support\\\\Facades\\\\Config","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","is_allowed":true,"in_allowed_state":false},{"name":"Laravel\\\\Socialite\\\\Facades\\\\Socialite","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Http\\\\RedirectResponse","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-integrations-integrationservice"}],"reverted_units_of_code":[{"name":"Laravel\\\\Socialite\\\\Facades\\\\Socialite","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false}]},{"name":"illuminate-http","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","dependencies":[{"name":"Illuminate\\\\Support\\\\Facades\\\\Config","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","is_allowed":true,"in_allowed_state":false},{"name":"Laravel\\\\Socialite\\\\Facades\\\\Socialite","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Http\\\\RedirectResponse","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-integrations-integrationservice"}],"reverted_units_of_code":[{"name":"Illuminate\\\\Http\\\\RedirectResponse","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false}]},{"name":"*undefined*","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"int","is_allowed":true,"in_allowed_state":false},{"name":"string","is_allowed":true,"in_allowed_state":false},{"name":"mixed","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Exceptions\\\\RepositoryException","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\App","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Database\\\\Eloquent\\\\Model","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-repositories-abstractrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalQuestionsRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Models\\\\Question","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-journalquestionsrepository"}],"reverted_units_of_code":[{"name":"App\\\\Exceptions\\\\RepositoryException","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Models\\\\Question","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalQuestionsRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false}]},{"name":"illuminate-database","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"int","is_allowed":true,"in_allowed_state":false},{"name":"string","is_allowed":true,"in_allowed_state":false},{"name":"mixed","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Exceptions\\\\RepositoryException","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\App","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Database\\\\Eloquent\\\\Model","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-repositories-abstractrepository"}],"reverted_units_of_code":[{"name":"Illuminate\\\\Database\\\\Eloquent\\\\Model","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false}]}]');
+        let dependentComponents = JSON.parse('[{"name":"application","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Learn\\\\UseCases\\\\JournalService","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\JournalLesson","is_allowed":true,"in_allowed_state":false},{"name":"int","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"string","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Lesson","is_allowed":true,"in_allowed_state":false},{"name":"stdClass","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalLessonRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\UseCases\\\\CourseStatus","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\UseCases\\\\LessonStatus","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-usecases-journalservice"},{"name":"App\\\\Packages\\\\Learn\\\\UseCases\\\\LearnService","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\UseCases\\\\LearnServiceInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"int","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Services\\\\IAuthorisationService","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Lesson","is_allowed":true,"in_allowed_state":false},{"name":"Error","is_allowed":true,"in_allowed_state":false},{"name":"Exception","is_allowed":true,"in_allowed_state":false},{"name":"bool","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseGroupRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CurriculumRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\LessonRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\QuestionRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\UseCases\\\\LearnService","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\UseCases\\\\JournalService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-usecases-learnservice"}],"reverted_units_of_code":[]}]');
+        let dependencyComponents = JSON.parse('[{"name":"domen","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalLessonRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\JournalLesson","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-journallessonrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Lesson","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-courserepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseGroupRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\CourseGroup","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-coursegrouprepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CurriculumRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Curriculum","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-curriculumrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\LessonRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Lesson","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Question","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-lessonrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\QuestionRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Answer","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Question","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-questionrepository"},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\UserService","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Services\\\\IUserService","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\UserDTO","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\Auth","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-services-userservice"},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"int","is_allowed":true,"in_allowed_state":false},{"name":"string","is_allowed":true,"in_allowed_state":false},{"name":"mixed","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Exceptions\\\\RepositoryException","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\App","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Database\\\\Eloquent\\\\Model","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-repositories-abstractrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalQuestionsRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Models\\\\Question","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-journalquestionsrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\AnswerRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Answer","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-answerrepository"}],"reverted_units_of_code":[{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\Interfaces\\\\RepositoryInterface","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseGroupRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalLessonRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalQuestionsRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CurriculumRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\QuestionRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\LessonRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\AnswerRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-domain-interfaces-repositoryinterface"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\JournalLesson","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalLessonRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-journallesson"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Course","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseGroupRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CurriculumRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-course"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Lesson","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\LessonRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-lesson"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\CourseGroup","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CourseGroupRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-coursegroup"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Curriculum","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\CurriculumRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-curriculum"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Question","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\QuestionRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\LessonRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-question"},{"name":"App\\\\Packages\\\\Learn\\\\Entities\\\\Answer","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\QuestionRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\AnswerRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-entities-answer"},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\UserDTO","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\UserService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-domain-userdto"}]},{"name":"illuminate-macroable","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","dependencies":[{"name":"Illuminate\\\\Support\\\\Facades\\\\Config","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","is_allowed":true,"in_allowed_state":false},{"name":"Laravel\\\\Socialite\\\\Facades\\\\Socialite","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Http\\\\RedirectResponse","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-integrations-integrationservice"},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\UserService","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Services\\\\IUserService","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\UserDTO","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\Auth","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-services-userservice"},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"int","is_allowed":true,"in_allowed_state":false},{"name":"string","is_allowed":true,"in_allowed_state":false},{"name":"mixed","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Exceptions\\\\RepositoryException","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\App","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Database\\\\Eloquent\\\\Model","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-repositories-abstractrepository"}],"reverted_units_of_code":[{"name":"Illuminate\\\\Support\\\\Facades\\\\Config","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\Auth","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\UserService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\App","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false}]},{"name":"laravel-socialite","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","dependencies":[{"name":"Illuminate\\\\Support\\\\Facades\\\\Config","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","is_allowed":true,"in_allowed_state":false},{"name":"Laravel\\\\Socialite\\\\Facades\\\\Socialite","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Http\\\\RedirectResponse","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-integrations-integrationservice"}],"reverted_units_of_code":[{"name":"Laravel\\\\Socialite\\\\Facades\\\\Socialite","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false}]},{"name":"illuminate-http","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","dependencies":[{"name":"Illuminate\\\\Support\\\\Facades\\\\Config","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","is_allowed":true,"in_allowed_state":false},{"name":"Laravel\\\\Socialite\\\\Facades\\\\Socialite","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Http\\\\RedirectResponse","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-integrations-integrationservice"}],"reverted_units_of_code":[{"name":"Illuminate\\\\Http\\\\RedirectResponse","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Integrations\\\\IntegrationService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false}]},{"name":"application","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\AuthorisationService","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Services\\\\IAuthorisationService","is_allowed":true,"in_allowed_state":false},{"name":"bool","is_allowed":true,"in_allowed_state":false},{"name":"string","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\AuthorisationService","is_allowed":true,"in_allowed_state":false},{"name":"Enforcer","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-services-authorisationservice"},{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\UserService","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Services\\\\IUserService","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\UserDTO","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\Auth","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-services-userservice"}],"reverted_units_of_code":[{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Services\\\\IAuthorisationService","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\AuthorisationService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-application-services-iauthorisationservice"},{"name":"App\\\\Packages\\\\Common\\\\Application\\\\Services\\\\IUserService","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Services\\\\UserService","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-application-services-iuserservice"}]},{"name":"*undefined*","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"int","is_allowed":true,"in_allowed_state":false},{"name":"string","is_allowed":true,"in_allowed_state":false},{"name":"mixed","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Exceptions\\\\RepositoryException","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\App","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Database\\\\Eloquent\\\\Model","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-repositories-abstractrepository"},{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalQuestionsRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Models\\\\Question","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-learn-infrastructure-repositories-journalquestionsrepository"}],"reverted_units_of_code":[{"name":"App\\\\Exceptions\\\\RepositoryException","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Models\\\\Question","dependencies":[{"name":"App\\\\Packages\\\\Learn\\\\Infrastructure\\\\Repositories\\\\JournalQuestionsRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false}]},{"name":"illuminate-database","linked_component_name":"infrastructure","units_of_code":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Domain\\\\Interfaces\\\\RepositoryInterface","is_allowed":true,"in_allowed_state":false},{"name":"array","is_allowed":true,"in_allowed_state":false},{"name":"int","is_allowed":true,"in_allowed_state":false},{"name":"string","is_allowed":true,"in_allowed_state":false},{"name":"mixed","is_allowed":true,"in_allowed_state":false},{"name":"App\\\\Exceptions\\\\RepositoryException","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Support\\\\Facades\\\\App","is_allowed":true,"in_allowed_state":false},{"name":"Illuminate\\\\Database\\\\Eloquent\\\\Model","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false,"uid":"app-packages-common-infrastructure-repositories-abstractrepository"}],"reverted_units_of_code":[{"name":"Illuminate\\\\Database\\\\Eloquent\\\\Model","dependencies":[{"name":"App\\\\Packages\\\\Common\\\\Infrastructure\\\\Repositories\\\\AbstractRepository","is_allowed":true,"in_allowed_state":false}],"is_allowed":true,"in_allowed_state":false}]}]');
 
         google.charts.load("current", {packages: ['corechart', 'bar']});
         google.charts.setOnLoadCallback(drawCharts);
@@ -154,8 +154,8 @@
                 ['Характеристика', 'Значение метрики'],
                 ['Примитивность', 0.221],
                 ['Абстрактность', 0.083],
-                ['Неустойчивость', 0.76],
-                ['Расстояние до главной диагонали', 0.157],
+                ['Неустойчивость', 0.905],
+                ['Расстояние до главной диагонали', 0.012],
             ]);
 
             var options = {
@@ -172,7 +172,7 @@
         function drawAIChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Имя', 'Неустойчивость', 'Абстрактность'],
-                ['Infrastructure', 0.76, 0.083],
+                ['Infrastructure', 0.905, 0.083],
             ]);
 
             var options = {
@@ -247,7 +247,52 @@
     <div class="row">
         <div class="col-6">
             <table class="table table-borderless table-hover">
-                                                            <tr class="hidden unit-of-code-row output-deps-chart application
+                                                            <tr class="hidden unit-of-code-row output-deps-chart domen
+                            ">
+                            <td>
+                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\JournalLessonRepository</span>
+                                                                    <a href="app-packages-learn-infrastructure-repositories-journallessonrepository.html">подробнее</a>
+                                                                <ul class="hidden">
+                                                                            <li class="">
+                                            App\Packages\Common\Infrastructure\Repositories\AbstractRepository
+                                        </li>
+                                                                            <li class="">
+                                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
+                                        </li>
+                                                                            <li class="">
+                                            array
+                                        </li>
+                                                                            <li class="">
+                                            App\Packages\Learn\Entities\JournalLesson
+                                        </li>
+                                                                    </ul>
+                            </td>
+                        </tr>
+                                            <tr class="hidden unit-of-code-row output-deps-chart domen
+                            ">
+                            <td>
+                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\CourseRepository</span>
+                                                                    <a href="app-packages-learn-infrastructure-repositories-courserepository.html">подробнее</a>
+                                                                <ul class="hidden">
+                                                                            <li class="">
+                                            App\Packages\Common\Infrastructure\Repositories\AbstractRepository
+                                        </li>
+                                                                            <li class="">
+                                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
+                                        </li>
+                                                                            <li class="">
+                                            array
+                                        </li>
+                                                                            <li class="">
+                                            App\Packages\Learn\Entities\Course
+                                        </li>
+                                                                            <li class="">
+                                            App\Packages\Learn\Entities\Lesson
+                                        </li>
+                                                                    </ul>
+                            </td>
+                        </tr>
+                                            <tr class="hidden unit-of-code-row output-deps-chart domen
                             ">
                             <td>
                                 <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository</span>
@@ -257,7 +302,7 @@
                                             App\Packages\Common\Infrastructure\Repositories\AbstractRepository
                                         </li>
                                                                             <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
+                                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
                                         </li>
                                                                             <li class="">
                                             array
@@ -271,55 +316,7 @@
                                                                     </ul>
                             </td>
                         </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart application
-                            ">
-                            <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\CourseRepository</span>
-                                                                    <a href="app-packages-learn-infrastructure-repositories-courserepository.html">подробнее</a>
-                                                                <ul class="hidden">
-                                                                            <li class="">
-                                            App\Packages\Common\Infrastructure\Repositories\AbstractRepository
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
-                                        </li>
-                                                                            <li class="">
-                                            array
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Course
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Lesson
-                                        </li>
-                                                                    </ul>
-                            </td>
-                        </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart application
-                            ">
-                            <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\LessonRepository</span>
-                                                                    <a href="app-packages-learn-infrastructure-repositories-lessonrepository.html">подробнее</a>
-                                                                <ul class="hidden">
-                                                                            <li class="">
-                                            App\Packages\Common\Infrastructure\Repositories\AbstractRepository
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
-                                        </li>
-                                                                            <li class="">
-                                            array
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Lesson
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Question
-                                        </li>
-                                                                    </ul>
-                            </td>
-                        </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart application
+                                            <tr class="hidden unit-of-code-row output-deps-chart domen
                             ">
                             <td>
                                 <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository</span>
@@ -329,7 +326,7 @@
                                             App\Packages\Common\Infrastructure\Repositories\AbstractRepository
                                         </li>
                                                                             <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
+                                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
                                         </li>
                                                                             <li class="">
                                             array
@@ -343,52 +340,55 @@
                                                                     </ul>
                             </td>
                         </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart application
+                                            <tr class="hidden unit-of-code-row output-deps-chart domen
                             ">
                             <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\JournalLessonRepository</span>
-                                                                    <a href="app-packages-learn-infrastructure-repositories-journallessonrepository.html">подробнее</a>
+                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\LessonRepository</span>
+                                                                    <a href="app-packages-learn-infrastructure-repositories-lessonrepository.html">подробнее</a>
                                                                 <ul class="hidden">
                                                                             <li class="">
                                             App\Packages\Common\Infrastructure\Repositories\AbstractRepository
                                         </li>
                                                                             <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
+                                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
                                         </li>
                                                                             <li class="">
                                             array
                                         </li>
                                                                             <li class="">
-                                            App\Packages\Learn\Entities\JournalLesson
+                                            App\Packages\Learn\Entities\Lesson
+                                        </li>
+                                                                            <li class="">
+                                            App\Packages\Learn\Entities\Question
                                         </li>
                                                                     </ul>
                             </td>
                         </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart application
+                                            <tr class="hidden unit-of-code-row output-deps-chart domen
                             ">
                             <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Common\Infrastructure\Services\AuthorisationService</span>
-                                                                    <a href="app-packages-common-infrastructure-services-authorisationservice.html">подробнее</a>
+                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\QuestionRepository</span>
+                                                                    <a href="app-packages-learn-infrastructure-repositories-questionrepository.html">подробнее</a>
                                                                 <ul class="hidden">
                                                                             <li class="">
-                                            App\Packages\Common\Application\Services\IAuthorisationService
+                                            App\Packages\Common\Infrastructure\Repositories\AbstractRepository
                                         </li>
                                                                             <li class="">
-                                            bool
+                                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
                                         </li>
                                                                             <li class="">
-                                            string
+                                            array
                                         </li>
                                                                             <li class="">
-                                            App\Packages\Common\Infrastructure\Services\AuthorisationService
+                                            App\Packages\Learn\Entities\Answer
                                         </li>
                                                                             <li class="">
-                                            Enforcer
+                                            App\Packages\Learn\Entities\Question
                                         </li>
                                                                     </ul>
                             </td>
                         </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart application
+                                            <tr class="hidden unit-of-code-row output-deps-chart domen
                             ">
                             <td>
                                 <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Common\Infrastructure\Services\UserService</span>
@@ -406,14 +406,14 @@
                                                                     </ul>
                             </td>
                         </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart application
+                                            <tr class="hidden unit-of-code-row output-deps-chart domen
                             ">
                             <td>
                                 <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Common\Infrastructure\Repositories\AbstractRepository</span>
                                                                     <a href="app-packages-common-infrastructure-repositories-abstractrepository.html">подробнее</a>
                                                                 <ul class="hidden">
                                                                             <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
+                                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
                                         </li>
                                                                             <li class="">
                                             array
@@ -439,7 +439,7 @@
                                                                     </ul>
                             </td>
                         </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart application
+                                            <tr class="hidden unit-of-code-row output-deps-chart domen
                             ">
                             <td>
                                 <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\JournalQuestionsRepository</span>
@@ -449,7 +449,7 @@
                                             App\Packages\Common\Infrastructure\Repositories\AbstractRepository
                                         </li>
                                                                             <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
+                                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
                                         </li>
                                                                             <li class="">
                                             array
@@ -460,210 +460,6 @@
                                                                     </ul>
                             </td>
                         </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart application
-                            ">
-                            <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\QuestionRepository</span>
-                                                                    <a href="app-packages-learn-infrastructure-repositories-questionrepository.html">подробнее</a>
-                                                                <ul class="hidden">
-                                                                            <li class="">
-                                            App\Packages\Common\Infrastructure\Repositories\AbstractRepository
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
-                                        </li>
-                                                                            <li class="">
-                                            array
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Answer
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Question
-                                        </li>
-                                                                    </ul>
-                            </td>
-                        </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart application
-                            ">
-                            <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\AnswerRepository</span>
-                                                                    <a href="app-packages-learn-infrastructure-repositories-answerrepository.html">подробнее</a>
-                                                                <ul class="hidden">
-                                                                            <li class="">
-                                            App\Packages\Common\Infrastructure\Repositories\AbstractRepository
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
-                                        </li>
-                                                                            <li class="">
-                                            array
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Answer
-                                        </li>
-                                                                    </ul>
-                            </td>
-                        </tr>
-                                                                                <tr class="hidden unit-of-code-row output-deps-chart domen
-                            ">
-                            <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository</span>
-                                                                    <a href="app-packages-learn-infrastructure-repositories-coursegrouprepository.html">подробнее</a>
-                                                                <ul class="hidden">
-                                                                            <li class="">
-                                            App\Packages\Common\Infrastructure\Repositories\AbstractRepository
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
-                                        </li>
-                                                                            <li class="">
-                                            array
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Course
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\CourseGroup
-                                        </li>
-                                                                    </ul>
-                            </td>
-                        </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart domen
-                            ">
-                            <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\CourseRepository</span>
-                                                                    <a href="app-packages-learn-infrastructure-repositories-courserepository.html">подробнее</a>
-                                                                <ul class="hidden">
-                                                                            <li class="">
-                                            App\Packages\Common\Infrastructure\Repositories\AbstractRepository
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
-                                        </li>
-                                                                            <li class="">
-                                            array
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Course
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Lesson
-                                        </li>
-                                                                    </ul>
-                            </td>
-                        </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart domen
-                            ">
-                            <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\LessonRepository</span>
-                                                                    <a href="app-packages-learn-infrastructure-repositories-lessonrepository.html">подробнее</a>
-                                                                <ul class="hidden">
-                                                                            <li class="">
-                                            App\Packages\Common\Infrastructure\Repositories\AbstractRepository
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
-                                        </li>
-                                                                            <li class="">
-                                            array
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Lesson
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Question
-                                        </li>
-                                                                    </ul>
-                            </td>
-                        </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart domen
-                            ">
-                            <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository</span>
-                                                                    <a href="app-packages-learn-infrastructure-repositories-curriculumrepository.html">подробнее</a>
-                                                                <ul class="hidden">
-                                                                            <li class="">
-                                            App\Packages\Common\Infrastructure\Repositories\AbstractRepository
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
-                                        </li>
-                                                                            <li class="">
-                                            array
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Course
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Curriculum
-                                        </li>
-                                                                    </ul>
-                            </td>
-                        </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart domen
-                            ">
-                            <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\JournalLessonRepository</span>
-                                                                    <a href="app-packages-learn-infrastructure-repositories-journallessonrepository.html">подробнее</a>
-                                                                <ul class="hidden">
-                                                                            <li class="">
-                                            App\Packages\Common\Infrastructure\Repositories\AbstractRepository
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
-                                        </li>
-                                                                            <li class="">
-                                            array
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\JournalLesson
-                                        </li>
-                                                                    </ul>
-                            </td>
-                        </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart domen
-                            ">
-                            <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Common\Infrastructure\Services\UserService</span>
-                                                                    <a href="app-packages-common-infrastructure-services-userservice.html">подробнее</a>
-                                                                <ul class="hidden">
-                                                                            <li class="">
-                                            App\Packages\Common\Application\Services\IUserService
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Common\Domain\UserDTO
-                                        </li>
-                                                                            <li class="">
-                                            Illuminate\Support\Facades\Auth
-                                        </li>
-                                                                    </ul>
-                            </td>
-                        </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart domen
-                            ">
-                            <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Infrastructure\Repositories\QuestionRepository</span>
-                                                                    <a href="app-packages-learn-infrastructure-repositories-questionrepository.html">подробнее</a>
-                                                                <ul class="hidden">
-                                                                            <li class="">
-                                            App\Packages\Common\Infrastructure\Repositories\AbstractRepository
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
-                                        </li>
-                                                                            <li class="">
-                                            array
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Answer
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Entities\Question
-                                        </li>
-                                                                    </ul>
-                            </td>
-                        </tr>
                                             <tr class="hidden unit-of-code-row output-deps-chart domen
                             ">
                             <td>
@@ -674,7 +470,7 @@
                                             App\Packages\Common\Infrastructure\Repositories\AbstractRepository
                                         </li>
                                                                             <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
+                                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
                                         </li>
                                                                             <li class="">
                                             array
@@ -731,7 +527,7 @@
                                                                     <a href="app-packages-common-infrastructure-repositories-abstractrepository.html">подробнее</a>
                                                                 <ul class="hidden">
                                                                             <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
+                                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
                                         </li>
                                                                             <li class="">
                                             array
@@ -799,6 +595,48 @@
                                                                     </ul>
                             </td>
                         </tr>
+                                                                                <tr class="hidden unit-of-code-row output-deps-chart application
+                            ">
+                            <td>
+                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Common\Infrastructure\Services\AuthorisationService</span>
+                                                                    <a href="app-packages-common-infrastructure-services-authorisationservice.html">подробнее</a>
+                                                                <ul class="hidden">
+                                                                            <li class="">
+                                            App\Packages\Common\Application\Services\IAuthorisationService
+                                        </li>
+                                                                            <li class="">
+                                            bool
+                                        </li>
+                                                                            <li class="">
+                                            string
+                                        </li>
+                                                                            <li class="">
+                                            App\Packages\Common\Infrastructure\Services\AuthorisationService
+                                        </li>
+                                                                            <li class="">
+                                            Enforcer
+                                        </li>
+                                                                    </ul>
+                            </td>
+                        </tr>
+                                            <tr class="hidden unit-of-code-row output-deps-chart application
+                            ">
+                            <td>
+                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Common\Infrastructure\Services\UserService</span>
+                                                                    <a href="app-packages-common-infrastructure-services-userservice.html">подробнее</a>
+                                                                <ul class="hidden">
+                                                                            <li class="">
+                                            App\Packages\Common\Application\Services\IUserService
+                                        </li>
+                                                                            <li class="">
+                                            App\Packages\Common\Domain\UserDTO
+                                        </li>
+                                                                            <li class="">
+                                            Illuminate\Support\Facades\Auth
+                                        </li>
+                                                                    </ul>
+                            </td>
+                        </tr>
                                                                                 <tr class="hidden unit-of-code-row output-deps-chart *undefined*
                             ">
                             <td>
@@ -806,7 +644,7 @@
                                                                     <a href="app-packages-common-infrastructure-repositories-abstractrepository.html">подробнее</a>
                                                                 <ul class="hidden">
                                                                             <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
+                                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
                                         </li>
                                                                             <li class="">
                                             array
@@ -842,7 +680,7 @@
                                             App\Packages\Common\Infrastructure\Repositories\AbstractRepository
                                         </li>
                                                                             <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
+                                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
                                         </li>
                                                                             <li class="">
                                             array
@@ -860,7 +698,7 @@
                                                                     <a href="app-packages-common-infrastructure-repositories-abstractrepository.html">подробнее</a>
                                                                 <ul class="hidden">
                                                                             <li class="">
-                                            App\Packages\Common\Application\Interfaces\RepositoryInterface
+                                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
                                         </li>
                                                                             <li class="">
                                             array
@@ -890,11 +728,11 @@
         </div>
         <div class="col-6">
             <table class="table table-borderless table-hover">
-                                                            <tr class="hidden unit-of-code-row output-deps-chart application
+                                                            <tr class="hidden unit-of-code-row output-deps-chart domen
                             ">
                             <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Common\Application\Interfaces\RepositoryInterface</span>
-                                                                    <a href="app-packages-common-application-interfaces-repositoryinterface.html">подробнее</a>
+                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Common\Domain\Interfaces\RepositoryInterface</span>
+                                                                    <a href="app-packages-common-domain-interfaces-repositoryinterface.html">подробнее</a>
                                                                 <ul class="hidden">
                                                                             <li class="">
                                             App\Packages\Common\Infrastructure\Repositories\AbstractRepository
@@ -926,31 +764,19 @@
                                                                     </ul>
                             </td>
                         </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart application
+                                            <tr class="hidden unit-of-code-row output-deps-chart domen
                             ">
                             <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Common\Application\Services\IAuthorisationService</span>
-                                                                    <a href="app-packages-common-application-services-iauthorisationservice.html">подробнее</a>
+                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Entities\JournalLesson</span>
+                                                                    <a href="app-packages-learn-entities-journallesson.html">подробнее</a>
                                                                 <ul class="hidden">
                                                                             <li class="">
-                                            App\Packages\Common\Infrastructure\Services\AuthorisationService
+                                            App\Packages\Learn\Infrastructure\Repositories\JournalLessonRepository
                                         </li>
                                                                     </ul>
                             </td>
                         </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart application
-                            ">
-                            <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Common\Application\Services\IUserService</span>
-                                                                    <a href="app-packages-common-application-services-iuserservice.html">подробнее</a>
-                                                                <ul class="hidden">
-                                                                            <li class="">
-                                            App\Packages\Common\Infrastructure\Services\UserService
-                                        </li>
-                                                                    </ul>
-                            </td>
-                        </tr>
-                                                                                <tr class="hidden unit-of-code-row output-deps-chart domen
+                                            <tr class="hidden unit-of-code-row output-deps-chart domen
                             ">
                             <td>
                                 <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Entities\Course</span>
@@ -964,18 +790,6 @@
                                         </li>
                                                                             <li class="">
                                             App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository
-                                        </li>
-                                                                    </ul>
-                            </td>
-                        </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart domen
-                            ">
-                            <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Entities\CourseGroup</span>
-                                                                    <a href="app-packages-learn-entities-coursegroup.html">подробнее</a>
-                                                                <ul class="hidden">
-                                                                            <li class="">
-                                            App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository
                                         </li>
                                                                     </ul>
                             </td>
@@ -998,14 +812,11 @@
                                             <tr class="hidden unit-of-code-row output-deps-chart domen
                             ">
                             <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Entities\Question</span>
-                                                                    <a href="app-packages-learn-entities-question.html">подробнее</a>
+                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Entities\CourseGroup</span>
+                                                                    <a href="app-packages-learn-entities-coursegroup.html">подробнее</a>
                                                                 <ul class="hidden">
                                                                             <li class="">
-                                            App\Packages\Learn\Infrastructure\Repositories\QuestionRepository
-                                        </li>
-                                                                            <li class="">
-                                            App\Packages\Learn\Infrastructure\Repositories\LessonRepository
+                                            App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository
                                         </li>
                                                                     </ul>
                             </td>
@@ -1025,23 +836,14 @@
                                             <tr class="hidden unit-of-code-row output-deps-chart domen
                             ">
                             <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Entities\JournalLesson</span>
-                                                                    <a href="app-packages-learn-entities-journallesson.html">подробнее</a>
+                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Learn\Entities\Question</span>
+                                                                    <a href="app-packages-learn-entities-question.html">подробнее</a>
                                                                 <ul class="hidden">
                                                                             <li class="">
-                                            App\Packages\Learn\Infrastructure\Repositories\JournalLessonRepository
+                                            App\Packages\Learn\Infrastructure\Repositories\QuestionRepository
                                         </li>
-                                                                    </ul>
-                            </td>
-                        </tr>
-                                            <tr class="hidden unit-of-code-row output-deps-chart domen
-                            ">
-                            <td>
-                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Common\Domain\UserDTO</span>
-                                                                    <a href="app-packages-common-domain-userdto.html">подробнее</a>
-                                                                <ul class="hidden">
                                                                             <li class="">
-                                            App\Packages\Common\Infrastructure\Services\UserService
+                                            App\Packages\Learn\Infrastructure\Repositories\LessonRepository
                                         </li>
                                                                     </ul>
                             </td>
@@ -1057,6 +859,18 @@
                                         </li>
                                                                             <li class="">
                                             App\Packages\Learn\Infrastructure\Repositories\AnswerRepository
+                                        </li>
+                                                                    </ul>
+                            </td>
+                        </tr>
+                                            <tr class="hidden unit-of-code-row output-deps-chart domen
+                            ">
+                            <td>
+                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Common\Domain\UserDTO</span>
+                                                                    <a href="app-packages-common-domain-userdto.html">подробнее</a>
+                                                                <ul class="hidden">
+                                                                            <li class="">
+                                            App\Packages\Common\Infrastructure\Services\UserService
                                         </li>
                                                                     </ul>
                             </td>
@@ -1116,6 +930,30 @@
                                                                     </ul>
                             </td>
                         </tr>
+                                                                                <tr class="hidden unit-of-code-row output-deps-chart application
+                            ">
+                            <td>
+                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Common\Application\Services\IAuthorisationService</span>
+                                                                    <a href="app-packages-common-application-services-iauthorisationservice.html">подробнее</a>
+                                                                <ul class="hidden">
+                                                                            <li class="">
+                                            App\Packages\Common\Infrastructure\Services\AuthorisationService
+                                        </li>
+                                                                    </ul>
+                            </td>
+                        </tr>
+                                            <tr class="hidden unit-of-code-row output-deps-chart application
+                            ">
+                            <td>
+                                <span style="cursor:pointer;" onclick="this.parentElement.getElementsByTagName('ul')[0].classList.toggle('hidden')">App\Packages\Common\Application\Services\IUserService</span>
+                                                                    <a href="app-packages-common-application-services-iuserservice.html">подробнее</a>
+                                                                <ul class="hidden">
+                                                                            <li class="">
+                                            App\Packages\Common\Infrastructure\Services\UserService
+                                        </li>
+                                                                    </ul>
+                            </td>
+                        </tr>
                                                                                 <tr class="hidden unit-of-code-row output-deps-chart *undefined*
                             ">
                             <td>
@@ -1160,35 +998,7 @@
     <div class="row">
         <div class="col-12">
             <table class="table table-borderless table-hover">
-                                                            <tr class="hidden unit-of-code-row input-deps-chart domen
-                            ">
-                            <td>
-                                App\Packages\Learn\Entities\CourseGroup
-                                                                    <a href="app-packages-learn-entities-coursegroup.html">подробнее</a>
-                                                            </td>
-                        </tr>
-                                            <tr class="hidden unit-of-code-row input-deps-chart domen
-                            ">
-                            <td>
-                                App\Packages\Learn\Entities\Course
-                                                                    <a href="app-packages-learn-entities-course.html">подробнее</a>
-                                                            </td>
-                        </tr>
-                                            <tr class="hidden unit-of-code-row input-deps-chart domen
-                            ">
-                            <td>
-                                App\Packages\Learn\Entities\Lesson
-                                                                    <a href="app-packages-learn-entities-lesson.html">подробнее</a>
-                                                            </td>
-                        </tr>
-                                            <tr class="hidden unit-of-code-row input-deps-chart domen
-                            ">
-                            <td>
-                                App\Packages\Learn\Entities\Curriculum
-                                                                    <a href="app-packages-learn-entities-curriculum.html">подробнее</a>
-                                                            </td>
-                        </tr>
-                                                                                <tr class="hidden unit-of-code-row input-deps-chart application
+                                                            <tr class="hidden unit-of-code-row input-deps-chart application
                             ">
                             <td>
                                 App\Packages\Learn\UseCases\JournalService
@@ -1209,8 +1019,8 @@
     <script type="text/javascript">
         var container = document.getElementById('graph');
 
-        var nodes = new vis.DataSet([{"id":"000000003154b49c000000002f15145c","label":"Domen","title":"Abstractness: 0, Instability: 0.313, Fan-in: Infrastructure, Application, Fan-out: Application, Infrastructure"},{"id":"000000003154b487000000002f15145c","label":"Infrastructure","title":"Abstractness: 0.083, Instability: 0.76, Fan-in: Domen, Application, Fan-out: Application, Domen, illuminate\/macroable, laravel\/socialite, illuminate\/http, *undefined*, illuminate\/database"},{"id":"000000003154b6ba000000002f15145c","label":"Application","title":"Abstractness: 0.2, Instability: 0.368, Fan-in: Domen, Infrastructure, Fan-out: Domen, Infrastructure"},{"id":"000000003154b47b000000002f15145c","label":"illuminate\/macroable","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000003154b5d5000000002f15145c","label":"laravel\/socialite","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000003154b449000000002f15145c","label":"illuminate\/http","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000003154b606000000002f15145c","label":"*undefined*","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000003154b5b9000000002f15145c","label":"illuminate\/database","title":"Abstractness: 1, Instability: 0, Fan-in: Infrastructure, Fan-out: "}]);
-        var edges = new vis.DataSet([{"from":"000000003154b49c000000002f15145c","to":"000000003154b487000000002f15145c","label":"4->4"},{"from":"000000003154b6ba000000002f15145c","to":"000000003154b487000000002f15145c","label":"2->4"},{"from":"000000003154b487000000002f15145c","to":"000000003154b6ba000000002f15145c","label":"11->3"},{"from":"000000003154b487000000002f15145c","to":"000000003154b49c000000002f15145c","label":"8->8"},{"from":"000000003154b487000000002f15145c","to":"000000003154b47b000000002f15145c","label":"3->3"},{"from":"000000003154b487000000002f15145c","to":"000000003154b5d5000000002f15145c","label":"1->1"},{"from":"000000003154b487000000002f15145c","to":"000000003154b449000000002f15145c","label":"1->1"},{"from":"000000003154b487000000002f15145c","to":"000000003154b606000000002f15145c","label":"2->2"},{"from":"000000003154b487000000002f15145c","to":"000000003154b5b9000000002f15145c","label":"1->1"}]);
+        var nodes = new vis.DataSet([{"id":"000000000e3ea89500000000266d6599","label":"Application","title":"Abstractness: 0.2, Instability: 0.818, Fan-in: Infrastructure, Fan-out: Domen, Infrastructure"},{"id":"000000000e3eaaa800000000266d6599","label":"Infrastructure","title":"Abstractness: 0.083, Instability: 0.905, Fan-in: Application, Fan-out: Domen, illuminate\/macroable, laravel\/socialite, illuminate\/http, Application, *undefined*, illuminate\/database"},{"id":"000000000e3eaab300000000266d6599","label":"Domen","title":"Abstractness: 0.1, Instability: 0, Fan-in: Infrastructure, Application, Fan-out: "},{"id":"000000000e3eaa5400000000266d6599","label":"illuminate\/macroable","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000000e3eabfa00000000266d6599","label":"laravel\/socialite","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000000e3eaa6600000000266d6599","label":"illuminate\/http","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000000e3ea83800000000266d6599","label":"*undefined*","title":"Abstractness: 0, Instability: 0, Fan-in: Infrastructure, Fan-out: "},{"id":"000000000e3eab9600000000266d6599","label":"illuminate\/database","title":"Abstractness: 1, Instability: 0, Fan-in: Infrastructure, Fan-out: "}]);
+        var edges = new vis.DataSet([{"from":"000000000e3ea89500000000266d6599","to":"000000000e3eaaa800000000266d6599","label":"2->6"},{"from":"000000000e3eaaa800000000266d6599","to":"000000000e3eaab300000000266d6599","label":"10->9"},{"from":"000000000e3eaaa800000000266d6599","to":"000000000e3eaa5400000000266d6599","label":"3->3"},{"from":"000000000e3eaaa800000000266d6599","to":"000000000e3eabfa00000000266d6599","label":"1->1"},{"from":"000000000e3eaaa800000000266d6599","to":"000000000e3eaa6600000000266d6599","label":"1->1"},{"from":"000000000e3eaaa800000000266d6599","to":"000000000e3ea89500000000266d6599","label":"2->2"},{"from":"000000000e3eaaa800000000266d6599","to":"000000000e3ea83800000000266d6599","label":"2->2"},{"from":"000000000e3eaaa800000000266d6599","to":"000000000e3eab9600000000266d6599","label":"1->1"}]);
         var data = {
             nodes: nodes,
             edges: edges

@@ -5,11 +5,11 @@ namespace App\Packages\Learn\UseCases;
 use App\Packages\Common\Application\Services\IAuthorisationService;
 use App\Packages\Learn\Entities\Course;
 use App\Packages\Learn\Entities\Lesson;
-use App\Packages\Learn\UseCases\JournalService;
 use App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CourseRepository;
 use App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository;
 use App\Packages\Learn\Infrastructure\Repositories\LessonRepository;
+use App\Packages\Learn\Infrastructure\Repositories\QuestionRepository;
 
 class LearnService implements LearnServiceInterface
 {
@@ -56,7 +56,7 @@ class LearnService implements LearnServiceInterface
         $rep = new CurriculumRepository();
         $list = $rep->all()->toArray();
         foreach ($list as $item) {
-            $item->fetchCourses();
+            $item->courses = $rep->courses($item->id);
         }
 
         $self = LearnService::getInstance();
@@ -67,21 +67,26 @@ class LearnService implements LearnServiceInterface
 
     public static function runLesson(int $id)
     {
-        $lesson = Lesson::getById($id);
-
+        // check permissions
         $self = LearnService::getInstance();
-        if (!$self->authService::authorized("LL{$lesson->id}", 'read')) {
+        if (!$self->authService::authorized("LL{$id}", 'read')) {
             throw new \Error('No access');
         }
 
-        $lesson->fetchQuestions();
+        // fill lesson questions and answers data
+        $rep = new LessonRepository();
+        $lesson = $rep->find($id);
+        $lesson->questions = $rep->questions($id);
+
+        $rep = new QuestionRepository();
         foreach ($lesson->questions as $value) {
-            $value->fetchAnswers();
+            $value->answers = $rep->answers($value->id);
             // delete right answer from the frontend side
-            foreach ($value->answers as $value) {
-                unset($value->correct);
+            foreach ($value->answers as $val) {
+                unset($val->correct);
             }
         }
+
         return $lesson;
     }
 
@@ -93,19 +98,23 @@ class LearnService implements LearnServiceInterface
      */
     public static function checkLesson(int $id, $data)
     {
-        $lesson = Lesson::getById($id);
-
+        // check permissions
         $self = LearnService::getInstance();
-        if (!$self->authService::authorized("LL{$lesson->id}", 'read')) {
+        if (!$self->authService::authorized("LL{$id}", 'read')) {
             throw new \Error('No access');
         }
 
+        $rep = new LessonRepository();
+        $lesson = $rep->find($id);
+        $lesson->questions = $rep->questions($id);
+
         $result = 'done';
         $pending = false; // there is a text question, need human check
-        $lesson->fetchQuestions();
+
+        $rep = new QuestionRepository();
         // check all questions
         foreach ($lesson->questions as $question) {
-            $question->fetchAnswers();
+            $question->answers = $rep->answers($question->id);
             switch ($question->type) {
                 case 'radio':
                     // only one answer
@@ -121,10 +130,10 @@ class LearnService implements LearnServiceInterface
                     $answer = $data["q$question->id"] ?? [];
                     $rightAnswer = array_filter($question->answers, fn($item) => ($item->correct));
 //                    if (is_array($answer)) {
-                        // check all correct answers
-                        foreach ($rightAnswer as $value) {
-                            if (!in_array($value->id, $answer)) $result = 'fail';
-                        }
+                    // check all correct answers
+                    foreach ($rightAnswer as $value) {
+                        if (!in_array($value->id, $answer)) $result = 'fail';
+                    }
 //                    } else $result = false;
                     break;
                 case 'text':
@@ -163,14 +172,14 @@ class LearnService implements LearnServiceInterface
      */
     public static function getCourse(int $id): Course
     {
-        $course = Course::getById($id);
-
         $self = LearnService::getInstance();
-        if (!$self->authService::authorized("LC{$course->id}", 'read')) {
+        if (!$self->authService::authorized("LC{$id}", 'read')) {
             throw new \Error('No access');
         }
-        $course->fetchLessons();
 
+        $rep = new CourseRepository();
+        $course = $rep->find($id);
+        $course->lessons = $rep->lessons($id);
         $course->lessons = array_filter($course->lessons, fn($item) => ($self->authService::authorized("LL{$item->id}", 'read')));
 
         return $course;

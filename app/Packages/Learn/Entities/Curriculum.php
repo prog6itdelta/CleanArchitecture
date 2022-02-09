@@ -2,7 +2,7 @@
 
 namespace App\Packages\Learn\Entities;
 
-use App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository;
+//use App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository;
 
 class Curriculum
 {
@@ -28,8 +28,8 @@ class Curriculum
         }
     }
 
-    function fetchCourses() {
-        $rep = new CurriculumRepository();
-        $this->courses = $rep->courses($this->id);
-    }
+//    function fetchCourses() {
+//        $rep = new CurriculumRepository();
+//        $this->courses = $rep->courses($this->id);
+//    }
 }

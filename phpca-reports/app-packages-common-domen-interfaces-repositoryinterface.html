@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
                 <meta charset="UTF-8">
-        <title>PHP Clean Architecture -     App\Packages\Learn\Entities\Question
+        <title>PHP Clean Architecture -     App\Packages\Common\Domen\Interfaces\RepositoryInterface
 </title>
 
         <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
@@ -94,8 +94,8 @@
         function drawCharacteristicsChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Характеристика', 'Значение'],
-                ['Примитивность', 0.75],
-                ['Неустойчивость', 0.571],
+                ['Примитивность', 0],
+                ['Неустойчивость', 0],
             ]);
 
             var options = {
@@ -122,7 +122,7 @@
     <div class="row">
         <a href="index.html">
             <div class="home">
-                    App\Packages\Learn\Entities\Question
+                    App\Packages\Common\Domen\Interfaces\RepositoryInterface
             </div>
         </a>
     </div>
@@ -134,7 +134,7 @@
             <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Главная</a></li>
     <li class="breadcrumb-item"><a href="domen.html">Domen</a></li>
-    <li class="breadcrumb-item active" aria-current="page">App\Packages\Learn\Entities\Question</li>
+    <li class="breadcrumb-item active" aria-current="page">App\Packages\Common\Domen\Interfaces\RepositoryInterface</li>
             </ol>
         </nav>
     </div>
@@ -143,11 +143,11 @@
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <ul style="margin-top: 10px;">
                 <li>Компонент: <a href="domen.html">Domen</a></li>
-                <li>Тип: Класс</li>
+                <li>Тип: Неопределен</li>
                 <li>Публичный: Да</li>
                 <li>Абстрактный: Нет</li>
-                <li>Примитивность: 0.75</li>
-                <li>Неустойчивость: 0.571</li>
+                <li>Примитивность: 0</li>
+                <li>Неустойчивость: 0</li>
             </ul>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -165,50 +165,11 @@
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <b>Исходящие зависимости</b>
             <table class="table table-borderless table-hover">
-                                    <tr class="">
-                        <td>
-                            bool
-                                                    </td>
-                    </tr>
-                                    <tr class="">
-                        <td>
-                            object
-                                                    </td>
-                    </tr>
-                                    <tr class="">
-                        <td>
-                            int
-                                                    </td>
-                    </tr>
-                                    <tr class="">
-                        <td>
-                            App\Packages\Learn\Entities\Question
-                                                            <a href="app-packages-learn-entities-question.html">подробнее</a>
-                                                    </td>
-                    </tr>
                             </table>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <b>Входящие зависимости</b>
             <table class="table table-borderless table-hover">
-                                    <tr class="">
-                        <td>
-                            App\Packages\Learn\Entities\Question
-                                                            <a href="app-packages-learn-entities-question.html">подробнее</a>
-                                                    </td>
-                    </tr>
-                                    <tr class="">
-                        <td>
-                            App\Packages\Learn\Infrastructure\Repositories\QuestionRepository
-                                                            <a href="app-packages-learn-infrastructure-repositories-questionrepository.html">подробнее</a>
-                                                    </td>
-                    </tr>
-                                    <tr class="">
-                        <td>
-                            App\Packages\Learn\Infrastructure\Repositories\LessonRepository
-                                                            <a href="app-packages-learn-infrastructure-repositories-lessonrepository.html">подробнее</a>
-                                                    </td>
-                    </tr>
                             </table>
         </div>
     </div>
@@ -216,8 +177,8 @@
     <script type="text/javascript">
         var container = document.getElementById('graph');
 
-        var nodes = new vis.DataSet([{"id":"000000000e3ea8e500000000266d6599","label":"App\\Packages\\Learn\\Entities\\Question"},{"id":"000000000e3ea8e600000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\QuestionRepository"},{"id":"000000000e3ea8c900000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\LessonRepository"},{"id":"000000000e3ea8d900000000266d6599","label":"bool"},{"id":"000000000e3ea8e700000000266d6599","label":"object"},{"id":"000000000e3ea8ef00000000266d6599","label":"int"}]);
-        var edges = new vis.DataSet([{"from":"000000000e3ea8e500000000266d6599","to":"000000000e3ea8e500000000266d6599"},{"from":"000000000e3ea8e600000000266d6599","to":"000000000e3ea8e500000000266d6599"},{"from":"000000000e3ea8c900000000266d6599","to":"000000000e3ea8e500000000266d6599"},{"from":"000000000e3ea8e500000000266d6599","to":"000000000e3ea8d900000000266d6599"},{"from":"000000000e3ea8e500000000266d6599","to":"000000000e3ea8e700000000266d6599"},{"from":"000000000e3ea8e500000000266d6599","to":"000000000e3ea8ef00000000266d6599"}]);
+        var nodes = new vis.DataSet([]);
+        var edges = new vis.DataSet([]);
         var data = {
             nodes: nodes,
             edges: edges

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
                 <meta charset="UTF-8">
-        <title>PHP Clean Architecture -     App\Packages\Common\Application\Interfaces\RepositoryInterface
+        <title>PHP Clean Architecture -     App\Packages\Common\Domain\Interfaces\RepositoryInterface
 </title>
 
         <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
@@ -94,8 +94,8 @@
         function drawCharacteristicsChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Характеристика', 'Значение'],
-                ['Примитивность', 1],
-                ['Неустойчивость', 0.091],
+                ['Примитивность', 0],
+                ['Неустойчивость', 0],
             ]);
 
             var options = {
@@ -122,7 +122,7 @@
     <div class="row">
         <a href="index.html">
             <div class="home">
-                    App\Packages\Common\Application\Interfaces\RepositoryInterface
+                    App\Packages\Common\Domain\Interfaces\RepositoryInterface
             </div>
         </a>
     </div>
@@ -133,8 +133,8 @@
         <nav aria-label="breadcrumb" class="breadcrumb-container">
             <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Главная</a></li>
-    <li class="breadcrumb-item"><a href="application.html">Application</a></li>
-    <li class="breadcrumb-item active" aria-current="page">App\Packages\Common\Application\Interfaces\RepositoryInterface</li>
+    <li class="breadcrumb-item"><a href="domen.html">Domen</a></li>
+    <li class="breadcrumb-item active" aria-current="page">App\Packages\Common\Domain\Interfaces\RepositoryInterface</li>
             </ol>
         </nav>
     </div>
@@ -142,12 +142,12 @@
         <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <ul style="margin-top: 10px;">
-                <li>Компонент: <a href="application.html">Application</a></li>
-                <li>Тип: Неопределен</li>
+                <li>Компонент: <a href="domen.html">Domen</a></li>
+                <li>Тип: Интерфейс</li>
                 <li>Публичный: Да</li>
-                <li>Абстрактный: Нет</li>
-                <li>Примитивность: 1</li>
-                <li>Неустойчивость: 0.091</li>
+                <li>Абстрактный: Да</li>
+                <li>Примитивность: 0</li>
+                <li>Неустойчивость: 0</li>
             </ul>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -165,22 +165,11 @@
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <b>Исходящие зависимости</b>
             <table class="table table-borderless table-hover">
-                                    <tr class="">
-                        <td>
-                            array
-                                                    </td>
-                    </tr>
                             </table>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <b>Входящие зависимости</b>
             <table class="table table-borderless table-hover">
-                                    <tr class="">
-                        <td>
-                            App\Packages\Learn\Entities\Question
-                                                            <a href="app-packages-learn-entities-question.html">подробнее</a>
-                                                    </td>
-                    </tr>
                                     <tr class="">
                         <td>
                             App\Packages\Common\Infrastructure\Repositories\AbstractRepository
@@ -242,8 +231,8 @@
     <script type="text/javascript">
         var container = document.getElementById('graph');
 
-        var nodes = new vis.DataSet([{"id":"000000003154b6cd000000002f15145c","label":"App\\Packages\\Learn\\Entities\\Question"},{"id":"000000003154b6f4000000002f15145c","label":"App\\Packages\\Common\\Application\\Interfaces\\RepositoryInterface"},{"id":"000000003154b61f000000002f15145c","label":"App\\Packages\\Common\\Infrastructure\\Repositories\\AbstractRepository"},{"id":"000000003154b6f0000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CourseGroupRepository"},{"id":"000000003154b6ec000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\JournalLessonRepository"},{"id":"000000003154b6e3000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\JournalQuestionsRepository"},{"id":"000000003154b6f5000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CourseRepository"},{"id":"000000003154b6f2000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CurriculumRepository"},{"id":"000000003154b60d000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\QuestionRepository"},{"id":"000000003154b6e7000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\LessonRepository"},{"id":"000000003154b60c000000002f15145c","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\AnswerRepository"},{"id":"000000003154b6fd000000002f15145c","label":"array"}]);
-        var edges = new vis.DataSet([{"from":"000000003154b6cd000000002f15145c","to":"000000003154b6f4000000002f15145c"},{"from":"000000003154b61f000000002f15145c","to":"000000003154b6f4000000002f15145c"},{"from":"000000003154b6f0000000002f15145c","to":"000000003154b6f4000000002f15145c"},{"from":"000000003154b6ec000000002f15145c","to":"000000003154b6f4000000002f15145c"},{"from":"000000003154b6e3000000002f15145c","to":"000000003154b6f4000000002f15145c"},{"from":"000000003154b6f5000000002f15145c","to":"000000003154b6f4000000002f15145c"},{"from":"000000003154b6f2000000002f15145c","to":"000000003154b6f4000000002f15145c"},{"from":"000000003154b60d000000002f15145c","to":"000000003154b6f4000000002f15145c"},{"from":"000000003154b6e7000000002f15145c","to":"000000003154b6f4000000002f15145c"},{"from":"000000003154b60c000000002f15145c","to":"000000003154b6f4000000002f15145c"},{"from":"000000003154b6f4000000002f15145c","to":"000000003154b6fd000000002f15145c"}]);
+        var nodes = new vis.DataSet([{"id":"000000000e3ea83300000000266d6599","label":"App\\Packages\\Common\\Infrastructure\\Repositories\\AbstractRepository"},{"id":"000000000e3ea82c00000000266d6599","label":"App\\Packages\\Common\\Domain\\Interfaces\\RepositoryInterface"},{"id":"000000000e3ea8c000000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CourseGroupRepository"},{"id":"000000000e3ea8cd00000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\JournalLessonRepository"},{"id":"000000000e3ea83e00000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\JournalQuestionsRepository"},{"id":"000000000e3ea8c100000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CourseRepository"},{"id":"000000000e3ea8ce00000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CurriculumRepository"},{"id":"000000000e3ea8e600000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\QuestionRepository"},{"id":"000000000e3ea8c900000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\LessonRepository"},{"id":"000000000e3ea82400000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\AnswerRepository"}]);
+        var edges = new vis.DataSet([{"from":"000000000e3ea83300000000266d6599","to":"000000000e3ea82c00000000266d6599"},{"from":"000000000e3ea8c000000000266d6599","to":"000000000e3ea82c00000000266d6599"},{"from":"000000000e3ea8cd00000000266d6599","to":"000000000e3ea82c00000000266d6599"},{"from":"000000000e3ea83e00000000266d6599","to":"000000000e3ea82c00000000266d6599"},{"from":"000000000e3ea8c100000000266d6599","to":"000000000e3ea82c00000000266d6599"},{"from":"000000000e3ea8ce00000000266d6599","to":"000000000e3ea82c00000000266d6599"},{"from":"000000000e3ea8e600000000266d6599","to":"000000000e3ea82c00000000266d6599"},{"from":"000000000e3ea8c900000000266d6599","to":"000000000e3ea82c00000000266d6599"},{"from":"000000000e3ea82400000000266d6599","to":"000000000e3ea82c00000000266d6599"}]);
         var data = {
             nodes: nodes,
             edges: edges
