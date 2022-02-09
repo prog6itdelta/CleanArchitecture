@@ -47,7 +47,7 @@ class UserController extends BaseController
             ['id' => Auth::user()->id],
             $changedFields
         );
-        return redirect('profile');
-        return $request;
+
+        return back();
     }
 }

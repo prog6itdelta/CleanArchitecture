@@ -11,6 +11,7 @@ import {
 import { SearchIcon } from '@heroicons/react/solid';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import { AdminContext, initialState, adminReducer, resetState } from './reducer.jsx';
+import Accordion from './Components/Accordion';
 
 export default function Navigation({ children }) {
 
@@ -18,12 +19,12 @@ export default function Navigation({ children }) {
   const dispatch = (...actions) => {
     actions.forEach((action) => disp(action));
   };
-  const { navigation: nav } = state;
 
   useEffect(() => {
     const curLoc = window.location.href;
     const regURLParse = /\/courses(\/)?(?<course>\d*)?(\/lessons)?(\/)?(?<lesson>\d*)?(\/questions)?(\/)?(?<question>\d*)?/g;
     const { groups: { course, lesson, question } } = regURLParse.exec(curLoc);
+
 
     if (course !== undefined) { dispatch({ type: 'CHOSE_COURSE', payload: { id: course } }); }
     if (lesson !== undefined) { dispatch({ type: 'CHOSE_LESSON', payload: { id: lesson } }); }
@@ -31,52 +32,60 @@ export default function Navigation({ children }) {
   }, []);
 
   const navigation = [
-    {
-      name: 'Курсы',
-      icon: AcademicCapIcon,
-      href: route('admin.courses'),
-      current: true,
-      active: true
-    },
-    {
-      name: 'Уроки',
-      icon: BookOpenIcon,
-      href: nav.currentCourse.id === null ? '#' : route('admin.lessons', nav.currentCourse.id),
-      current: true,
-      active: nav.currentCourse.id !== null
-    },
-    {
-      name: 'Вопросы',
-      icon: QuestionMarkCircleIcon,
-      href: nav.currentLesson.id === null ? '#' : route('admin.questions', [nav.currentCourse.id, nav.currentLesson.id]),
-      current: true,
-      active: nav.currentLesson.id !== null
-    },
-    {
-      name: 'Ответы',
-      icon: ClipboardListIcon,
-      href: nav.currentQuestion.id === null ? '#' : route('admin.answers', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id]),
-      active: nav.currentQuestion.id !== null
-    },
-    // {
-    //   name: 'Департаменты',
-    //   icon: HomeIcon,
-    //   href: '#',
-    //   // route('admin.departments'),
-    //   current: true
-    // },
+    [
+      {
+        name: 'Курсы',
+        icon: AcademicCapIcon,
+        href: route('admin.courses'),
+        current: true,
+      },
+      {
+        name: 'Уроки',
+        icon: BookOpenIcon,
+        href: route('admin.lessons'),
+        current: true
+      },
+      {
+        name: 'Вопросы',
+        icon: QuestionMarkCircleIcon,
+        href: route('admin.questions'),
+        current: true
+      },
+      {
+        name: 'Ответы',
+        icon: ClipboardListIcon,
+        href: route('admin.answers'),
+        current: true
+
+      },
+    ],
+
+    [
+      {
+        name: 'Департаменты',
+        icon: HomeIcon,
+        href: route('admin.departments'),
+        current: true
+      }
+    ]
+
   ];
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const { auth, userNavigation } = usePage().props;
   const user = auth.user;
+  const nav = [...navigation[0],...navigation[1]];
+  console.log(nav);
 
   const currentLocation = location.href;
-  navigation.forEach((navItem) => {
+  nav.forEach((navItem) => {
     navItem.href === currentLocation
       ? navItem.current = true
       : navItem.current = false;
   });
+
+  const learningCenter = navigation[0];
+  const mainMenu = navigation[1];
 
   return (
     <AdminContext.Provider value={{ dispatch, state }}>
@@ -135,7 +144,8 @@ export default function Navigation({ children }) {
                 </div>
                 <div className="mt-5 flex-1 h-0 overflow-y-auto">
                   <nav className="px-2 space-y-1">
-                    {navigation.map((item) => (
+                    <Accordion title="Learning Center">
+                    {learningCenter.map((item) => (
                       <InertiaLink
                         key={item.name}
                         href={item.href}
@@ -145,6 +155,20 @@ export default function Navigation({ children }) {
                         }
                       >
                         <item.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true"/>
+                        {item.name}
+                      </InertiaLink>
+                    ))}
+                    </Accordion>
+                    {mainMenu.map((item) => (
+                      <InertiaLink
+                        key={item.name}
+                        href={item.href}
+                        className={classNames(
+                          item.current ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600',
+                          'group flex items-center px-2 py-2 text-base font-medium rounded-md'
+                        )}
+                      >
+                        <item.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true" />
                         {item.name}
                       </InertiaLink>
                     ))}
@@ -174,7 +198,8 @@ export default function Navigation({ children }) {
               </div>
               <div className="mt-5 flex-1 flex flex-col">
                 <nav className="flex-1 px-2 space-y-1">
-                  {navigation.map((item) => (
+                  <Accordion title="Learning Center">
+                  {learningCenter.map((item) => (
                     <InertiaLink
                       key={item.name}
                       href={item.href}
@@ -189,6 +214,20 @@ export default function Navigation({ children }) {
                       }
                     >
                       <item.icon className={`mr-3 flex-shrink-0 h-6 w-6 ${item.active ? 'text-indigo-300' : 'text-gray-500'}`} aria-hidden="true"/>
+                      {item.name}
+                    </InertiaLink>
+                  ))}
+                  </Accordion>
+                  {mainMenu.map((item) => (
+                    <InertiaLink
+                      key={item.name}
+                      href={item.href}
+                      className={classNames(
+                        item.current ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600',
+                        'group flex items-center px-2 py-2 text-base font-medium rounded-md'
+                      )}
+                    >
+                      <item.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true" />
                       {item.name}
                     </InertiaLink>
                   ))}

@@ -46,6 +46,7 @@ export default function Profile() {
     if (passwordsMatch()) {
       post('/profile/edit');
       onClear();
+      history.back(-2);
     }
   };
 

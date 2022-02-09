@@ -1,16 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
 import React from 'react';
-import {
-  BellIcon,
-  CalendarIcon,
-  HomeIcon,
-  MenuAlt2Icon,
-  XIcon,
-  AcademicCapIcon,
-  BookOpenIcon,
-  QuestionMarkCircleIcon,
-  ClipboardListIcon
-} from '@heroicons/react/outline';
 import Navigation from './Navigation.jsx';
 
 const user = {
