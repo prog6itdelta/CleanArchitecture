@@ -417,7 +417,7 @@ export default function Table({dataValue, columnsValue, updateData, skipPageRese
                       return (
                         <th
                           scope="col"
-                          className="px-3 py-3 text-center border-r border-gray-300 text-xs font-medium text-gray-500 uppercase tracking-wider flex flex-wrap items-center justify-center"
+                          className="px-3 py-3 text-center border-r border-gray-300 text-xs font-medium text-gray-500 tracking-wider flex flex-wrap items-center justify-center"
                           {...column.getHeaderProps()}
                         >
                           <div
@@ -489,6 +489,9 @@ export default function Table({dataValue, columnsValue, updateData, skipPageRese
               {showGoToPage && <PageSelector/>}
               {showPagination && <Pagination/>}
 
+            </div>
+            <div className="px-2 py-3 flex flex-wrap items-center justify-center w-full space-y-2">
+              {props.buttons !== undefined && props.buttons}
             </div>
           </div>
         </div>

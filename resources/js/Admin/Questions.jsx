@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch, RadioGroup } from '@headlessui/react';
@@ -7,14 +7,30 @@ import EditableCell from './Components/EditableCell.jsx';
 import OneLineCell from './Components/OneLineCell.jsx';
 import ActionsCell from './Components/ActionsCell.jsx';
 import Modal from './Components/Modal.jsx';
+import { AdminContext } from './reducer.jsx';
 
 export default function Questions({ questions, page_count: controlledPageCount }) {
   const [showModal, setShowModal] = useState(false);
   const [skipPageReset, setSkipPageReset] = React.useState(false);
   const [editedQuestion, setEditedQuestion] = useState(null);
+  const {state: { navigation: nav }, dispatch} = useContext(AdminContext);
   useEffect(() => {
     setSkipPageReset(false);
   }, [questions]);
+
+  const showQuestionAnswers = (question) => {
+    dispatch({
+      type: 'CHOSE_QUESTION',
+      payload: {
+        id: question.id,
+        name: question.name
+      }
+    });
+
+    Inertia.post(route('admin.answers', [nav.currentCourse.id, nav.currentLesson.id, question.id]));
+  };
+
+  // todo create questions table
 
   const columns = [
     {
@@ -75,6 +91,11 @@ export default function Questions({ questions, page_count: controlledPageCount }
           disabled: false,
         },
         {
+          name: 'Открыть',
+          type: 'open',
+          action: () => showQuestionAnswers(question),
+        },
+        {
           name: 'delete',
           type: 'delete',
           action: () => console.log('delete'),
@@ -99,7 +120,7 @@ export default function Questions({ questions, page_count: controlledPageCount }
         ...oldQuestion,
         [columnId]: value
       };
-      Inertia.post(route('admin.questions.edit', newQuestion.id), newQuestion);
+      Inertia.post(route('admin.questions.edit', [nav.currentCourse.id, nav.currentLesson.id, newQuestion.id]), newQuestion);
     }
   };
 
@@ -134,7 +155,6 @@ export default function Questions({ questions, page_count: controlledPageCount }
                   <Switch
                     checked={Boolean(data.active)}
                     onChange={(e) => {
-                      console.log(Number(e));
                       setData('active', Number(e));
                     }}
                     className={`
@@ -243,8 +263,8 @@ export default function Questions({ questions, page_count: controlledPageCount }
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
             onClick={() => {
-              post(route('admin.questions.edit', editedQuestion.id),
-                { data, onSuccess: () => {Inertia.get(route(route().current()));} });
+              post(route('admin.questions.edit', [nav.currentCourse.id, nav.currentLesson.id, editedQuestion.id]),
+                { data, onSuccess: () => {Inertia.get(route(route().current(), [nav.currentCourse.id, nav.currentLesson.id]));} });
               setShowModal(false);
 
             }}
@@ -271,6 +291,15 @@ export default function Questions({ questions, page_count: controlledPageCount }
         </div>
       </header>
       <main className="w-full h-fit">
+        {/*<Table*/}
+        {/*  dataValue={lessonsTableData}*/}
+        {/*  columnsValue={lessonsColumns}*/}
+        {/*  skipPageReset={skipPageReset}*/}
+        {/*  updateData={updateData}*/}
+        {/*  options={tableOptions}*/}
+        {/*  controlledPageCount={controlledPageCount}*/}
+        {/*/>*/}
+
         <Table
           dataValue={tableData}
           columnsValue={columns}

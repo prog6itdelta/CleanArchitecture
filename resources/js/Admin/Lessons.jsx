@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch } from '@headlessui/react';
@@ -7,14 +7,28 @@ import EditableCell from './Components/EditableCell.jsx';
 import OneLineCell from './Components/OneLineCell.jsx';
 import ActionsCell from './Components/ActionsCell.jsx';
 import Modal from './Components/Modal.jsx';
+import { AdminContext } from './reducer.jsx';
 
 export default function Lessons({ lessons, page_count: controlledPageCount }) {
   const [showModal, setShowModal] = useState(false);
   const [skipPageReset, setSkipPageReset] = React.useState(false);
   const [editedLesson, setEditedLesson] = useState(null);
+  const {state: { navigation: nav }, dispatch} = useContext(AdminContext);
   useEffect(() => {
     setSkipPageReset(false);
   }, [lessons]);
+
+  const showLessonQuestions = (lesson) => {
+    dispatch({
+      type: 'CHOSE_LESSON',
+      payload: {
+        id: lesson.id,
+        name: lesson.name
+      }
+    });
+
+    Inertia.post(route('admin.questions', [nav.currentCourse.id, lesson.id]));
+  };
 
   const columns = [
     {
@@ -75,6 +89,11 @@ export default function Lessons({ lessons, page_count: controlledPageCount }) {
           disabled: false,
         },
         {
+          name: 'Открыть',
+          type: 'open',
+          action: () => showLessonQuestions(lesson),
+        },
+        {
           name: 'delete',
           type: 'delete',
           action: () => console.log('delete'),
@@ -99,7 +118,7 @@ export default function Lessons({ lessons, page_count: controlledPageCount }) {
         ...oldLesson,
         [columnId]: value
       };
-      Inertia.post(route('admin.lessons.edit', newLesson.id), newLesson);
+      Inertia.post(route('admin.lessons.edit', [nav.currentCourse.id, newLesson.id]), newLesson);
     }
   };
 
@@ -133,7 +152,7 @@ export default function Lessons({ lessons, page_count: controlledPageCount }) {
                 <span className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                   <Switch
                     checked={Boolean(data.active)}
-                    onChange={(e) => {console.log(Number(e)); setData('active', Number(e))}}
+                    onChange={(e) => {setData('active', Number(e))}}
                     className={`
                     ${Boolean(data.active) ? 'bg-indigo-600' : 'bg-gray-200'} relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
                     `}
@@ -197,8 +216,8 @@ export default function Lessons({ lessons, page_count: controlledPageCount }) {
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
             onClick={() => {
-              post(route('admin.lessons.edit', editedLesson.id),
-                { data, onSuccess: () => {Inertia.get(route(route().current()));} });
+              post(route('admin.lessons.edit', [nav.currentCourse.id, editedLesson.id]),
+                { data, onSuccess: () => {Inertia.get(route(route().current(), nav.currentCourse.id));} });
               setShowModal(false);
 
             }}

@@ -67,20 +67,23 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/courses/{id}/edit', [AdminController::class, 'editCourse'])
             ->name('admin.course.edit');
 
-        Route::get('/lessons', [AdminController::class, 'lessons'])
+        Route::match(['get', 'post'], '/courses/{cid}/lessons', [AdminController::class, 'lessons'])
             ->name('admin.lessons');
 
-        Route::post('/lessons/{id}/edit', [AdminController::class, 'editLesson'])
+        Route::post('courses/{cid}/lessons/{lid}/edit', [AdminController::class, 'editLesson'])
             ->name('admin.lessons.edit');
 
-        Route::get('/questions', [AdminController::class, 'questions'])
+        Route::match(['get', 'post'], 'courses/{cid}/lessons/{lid}/questions', [AdminController::class, 'questions'])
             ->name('admin.questions');
 
-        Route::post('/questions/{id}/edit', [AdminController::class, 'editQuestion'])
+        Route::post('courses/{cid}/lessons/{lid}/questions/{qid}/edit', [AdminController::class, 'editQuestion'])
             ->name('admin.questions.edit');
 
-        Route::get('/answers', [AdminController::class, 'answers'])
+        Route::match(['get', 'post'],'courses/{cid}/lessons/{lid}/questions/{qid}/answers', [AdminController::class, 'answers'])
             ->name('admin.answers');
+
+        Route::post('courses/{cid}/lessons/{lid}/questions/{qid}/answers/{aid}/edit', [AdminController::class, 'editAnswer'])
+            ->name('admin.answers.edit');
 
         Route::get('/departments', [AdminController::class, 'departments'])
             ->name('admin.departments');

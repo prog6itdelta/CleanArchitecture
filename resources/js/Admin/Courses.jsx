@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch } from '@headlessui/react';
@@ -7,18 +7,31 @@ import EditableCell from './Components/EditableCell.jsx';
 import OneLineCell from './Components/OneLineCell.jsx';
 import ActionsCell from './Components/ActionsCell.jsx';
 import Modal from './Components/Modal.jsx';
+import { AdminContext } from './reducer.jsx';
 
 export default function Courses({ courses, page_count: controlledPageCount }) {
   const [showModal, setShowModal] = useState(false);
   const [skipPageReset, setSkipPageReset] = React.useState(false);
   const [editedCourse, setEditedCourse] = useState(null);
+  const {state, dispatch} = useContext(AdminContext);
   useEffect(() => {
     setSkipPageReset(false);
   }, [courses]);
 
+  const showCourseLessons = (course) => {
+    dispatch({
+      type: 'CHOSE_COURSE',
+      payload: {
+        id: course.id,
+        name: course.name
+      }
+    });
+    Inertia.post(route('admin.lessons', course.id));
+  };
+
   const columns = [
     {
-      Header: 'ACTIONS',
+      Header: 'Действия',
       accessor: 'rowActions',
       disableFilters: true,
       Filter: '',
@@ -73,6 +86,11 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
             setShowModal(true);
           },
           disabled: false,
+        },
+        {
+          name: 'Открыть',
+          type: 'open',
+          action: () => showCourseLessons(course),
         },
         {
           name: 'delete',
@@ -145,7 +163,7 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
                 <span className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                   <Switch
                     checked={Boolean(data.active)}
-                    onChange={(e) => {console.log(Number(e)); setData('active', Number(e))}}
+                    onChange={(e) => {setData('active', Number(e))}}
                     className={`
                     ${Boolean(data.active) ? 'bg-indigo-600' : 'bg-gray-200'} relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
                     `}

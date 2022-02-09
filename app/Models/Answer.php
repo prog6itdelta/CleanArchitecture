@@ -10,4 +10,11 @@ class Answer extends Model
     use HasFactory;
 
     protected $table = 'learn_answers';
+
+    protected $fillable = [
+        'name',
+        'active',
+        'correct',
+        'sort'
+    ];
 }

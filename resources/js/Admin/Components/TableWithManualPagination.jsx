@@ -418,7 +418,7 @@ export default function TableWithManualPagination({dataValue, columnsValue, upda
                       return (
                         <th
                           scope="col"
-                          className="px-3 py-3 text-center border-r border-gray-300 text-xs font-medium text-gray-500 uppercase tracking-wider flex flex-wrap items-center justify-center"
+                          className="px-3 py-3 text-center border-r border-gray-300 text-xs font-medium text-gray-500 tracking-wider flex flex-wrap items-center justify-center"
                           {...column.getHeaderProps()}
                         >
                           <div

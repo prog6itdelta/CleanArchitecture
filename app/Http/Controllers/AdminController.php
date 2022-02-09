@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Question;
 use App\Packages\Department\UseCases\DepartmentService;
 use App\Packages\Learn\UseCases\LearnService;
 use App\Packages\Learn\UseCases\JournalService;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Question;
+use App\Models\Answer;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
@@ -53,13 +54,14 @@ class AdminController extends BaseController
         return redirect()->route('admin.courses');
     }
 
-    public function lessons()
+    public function lessons(Request $request, $cid)
     {
-        $lessons = LearnService::getLessons();
+        $course = LearnService::getCourse($cid);
+        $lessons = array_values($course->lessons);
         return Inertia::render('Admin/Lessons', compact('lessons'));
     }
 
-    public function editLesson(Request $request, $id)
+    public function editLesson(Request $request, $cid, $lid)
     {
         $changedFields = [];
         $input = $request->collect();
@@ -70,19 +72,22 @@ class AdminController extends BaseController
             }
         }
         Lesson::updateOrCreate(
-            ['id' => $id],
+            ['id' => $lid],
             $changedFields
         );
-        return redirect()->route('admin.lessons');
+        return redirect()->route('admin.lessons', [$cid]);
     }
 
-    public function questions()
+    public function questions(Request $request, $cid, $lid)
     {
-        $questions = LearnService::getAllQuestions();
+//        $lessons = LearnService::getLessons();
+//        $questions = LearnService::getAllQuestions();
+        $lesson = LearnService::runLesson($lid);
+        $questions = $lesson->questions;
         return Inertia::render('Admin/Questions', compact('questions'));
     }
 
-    public function editQuestion(Request $request, $id)
+    public function editQuestion(Request $request, $cid, $lid, $qid)
     {
         $changedFields = [];
         $input = $request->collect();
@@ -93,16 +98,35 @@ class AdminController extends BaseController
             }
         }
         Question::updateOrCreate(
-            ['id' => $id],
+            ['id' => $qid],
             $changedFields
         );
-        return redirect()->route('admin.questions');
+        return redirect()->route('admin.questions', [$cid, $lid]);
     }
 
-    public function answers()
+    public function answers(Request $request, $cid, $lid, $qid)
     {
-        $lessons = LearnService::getLessons();
-        return Inertia::render('Admin/Lessons', compact('lessons'));
+        $lesson = LearnService::runLesson($lid);
+        $key = array_search($qid, array_column($lesson->questions, 'id'), false);
+        $answers = $lesson->questions[$key]->answers;
+        return Inertia::render('Admin/Answers', compact('answers'));
+    }
+
+    public function editAnswer(Request $request, $cid, $lid, $qid, $aid)
+    {
+        $changedFields = [];
+        $input = $request->collect();
+
+        foreach ($input as $key => $item) {
+            if ($key !== 'id' && $item !== null) {
+                $changedFields[$key] = $item;
+            }
+        }
+        Answer::updateOrCreate(
+            ['id' => $aid],
+            $changedFields
+        );
+        return redirect()->route('admin.answers', [$cid, $lid, $qid]);
     }
 
     /**
