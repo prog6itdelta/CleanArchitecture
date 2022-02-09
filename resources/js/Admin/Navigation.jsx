@@ -9,19 +9,25 @@ import {
 } from '@heroicons/react/outline';
 import { SearchIcon } from '@heroicons/react/solid';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
+import Accordion from './Components/Accordion';
 
 export default function Navigation({ navigation, children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const { auth, userNavigation } = usePage().props;
   const user = auth.user;
+  const nav = [...navigation[0],...navigation[1]];
+  console.log(nav);
 
   const currentLocation = location.href;
-  navigation.forEach((navItem) => {
+  nav.forEach((navItem) => {
     navItem.href === currentLocation
       ? navItem.current = true
       : navItem.current = false;
   });
+  
+  const learningCenter = navigation[0];
+  const mainMenu = navigation[1];
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
@@ -82,7 +88,22 @@ export default function Navigation({ navigation, children }) {
               </div>
               <div className="mt-5 flex-1 h-0 overflow-y-auto">
                 <nav className="px-2 space-y-1">
-                  {navigation.map((item) => (
+                  <Accordion title="Learning Center">
+                  {learningCenter.map((item) => (
+                    <InertiaLink
+                      key={item.name}
+                      href={item.href}
+                      className={classNames(
+                        item.current ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600',
+                        'group flex items-center px-2 py-2 text-base font-medium rounded-md'
+                      )}
+                    >
+                      <item.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true" />
+                      {item.name}
+                    </InertiaLink>
+                  ))}
+                  </Accordion>
+                  {mainMenu.map((item) => (
                     <InertiaLink
                       key={item.name}
                       href={item.href}
@@ -121,24 +142,40 @@ export default function Navigation({ navigation, children }) {
             </div>
             <div className="mt-5 flex-1 flex flex-col">
               <nav className="flex-1 px-2 space-y-1">
-                {navigation.map((item) => (
-                  <InertiaLink
-                    key={item.name}
-                    href={item.href}
-                    className={classNames(
-                      item.current ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600',
-                      'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
-                    )}
-                  >
-                    <item.icon className="mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true" />
-                    {item.name}
-                  </InertiaLink>
-                ))}
+                <Accordion title="Learning Center">
+                  {learningCenter.map((item) => (
+                    <InertiaLink
+                      key={item.name}
+                      href={item.href}
+                      className={classNames(
+                        item.current ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600',
+                        'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                      )}
+                    >
+                      <item.icon className="mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true" />
+                      {item.name}
+                    </InertiaLink>
+                  ))}
+                </Accordion>
+                {mainMenu.map((item) => (
+                    <InertiaLink
+                      key={item.name}
+                      href={item.href}
+                      className={classNames(
+                        item.current ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600',
+                        'group flex items-center px-2 py-2 text-base font-medium rounded-md'
+                      )}
+                    >
+                      <item.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true" />
+                      {item.name}
+                    </InertiaLink>
+                  ))}
               </nav>
             </div>
           </div>
         </div>
       </div>
+      
       <div className="flex flex-col w-0 flex-1 overflow-hidden">
         <div className="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
           <button
@@ -201,6 +238,7 @@ export default function Navigation({ navigation, children }) {
                 >
                   <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                     {userNavigation.map((item) => (
+                      
                       <Menu.Item key={item.name}>
                         {({ active }) => (
                           <InertiaLink
