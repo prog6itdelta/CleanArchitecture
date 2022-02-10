@@ -20,6 +20,8 @@ export default function Navigation({ children }) {
     actions.forEach((action) => disp(action));
   };
 
+  const { navigation: storeNav } = state;
+
   useEffect(() => {
     const curLoc = window.location.href;
     const regURLParse = /\/courses(\/)?(?<course>\d*)?(\/lessons)?(\/)?(?<lesson>\d*)?(\/questions)?(\/)?(?<question>\d*)?/g;
@@ -32,60 +34,96 @@ export default function Navigation({ children }) {
   }, []);
 
   const navigation = [
-    [
-      {
-        name: 'Курсы',
-        icon: AcademicCapIcon,
-        href: route('admin.courses'),
-        current: true,
-      },
-      {
-        name: 'Уроки',
-        icon: BookOpenIcon,
-        href: route('admin.lessons'),
-        current: true
-      },
-      {
-        name: 'Вопросы',
-        icon: QuestionMarkCircleIcon,
-        href: route('admin.questions'),
-        current: true
-      },
-      {
-        name: 'Ответы',
-        icon: ClipboardListIcon,
-        href: route('admin.answers'),
-        current: true
-
-      },
-    ],
-
-    [
-      {
-        name: 'Департаменты',
-        icon: HomeIcon,
-        href: route('admin.departments'),
-        current: true
-      }
-    ]
+    {
+      name: 'Learning Center',
+      items: [
+        {
+          name: 'Курсы',
+          icon: AcademicCapIcon,
+          href: route('admin.courses'),
+          current: true,
+          active: true
+        },
+        {
+          name: 'Уроки',
+          icon: BookOpenIcon,
+          href: storeNav.currentCourse.id === null ? '#' : route('admin.lessons', storeNav.currentCourse.id),
+          current: true,
+          active: storeNav.currentCourse.id !== null
+        },
+        {
+          name: 'Вопросы',
+          icon: QuestionMarkCircleIcon,
+          href: storeNav.currentLesson.id === null ? '#' : route('admin.questions', [storeNav.currentCourse.id, storeNav.currentLesson.id]),
+          current: true,
+          active: storeNav.currentLesson.id !== null
+        },
+        {
+          name: 'Ответы',
+          icon: ClipboardListIcon,
+          href: storeNav.currentQuestion.id === null ? '#' : route('admin.answers', [storeNav.currentCourse.id, storeNav.currentLesson.id, storeNav.currentQuestion.id]),
+          active: storeNav.currentQuestion.id !== null
+        },
+      ],
+    },
+    {
+      name: 'Департаменты',
+      icon: HomeIcon,
+      href: route('admin.departments'),
+      current: true
+    }
 
   ];
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const { auth, userNavigation } = usePage().props;
   const user = auth.user;
-  const nav = [...navigation[0],...navigation[1]];
-  console.log(nav);
 
   const currentLocation = location.href;
-  nav.forEach((navItem) => {
-    navItem.href === currentLocation
-      ? navItem.current = true
-      : navItem.current = false;
-  });
+  const setCurrentNavItem = (navArr) => {
+    navArr.forEach((navItem) => {
+      if (Array.isArray(navItem.items)) { setCurrentNavItem(navItem.items); } else {
+        navItem.href === currentLocation
+          ? navItem.current = true
+          : navItem.current = false;
+      }
+    });
+  };
+  setCurrentNavItem(navigation);
 
-  const learningCenter = navigation[0];
-  const mainMenu = navigation[1];
+  const NavItems = ({ items }) => {
+    return (
+      items.map((navItem) => {
+        if (Array.isArray(navItem.items)) {
+          return (
+            <Accordion title={navItem.name} key={navItem.name}>
+              <NavItems items={navItem.items}/>
+            </Accordion>
+          );
+        }
+        else {
+          return (
+            <InertiaLink
+              key={navItem.name}
+              href={navItem.href}
+              className={
+                `${navItem.current
+                  ? 'bg-indigo-800 text-white'
+                  : navItem.active === undefined || navItem.active
+                    ? 'text-indigo-100 hover:bg-indigo-600'
+                    : 'text-gray-500 cursor-default'
+                }
+                        group flex items-center px-2 py-2 text-sm font-medium rounded-md`
+              }
+            >
+              <navItem.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true"/>
+              {navItem.name}
+            </InertiaLink>
+          );
+        }
+      })
+    );
+  };
 
   return (
     <AdminContext.Provider value={{ dispatch, state }}>
@@ -144,34 +182,7 @@ export default function Navigation({ children }) {
                 </div>
                 <div className="mt-5 flex-1 h-0 overflow-y-auto">
                   <nav className="px-2 space-y-1">
-                    <Accordion title="Learning Center">
-                    {learningCenter.map((item) => (
-                      <InertiaLink
-                        key={item.name}
-                        href={item.href}
-                        className={
-                          `${item.current ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600'}
-                          group flex items-center px-2 py-2 text-base font-medium rounded-md`
-                        }
-                      >
-                        <item.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true"/>
-                        {item.name}
-                      </InertiaLink>
-                    ))}
-                    </Accordion>
-                    {mainMenu.map((item) => (
-                      <InertiaLink
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600',
-                          'group flex items-center px-2 py-2 text-base font-medium rounded-md'
-                        )}
-                      >
-                        <item.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true" />
-                        {item.name}
-                      </InertiaLink>
-                    ))}
+                    <NavItems items={navigation} />
                   </nav>
                 </div>
               </div>
@@ -198,39 +209,7 @@ export default function Navigation({ children }) {
               </div>
               <div className="mt-5 flex-1 flex flex-col">
                 <nav className="flex-1 px-2 space-y-1">
-                  <Accordion title="Learning Center">
-                  {learningCenter.map((item) => (
-                    <InertiaLink
-                      key={item.name}
-                      href={item.href}
-                      className={
-                        `${item.current
-                          ? 'bg-indigo-800 text-white'
-                          : item.active
-                            ? 'text-indigo-100 hover:bg-indigo-600'
-                            : 'text-gray-500 cursor-default'
-                        }
-                        group flex items-center px-2 py-2 text-sm font-medium rounded-md`
-                      }
-                    >
-                      <item.icon className={`mr-3 flex-shrink-0 h-6 w-6 ${item.active ? 'text-indigo-300' : 'text-gray-500'}`} aria-hidden="true"/>
-                      {item.name}
-                    </InertiaLink>
-                  ))}
-                  </Accordion>
-                  {mainMenu.map((item) => (
-                    <InertiaLink
-                      key={item.name}
-                      href={item.href}
-                      className={classNames(
-                        item.current ? 'bg-indigo-800 text-white' : 'text-indigo-100 hover:bg-indigo-600',
-                        'group flex items-center px-2 py-2 text-base font-medium rounded-md'
-                      )}
-                    >
-                      <item.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true" />
-                      {item.name}
-                    </InertiaLink>
-                  ))}
+                  <NavItems items={navigation} />
                 </nav>
               </div>
             </div>
