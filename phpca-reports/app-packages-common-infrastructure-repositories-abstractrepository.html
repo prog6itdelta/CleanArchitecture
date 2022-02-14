@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <meta charset="UTF-8">
+        <title>PHP Clean Architecture -     App\Packages\Common\Infrastructure\Repositories\AbstractRepository
+</title>
+
+        <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src="https://kit.fontawesome.com/a2c128da6b.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+              integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+              crossorigin="anonymous">
+        <style>
+            .header {
+                background: mediumpurple;
+                color: #ffffff;
+                font-size: 30px;
+            }
+
+            .home {
+                height: 50px;
+                padding: 0 10px;
+            }
+
+            .home:hover {
+                background: rebeccapurple;
+            }
+
+            .header a, .footer a {
+                color: #ffffff;
+            }
+
+            .header a:hover {
+                text-decoration: none;
+            }
+
+            .header a:hover, .footer a:hover {
+                color: #ffffff;
+            }
+
+            .content {
+                margin: 10px;
+                width: calc(100% - 20px);
+            }
+
+            .breadcrumb-container {
+                width: 100%;
+            }
+
+            .footer {
+                background: mediumpurple;
+                height: 50px;
+                color: #ffffff;
+                padding-top: 13px;
+                margin-top: 10px;
+            }
+
+            .footer i.fab {
+                font-size: 25px;
+                color: black;
+                margin: -2px 10px;
+            }
+
+            #to-top {
+                display: block;
+                position: fixed;
+                right: 20px;
+                bottom: 20px;
+                width: 50px;
+                height: 50px;
+                background: mediumpurple;
+                border: 2px solid rebeccapurple;
+                color: white;
+                padding: 0 13px;
+                font-size: 30px;
+            }
+
+            #to-top:hover {
+                cursor: pointer;
+                background: rebeccapurple;
+                border-color: mediumpurple;
+            }
+        </style>
+    
+    <script type="text/javascript">
+        google.charts.load("current", {packages: ['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            drawCharacteristicsChart();
+        }
+
+        function drawCharacteristicsChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Характеристика', 'Значение'],
+                ['Примитивность', 0.5],
+                ['Неустойчивость', 0.5],
+            ]);
+
+            var options = {
+                title: 'Характеристики',
+                bars: 'horizontal',
+                legend: { position: 'none' }
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('characteristics-chart'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+    </script>
+    <style>
+        #graph {
+            border: 1px solid mediumpurple;
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid header">
+    <div class="row">
+        <a href="index.html">
+            <div class="home">
+                    App\Packages\Common\Infrastructure\Repositories\AbstractRepository
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="container-fluid content">
+    <div class="row">
+        <nav aria-label="breadcrumb" class="breadcrumb-container">
+            <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Главная</a></li>
+    <li class="breadcrumb-item"><a href="infrastructure.html">Infrastructure</a></li>
+    <li class="breadcrumb-item active" aria-current="page">App\Packages\Common\Infrastructure\Repositories\AbstractRepository</li>
+            </ol>
+        </nav>
+    </div>
+
+        <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <ul style="margin-top: 10px;">
+                <li>Компонент: <a href="infrastructure.html">Infrastructure</a></li>
+                <li>Тип: Класс</li>
+                <li>Публичный: Да</li>
+                <li>Абстрактный: Да</li>
+                <li>Примитивность: 0.5</li>
+                <li>Неустойчивость: 0.5</li>
+            </ul>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div id="characteristics-chart"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <b>Граф зависимостей</b>
+            <div id="graph"></div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <b>Исходящие зависимости</b>
+            <table class="table table-borderless table-hover">
+                                    <tr class="">
+                        <td>
+                            App\Packages\Common\Domain\Interfaces\RepositoryInterface
+                                                            <a href="app-packages-common-domain-interfaces-repositoryinterface.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            array
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            int
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            string
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            mixed
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            App\Exceptions\RepositoryException
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            Illuminate\Support\Facades\App
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            Illuminate\Database\Eloquent\Model
+                                                    </td>
+                    </tr>
+                            </table>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <b>Входящие зависимости</b>
+            <table class="table table-borderless table-hover">
+                                    <tr class="">
+                        <td>
+                            App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository
+                                                            <a href="app-packages-learn-infrastructure-repositories-coursegrouprepository.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            App\Packages\Learn\Infrastructure\Repositories\JournalLessonRepository
+                                                            <a href="app-packages-learn-infrastructure-repositories-journallessonrepository.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            App\Packages\Learn\Infrastructure\Repositories\JournalQuestionsRepository
+                                                            <a href="app-packages-learn-infrastructure-repositories-journalquestionsrepository.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            App\Packages\Learn\Infrastructure\Repositories\CourseRepository
+                                                            <a href="app-packages-learn-infrastructure-repositories-courserepository.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            App\Packages\Learn\Infrastructure\Repositories\CurriculumRepository
+                                                            <a href="app-packages-learn-infrastructure-repositories-curriculumrepository.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            App\Packages\Learn\Infrastructure\Repositories\QuestionRepository
+                                                            <a href="app-packages-learn-infrastructure-repositories-questionrepository.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            App\Packages\Learn\Infrastructure\Repositories\LessonRepository
+                                                            <a href="app-packages-learn-infrastructure-repositories-lessonrepository.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                                    <tr class="">
+                        <td>
+                            App\Packages\Learn\Infrastructure\Repositories\AnswerRepository
+                                                            <a href="app-packages-learn-infrastructure-repositories-answerrepository.html">подробнее</a>
+                                                    </td>
+                    </tr>
+                            </table>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var container = document.getElementById('graph');
+
+        var nodes = new vis.DataSet([{"id":"000000000e3ea8c000000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CourseGroupRepository"},{"id":"000000000e3ea83300000000266d6599","label":"App\\Packages\\Common\\Infrastructure\\Repositories\\AbstractRepository"},{"id":"000000000e3ea8cd00000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\JournalLessonRepository"},{"id":"000000000e3ea83e00000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\JournalQuestionsRepository"},{"id":"000000000e3ea8c100000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CourseRepository"},{"id":"000000000e3ea8ce00000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\CurriculumRepository"},{"id":"000000000e3ea8e600000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\QuestionRepository"},{"id":"000000000e3ea8c900000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\LessonRepository"},{"id":"000000000e3ea82400000000266d6599","label":"App\\Packages\\Learn\\Infrastructure\\Repositories\\AnswerRepository"},{"id":"000000000e3ea82c00000000266d6599","label":"App\\Packages\\Common\\Domain\\Interfaces\\RepositoryInterface"},{"id":"000000000e3ea8d300000000266d6599","label":"array"},{"id":"000000000e3ea8ef00000000266d6599","label":"int"},{"id":"000000000e3ea8e000000000266d6599","label":"string"},{"id":"000000000e3ea82d00000000266d6599","label":"mixed"},{"id":"000000000e3ea83600000000266d6599","label":"App\\Exceptions\\RepositoryException"},{"id":"000000000e3ea82800000000266d6599","label":"Illuminate\\Support\\Facades\\App"},{"id":"000000000e3ea8f000000000266d6599","label":"Illuminate\\Database\\Eloquent\\Model"}]);
+        var edges = new vis.DataSet([{"from":"000000000e3ea8c000000000266d6599","to":"000000000e3ea83300000000266d6599"},{"from":"000000000e3ea8cd00000000266d6599","to":"000000000e3ea83300000000266d6599"},{"from":"000000000e3ea83e00000000266d6599","to":"000000000e3ea83300000000266d6599"},{"from":"000000000e3ea8c100000000266d6599","to":"000000000e3ea83300000000266d6599"},{"from":"000000000e3ea8ce00000000266d6599","to":"000000000e3ea83300000000266d6599"},{"from":"000000000e3ea8e600000000266d6599","to":"000000000e3ea83300000000266d6599"},{"from":"000000000e3ea8c900000000266d6599","to":"000000000e3ea83300000000266d6599"},{"from":"000000000e3ea82400000000266d6599","to":"000000000e3ea83300000000266d6599"},{"from":"000000000e3ea83300000000266d6599","to":"000000000e3ea82c00000000266d6599"},{"from":"000000000e3ea83300000000266d6599","to":"000000000e3ea8d300000000266d6599"},{"from":"000000000e3ea83300000000266d6599","to":"000000000e3ea8ef00000000266d6599"},{"from":"000000000e3ea83300000000266d6599","to":"000000000e3ea8e000000000266d6599"},{"from":"000000000e3ea83300000000266d6599","to":"000000000e3ea82d00000000266d6599"},{"from":"000000000e3ea83300000000266d6599","to":"000000000e3ea83600000000266d6599"},{"from":"000000000e3ea83300000000266d6599","to":"000000000e3ea82800000000266d6599"},{"from":"000000000e3ea83300000000266d6599","to":"000000000e3ea8f000000000266d6599"}]);
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            nodes: {
+                shape: 'box'
+            },
+            edges: {
+                arrows: 'to'
+            }
+        };
+
+        var network = new vis.Network(container, data, options);
+    </script>
+</div>
+
+<div id="to-top" onclick="window.scrollTo(0, 0);">
+    <i class="fas fa-angle-up" aria-hidden="true"></i>
+</div>
+
+<div class="container-fluid footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div><a href="index.html">PHP Clean Architecture</a></div>
+            <div><a href="https://github.com/Chetkov/php-clean-architecture"><i class="fab fa-github"></i></a></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

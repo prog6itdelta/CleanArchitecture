@@ -2,7 +2,7 @@
 
 namespace App\Packages\Learn\Entities;
 
-use App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository;
+//use App\Packages\Learn\Infrastructure\Repositories\CourseGroupRepository;
 
 class CourseGroup
 {
@@ -26,8 +26,8 @@ class CourseGroup
         }
     }
 
-    function courses() {
-        $rep = new CourseGroupRepository();
-        return $rep->courses($this->id);
-    }
+//    function courses() {
+//        $rep = new CourseGroupRepository();
+//        return $rep->courses($this->id);
+//    }
 }
