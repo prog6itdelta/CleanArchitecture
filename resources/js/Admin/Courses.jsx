@@ -84,10 +84,10 @@ export default function Courses({ paginatedCourses }) {
     };
   }));
   const tableOptions = {
-    showGlobalFilter: true,
-    showColumnSelection: false,
+    // showGlobalFilter: true,
+    // showColumnSelection: false,
     showElementsPerPage: true,
-    showGoToPage: false,
+    // showGoToPage: false,
     showPagination: true,
   };
 

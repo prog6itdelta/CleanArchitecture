@@ -21,22 +21,22 @@ import {
 } from '@heroicons/react/outline';
 import { Listbox, Transition } from '@headlessui/react';
 import ColumnFilter from './ColumnFilter.jsx';
-import GlobalFilter from './GlobalFilter.jsx';
-import EditableCell from './EditableCell.jsx';
+// import GlobalFilter from './GlobalFilter.jsx';
+// import EditableCell from './EditableCell.jsx';
 
 export default function Table({ dataValue: data, columnsValue, ...props }) {
   const {
     options: {
-      showGlobalFilter = true,
-      showColumnSelection = true,
+      // showGlobalFilter = true,
+      // showColumnSelection = true,
       showElementsPerPage = true,
-      showGoToPage = true,
+      // showGoToPage = true,
       showPagination = true,
     } = {
-      showGlobalFilter,
-      showColumnSelection,
+      // showGlobalFilter,
+      // showColumnSelection,
       showElementsPerPage,
-      showGoToPage,
+      // showGoToPage,
       showPagination,
     },
     fetchData = null,
@@ -104,7 +104,7 @@ export default function Table({ dataValue: data, columnsValue, ...props }) {
       defaultColumn,
       initialState: { pageIndex: curPage },
       manualPagination: controlledPageCount !== null,
-      pageCount: controlledPageCount
+      pageCount: controlledPageCount,
     },
     useGlobalFilter,
     useFilters,
@@ -426,7 +426,7 @@ export default function Table({ dataValue: data, columnsValue, ...props }) {
         <div className="max-w-full w-full">
           <div
             className="align-middle inline-block max-w-full w-full border-b border-gray-100 bg-gray-100 sm:rounded-lg shadow overflow-hidden">
-            {showGlobalFilter && <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>}
+            {/*{showGlobalFilter && <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>}*/}
             <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div
                 className="min-w-full divide-y divide-gray-400 border-collapse sm:px-6 lg:px-8"
