@@ -43,18 +43,15 @@ export default function Table({ dataValue: data, columnsValue, ...props }) {
     controlledPageCount = null,
     loading = false,
     total = null,
-    globalState = null,
-    dispatch = null,
     curPage = 0
   } = props;
 
-  // const data = React.useMemo(() => dataValue, [dataValue]);
   const columns = React.useMemo(() => columnsValue, []);
 
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 50,
-      width: 60,
+      width: 150,
       maxWidth: 400,
       // DefaultFilter
       Filter: ColumnFilter,
@@ -121,6 +118,10 @@ export default function Table({ dataValue: data, columnsValue, ...props }) {
         // Let's make a column for selection
         {
           id: 'selection',
+          disableResizing: true,
+          minWidth: 50,
+          width: 50,
+          maxWidth: 50,
           // The header can use the table's getToggleAllRowsSelectedProps method
           // to render a checkbox
           Header: ({ getToggleAllRowsSelectedProps }) => (
@@ -136,6 +137,11 @@ export default function Table({ dataValue: data, columnsValue, ...props }) {
         },
         ...columns,
       ]);
+      hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
+        // fix the parent group of the selection button to not be resizable
+        const selectionGroupHeader = headerGroups[0].headers[0];
+        selectionGroupHeader.canResize = false;
+      });
     }
   );
 
@@ -421,24 +427,24 @@ export default function Table({ dataValue: data, columnsValue, ...props }) {
           <div
             className="align-middle inline-block max-w-full w-full border-b border-gray-100 bg-gray-100 sm:rounded-lg shadow overflow-hidden">
             {showGlobalFilter && <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>}
-            <div className="overflow-x-auto">
-              <table
-                className="min-w-full divide-y divide-gray-400 border-collapse"
+            <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+              <div
+                className="min-w-full divide-y divide-gray-400 border-collapse sm:px-6 lg:px-8"
                 {...getTableProps()}
               >
-                <thead>
+                <div>
                 {headerGroups.map((headerGroup) => (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map((column) => {
-                      const getSortByToggleProps = { ...column.getSortByToggleProps() };
-                      return (
-                        <th
-                          scope="col"
-                          className="px-3 py-3 text-center border-r border-gray-300 text-xs font-medium text-gray-500 tracking-wider flex flex-wrap items-center justify-center"
-                          {...column.getHeaderProps()}
-                        >
+                    <div {...headerGroup.getHeaderGroupProps()}>
+                      {headerGroup.headers.map((column, idx) => {
+                        const getSortByToggleProps = { ...column.getSortByToggleProps() };
+                        return (
                           <div
-                            className="flex w-full items-center justify-center" {...column.disableFilters ? null : getSortByToggleProps}>
+                            scope="col"
+                            className={`px-3 py-3 text-center ${idx === headerGroup.headers.length - 1 ? '' : 'border-r'} border-gray-300 text-xs font-medium text-gray-500 tracking-wider flex flex-wrap items-center justify-center`}
+                            {...column.getHeaderProps()}
+                          >
+                            <div
+                              className="flex w-full items-center justify-center" {...column.disableFilters ? null : getSortByToggleProps}>
                             <span className="relative">
                               {column.render('Header')}
                               <SortingIndicator
@@ -446,22 +452,27 @@ export default function Table({ dataValue: data, columnsValue, ...props }) {
                                 className="absolute top-0 -right-4 w-4 h-4"
                               />
                             </span>
+                            </div>
+
+                            {column.canFilter ? column.render('Filter') : null}
+
+                            {column.disableResizing !== true
+                              ? <div
+                                className={`resizer isResizing`}
+                                {...column.getResizerProps()}
+                              ></div>
+                              : null
+                            }
                           </div>
-
-                          {column.canFilter ? column.render('Filter') : null}
-
-                          <div
-                            className={`resizer ${column.isResizing ? 'isResizing' : ''}`}
-                            {...column.getResizerProps()}
-                          ></div>
-                        </th>
-                      );
-                    })}
-                  </tr>
-                ))}
-                </thead>
+                        );
+                      })}
+                    </div>
+                  )
+                )
+                }
+                </div>
                 {/* Apply the table body props */}
-                <tbody
+                <div
                   {...getTableBodyProps()}
                 >
                 {
@@ -471,30 +482,30 @@ export default function Table({ dataValue: data, columnsValue, ...props }) {
                     prepareRow(row);
                     return (
                       // Apply the row props
-                      <tr
+                      <div
                         className={`${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'} border-b border-gray-300`}
                         {...row.getRowProps()}
                       >
                         {
                           // Loop over the rows cells
-                          row.cells.map((cell) => {
+                          row.cells.map((cell, idx) => {
                             // Apply the cell props
                             return (
-                              <td
-                                className={`p-2 whitespace-nowrap text-sm text-gray-500 justify-center border-r border-gray-300 flex flex-wrap items-center overflow-hidden`}
+                              <div
+                                className={`p-2 whitespace-nowrap text-sm text-gray-500 justify-center ${idx === row.cells.length - 1 ? '' : 'border-r'} border-gray-300 flex flex-wrap items-center overflow-hidden`}
                                 {...cell.getCellProps()}
                               >
                                 {cell.render('Cell')}
-                              </td>
+                              </div>
                             );
                           })
                         }
-                      </tr>
+                      </div>
                     );
                   })
                 }
-                </tbody>
-              </table>
+                </div>
+              </div>
             </div>
 
             <div

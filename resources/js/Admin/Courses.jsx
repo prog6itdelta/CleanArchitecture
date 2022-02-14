@@ -305,8 +305,6 @@ export default function Courses({ paginatedCourses }) {
           controlledPageCount={controlledPageCount}
           total={paginatedCourses.total}
           fetchData={fetchData}
-          globalState={state}
-          dispatch={dispatch}
           loading={loading}
           curPage={curPage}
         />
