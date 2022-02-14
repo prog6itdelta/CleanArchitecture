@@ -44,26 +44,6 @@ export default function Navigation({ children }) {
           current: true,
           active: true
         },
-        {
-          name: 'Уроки',
-          icon: BookOpenIcon,
-          href: storeNav.currentCourse.id === null ? '#' : route('admin.lessons', storeNav.currentCourse.id),
-          current: true,
-          active: storeNav.currentCourse.id !== null
-        },
-        {
-          name: 'Вопросы',
-          icon: QuestionMarkCircleIcon,
-          href: storeNav.currentLesson.id === null ? '#' : route('admin.questions', [storeNav.currentCourse.id, storeNav.currentLesson.id]),
-          current: true,
-          active: storeNav.currentLesson.id !== null
-        },
-        {
-          name: 'Ответы',
-          icon: ClipboardListIcon,
-          href: storeNav.currentQuestion.id === null ? '#' : route('admin.answers', [storeNav.currentCourse.id, storeNav.currentLesson.id, storeNav.currentQuestion.id]),
-          active: storeNav.currentQuestion.id !== null
-        },
       ],
     },
     {

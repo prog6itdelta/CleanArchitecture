@@ -61,7 +61,7 @@ Route::middleware(['auth'])->group(function () {
             return redirect()->route('admin.courses');
         })->name('admin.index');
 
-        Route::get('/courses', [AdminController::class, 'courses'])
+        Route::match(['get', 'post'], '/courses', [AdminController::class, 'courses'])
             ->name('admin.courses');
 
         Route::post('/courses/{id}/edit', [AdminController::class, 'editCourse'])

@@ -13,46 +13,17 @@ export default function Answers({ answers, page_count: controlledPageCount }) {
   const [showModal, setShowModal] = useState(false);
   const [skipPageReset, setSkipPageReset] = React.useState(false);
   const [editedAnswer, setEditedAnswer] = useState(null);
-  const {state: { navigation: nav }} = useContext(AdminContext);
+  const { state: { navigation: nav }, dispatch } = useContext(AdminContext);
   useEffect(() => {
     setSkipPageReset(false);
   }, [answers]);
 
   const columns = [
     {
-      Header: 'ACTIONS',
-      accessor: 'rowActions',
-      disableFilters: true,
-      Filter: '',
-      width: 100,
-      Cell: ActionsCell,
-    },
-    {
-      Header: 'ID',
-      accessor: 'id',
-      Filter: '',
-      width: 50,
-      // Cell: EditableCell,
-    },
-    {
       Header: 'Name',
       accessor: 'name',
       Filter: '',
       width: 250,
-      Cell: EditableCell,
-    },
-    {
-      Header: 'Sort',
-      accessor: 'sort',
-      Filter: '',
-      width: 300,
-      Cell: OneLineCell,
-    },
-    {
-      Header: 'Correct',
-      accessor: 'correct',
-      Filter: '',
-      width: 300,
       Cell: OneLineCell,
     },
     {
@@ -61,6 +32,14 @@ export default function Answers({ answers, page_count: controlledPageCount }) {
       Filter: '',
       width: 70,
       Cell: OneLineCell,
+    },
+    {
+      Header: 'ACTIONS',
+      accessor: 'rowActions',
+      disableFilters: true,
+      Filter: '',
+      width: 100,
+      Cell: ActionsCell,
     },
   ];
   const tableData = answers.map((answer, i) => {
@@ -72,7 +51,10 @@ export default function Answers({ answers, page_count: controlledPageCount }) {
           type: 'edit',
           action: () => {
             setEditedAnswer(answer);
-            setShowModal(true);
+            dispatch({
+              type: 'CHANGE_HEADER',
+              payload: `Редактирование ответа ${answer.name}`
+            });
           },
           disabled: false,
         },
@@ -87,22 +69,10 @@ export default function Answers({ answers, page_count: controlledPageCount }) {
   });
   const tableOptions = {
     showGlobalFilter: true,
-    showColumnSelection: true,
+    showColumnSelection: false,
     showElementsPerPage: true,
     showGoToPage: false,
     showPagination: true,
-  };
-  const updateData = (rowIndex, columnId, value) => {
-    const oldValue = answers[rowIndex][columnId];
-    setSkipPageReset(true);
-    if (value !== oldValue) {
-      const oldAnswer = answers[rowIndex];
-      const newAnswer = {
-        ...oldAnswer,
-        [columnId]: value
-      };
-      Inertia.post(route('admin.answers.edit', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id, newAnswer.id]), newAnswer);
-    }
   };
 
   const EditAnswerForm = () => {
@@ -115,10 +85,7 @@ export default function Answers({ answers, page_count: controlledPageCount }) {
 
     return (
       <>
-        <div className="bg-white -mx-6 -mt-5 shadow overflow-hidden">
-          <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">Редактирование ответа: {data.name}</h3>
-          </div>
+        <div className="bg-white shadow overflow-hidden rounded-md">
           <div className="border-t border-gray-200">
             <ul>
               <li className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -249,9 +216,16 @@ export default function Answers({ answers, page_count: controlledPageCount }) {
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
             onClick={() => {
               post(route('admin.answers.edit', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id, editedAnswer.id]),
-                { data, onSuccess: () => {Inertia.get(route(route().current(), [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id]));} });
-              setShowModal(false);
-
+                {
+                  data,
+                  onSuccess: () => {
+                    dispatch({
+                      type: 'CHANGE_HEADER',
+                      payload: `Ответы вопроса ${nav.currentQuestion.name}`
+                    });
+                  }
+                });
+              setEditedAnswer(null);
             }}
           >
             Сохранить
@@ -259,7 +233,13 @@ export default function Answers({ answers, page_count: controlledPageCount }) {
           <button
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
-            onClick={() => setShowModal(false)}
+            onClick={() => {
+              setEditedAnswer(null);
+              dispatch({
+                type: 'CHANGE_HEADER',
+                payload: `Ответы вопроса ${nav.currentQuestion.name}`
+              });
+            }}
           >
             Отмена
           </button>
@@ -269,28 +249,17 @@ export default function Answers({ answers, page_count: controlledPageCount }) {
   };
 
   return (
-    <>
-      <header>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold leading-tight text-gray-900 text-center">Админка</h1>
-        </div>
-      </header>
-      <main className="w-full h-fit">
-        <Table
+    <main className="w-full h-fit">
+      {editedAnswer === null
+        ? <Table
           dataValue={tableData}
           columnsValue={columns}
           skipPageReset={skipPageReset}
-          updateData={updateData}
           options={tableOptions}
           controlledPageCount={controlledPageCount}
         />
-        <Modal
-          open={showModal}
-          onClose={() => setShowModal(false)}
-        >
-          <EditAnswerForm/>
-        </Modal>
-      </main>
-    </>
+        : <EditAnswerForm/>
+      }
+    </main>
   );
 }

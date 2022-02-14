@@ -1,19 +1,21 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useCallback, useRef, useContext } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
+import axios from 'axios';
 import { Switch } from '@headlessui/react';
 import Table from './Components/Table.jsx';
 import OneLineCell from './Components/OneLineCell.jsx';
 import ActionsCell from './Components/ActionsCell.jsx';
 import { AdminContext } from './reducer.jsx';
 
-export default function Courses({ courses, page_count: controlledPageCount }) {
-  const [skipPageReset, setSkipPageReset] = useState(false);
+export default function Courses({ paginatedCourses }) {
+  // todo refactor Courses and Table to make the code clearly
+  const [loading, setLoading] = useState(false);
+  const [curPage, setCurPage] = useState(0);
+  const [controlledPageCount, setControlledPageCount] = useState(paginatedCourses.last_page);
+  const courses = paginatedCourses.data;
   const [editedCourse, setEditedCourse] = useState(null);
   const { state, dispatch } = useContext(AdminContext);
-  useEffect(() => {
-    setSkipPageReset(false);
-  }, [courses]);
 
   const showCourseLessons = () => {
     dispatch(
@@ -26,7 +28,7 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
       },
       {
         type: 'CHANGE_HEADER',
-        payload: `Админка`
+        payload: `Уроки курса ${editedCourse.name}`
       }
     );
     Inertia.post(route('admin.lessons', editedCourse.id));
@@ -34,39 +36,10 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
 
   const columns = [
     {
-      Header: 'Действия',
-      accessor: 'rowActions',
-      disableFilters: true,
-      Filter: '',
-      width: 100,
-      Cell: ActionsCell,
-    },
-    {
-      Header: 'ID',
-      accessor: 'id',
-      Filter: '',
-      width: 50,
-      // Cell: EditableCell,
-    },
-    {
       Header: 'Name',
       accessor: 'name',
       Filter: '',
       width: 250,
-      Cell: OneLineCell,
-    },
-    {
-      Header: 'description',
-      accessor: 'description',
-      Filter: '',
-      width: 300,
-      Cell: OneLineCell,
-    },
-    {
-      Header: 'image',
-      accessor: 'image',
-      Filter: '',
-      width: 300,
       Cell: OneLineCell,
     },
     {
@@ -76,8 +49,16 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
       width: 70,
       Cell: OneLineCell,
     },
+    {
+      Header: 'Действия',
+      accessor: 'rowActions',
+      disableFilters: true,
+      Filter: '',
+      width: 100,
+      Cell: ActionsCell,
+    },
   ];
-  const tableData = courses.map((course, i) => {
+  const [data, setData] = useState(courses.map((course, i) => {
     return {
       ...course,
       rowActions: [
@@ -101,26 +82,49 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
         },
       ]
     };
-  });
+  }));
   const tableOptions = {
     showGlobalFilter: true,
-    showColumnSelection: true,
+    showColumnSelection: false,
     showElementsPerPage: true,
     showGoToPage: false,
     showPagination: true,
   };
-  const updateData = (rowIndex, columnId, value) => {
-    const oldValue = courses[rowIndex][columnId];
-    setSkipPageReset(true);
-    if (value !== oldValue) {
-      const oldCourse = courses[rowIndex];
-      const newCourse = {
-        ...oldCourse,
-        [columnId]: value
-      };
-      Inertia.post(route('admin.course.edit', newCourse.id), newCourse);
-    }
-  };
+
+  const fetchData = useCallback(({pageIndex, pageSize}) => {
+    setLoading(true);
+
+    axios.get(`${route(route().current())}?page=${pageIndex}&perpage=${pageSize}`).then((resp) => {
+      setCurPage(Number(resp.data.current_page - 1));
+      setControlledPageCount(resp.data.last_page);
+      setData(resp.data.data.map((course, i) => {
+        return {
+          ...course,
+          rowActions: [
+            {
+              name: 'edit',
+              type: 'edit',
+              action: () => {
+                setEditedCourse(course);
+                dispatch({
+                  type: 'CHANGE_HEADER',
+                  payload: `Редактирование курса ${course.name}`
+                });
+              },
+              disabled: false,
+            },
+            {
+              name: 'delete',
+              type: 'delete',
+              action: () => console.log('delete'),
+              disabled: Boolean(i % 2),
+            },
+          ]
+        };
+      }));
+    })
+      .then(() => setLoading(false));
+  }, []);
 
   const EditCourseForm = () => {
     const [courseImg, setCourseImg] = useState(editedCourse.image);
@@ -293,15 +297,18 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
 
   return (
     <main className="w-full h-fit">
-
       {editedCourse === null
         ? <Table
-          dataValue={tableData}
+          dataValue={data}
           columnsValue={columns}
-          skipPageReset={skipPageReset}
-          updateData={updateData}
           options={tableOptions}
           controlledPageCount={controlledPageCount}
+          total={paginatedCourses.total}
+          fetchData={fetchData}
+          globalState={state}
+          dispatch={dispatch}
+          loading={loading}
+          curPage={curPage}
         />
         : <EditCourseForm/>
       }

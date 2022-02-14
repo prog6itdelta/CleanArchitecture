@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect, useRef} from 'react';
+import React, { Fragment, useState, useEffect, useRef } from 'react';
 import {
   useTable,
   useSortBy,
@@ -19,12 +19,12 @@ import {
   PencilIcon,
   ClipboardCheckIcon
 } from '@heroicons/react/outline';
-import {Listbox, Transition} from '@headlessui/react';
+import { Listbox, Transition } from '@headlessui/react';
 import ColumnFilter from './ColumnFilter.jsx';
 import GlobalFilter from './GlobalFilter.jsx';
 import EditableCell from './EditableCell.jsx';
 
-export default function Table({dataValue, columnsValue, updateData, skipPageReset, ...props}) {
+export default function Table({ dataValue: data, columnsValue, ...props }) {
   const {
     options: {
       showGlobalFilter = true,
@@ -38,10 +38,17 @@ export default function Table({dataValue, columnsValue, updateData, skipPageRese
       showElementsPerPage,
       showGoToPage,
       showPagination,
-    }
+    },
+    fetchData = null,
+    controlledPageCount = null,
+    loading = false,
+    total = null,
+    globalState = null,
+    dispatch = null,
+    curPage = 0
   } = props;
 
-  const data = React.useMemo(() => dataValue, []);
+  // const data = React.useMemo(() => dataValue, [dataValue]);
   const columns = React.useMemo(() => columnsValue, []);
 
   const defaultColumn = React.useMemo(
@@ -57,11 +64,11 @@ export default function Table({dataValue, columnsValue, updateData, skipPageRese
   );
 
   const IndeterminateCheckbox = React.forwardRef(
-    ({indeterminate, ...rest}, ref) => {
+    ({ indeterminate, ...rest }, ref) => {
       const defaultRef = React.useRef();
       const resolvedRef = ref || defaultRef;
 
-      React.useEffect(() => {
+      useEffect(() => {
         resolvedRef.current.indeterminate = indeterminate;
       }, [resolvedRef, indeterminate]);
 
@@ -90,7 +97,7 @@ export default function Table({dataValue, columnsValue, updateData, skipPageRese
     getToggleHideAllColumnsProps,
     setPageSize,
     state,
-    state: {pageIndex, pageSize},
+    state: { pageIndex, pageSize },
     selectedFlatRows,
     setGlobalFilter,
   } = useTable(
@@ -98,9 +105,9 @@ export default function Table({dataValue, columnsValue, updateData, skipPageRese
       columns,
       data,
       defaultColumn,
-      initialState: {pageIndex: 0},
-      autoResetPage: !skipPageReset,
-      updateData,
+      initialState: { pageIndex: curPage },
+      manualPagination: controlledPageCount !== null,
+      pageCount: controlledPageCount
     },
     useGlobalFilter,
     useFilters,
@@ -116,13 +123,13 @@ export default function Table({dataValue, columnsValue, updateData, skipPageRese
           id: 'selection',
           // The header can use the table's getToggleAllRowsSelectedProps method
           // to render a checkbox
-          Header: ({getToggleAllRowsSelectedProps}) => (
+          Header: ({ getToggleAllRowsSelectedProps }) => (
             <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
 
           ),
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
-          Cell: ({row}) => (
+          Cell: ({ row }) => (
             <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
           ),
           disableFilters: true
@@ -132,13 +139,15 @@ export default function Table({dataValue, columnsValue, updateData, skipPageRese
     }
   );
 
-  const {globalFilter} = state;
+  const { globalFilter } = state;
   // Update the state when input changes
 
-  const [openColumnSelector, setOpenColumnSelector] = useState(false);
-  const onVisibilityChange = () => { setOpenColumnSelector(!openColumnSelector); };
+  useEffect(() => {
+    if (fetchData !== null && loading !== true) {fetchData({ pageIndex: pageIndex + 1, pageSize });}
+  }, [fetchData, pageSize, pageIndex]);
 
-  const SortingIndicator = ({column, className}) => {
+
+  const SortingIndicator = ({ column, className }) => {
     if (column.isSorted) {
       if (column.isSortedDesc) { return <SortAscendingIcon className={className}/>; }
       return <SortDescendingIcon className={className}/>;
@@ -148,79 +157,80 @@ export default function Table({dataValue, columnsValue, updateData, skipPageRese
     return null;
   };
 
-  const VisibleColumnsSelector = () => {
-    return (
-      <Listbox onChange={() => null}>
-        {({open}) => (
-          <>
-            <div className="relative flex items-center" style={{width: '220px'}}>
-              <Listbox.Button
-                className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-pointer focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-              >
-                <span className="block truncate -ml-3 -mr-10 -my-2 pl-3 pr-10 py-2" onClick={onVisibilityChange}>Выбрать столбцы</span>
-                <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                  <SelectorIcon className="h-5 w-5 text-gray-600" aria-hidden="true"/>
-                </span>
-              </Listbox.Button>
-
-              <Transition
-                show={openColumnSelector}
-                as={Fragment}
-                leave="transition ease-in duration-100"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <Listbox.Options as="div"
-                                 className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none text-sm bottom-9">
-                  {allColumns.map((column) => (
-                    <Listbox.Option
-                      as="label"
-                      key={`${column.id}Selector`}
-                      className={({active}) => `
-                              ${active
-                        ? 'bg-gray-200'
-                        : 'text-gray-900'
-                      } cursor-pointer relative px-4 py-2 min-w-full block`
-                      }
-                      value={column.id}
-                    >
-                      {() => (
-                        <>
-                          <input type="checkbox"
-                                 className="form-checkbox h-5 w-5 text-gray-600" {...column.getToggleHiddenProps()} />
-                          <span className={
-                            `${column.isVisible
-                              ? 'font-semibold'
-                              : 'font-normal'
-                            } ml-2 truncate text-xs'`
-                          }
-                          >
-                            {column.id}
-                          </span>
-                        </>
-                      )}
-                    </Listbox.Option>
-                  ))}
-                </Listbox.Options>
-              </Transition>
-            </div>
-          </>
-        )}
-      </Listbox>
-    );
-  };
+  // VisibleColumnsSelector is not usable in current state it have to be remade if we need it
+  // const VisibleColumnsSelector = () => {
+  //   return (
+  //     <Listbox onChange={() => null}>
+  //       {({open}) => (
+  //         <>
+  //           <div className="relative flex items-center" style={{width: '220px'}}>
+  //             <Listbox.Button
+  //               className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-pointer focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+  //             >
+  //               <span className="block truncate -ml-3 -mr-10 -my-2 pl-3 pr-10 py-2">Выбрать столбцы</span>
+  //               <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+  //                 <SelectorIcon className="h-5 w-5 text-gray-600" aria-hidden="true"/>
+  //               </span>
+  //             </Listbox.Button>
+  //
+  //             <Transition
+  //               show={open}
+  //               as={Fragment}
+  //               leave="transition ease-in duration-100"
+  //               leaveFrom="opacity-100"
+  //               leaveTo="opacity-0"
+  //             >
+  //               <Listbox.Options as="div"
+  //                                className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none text-sm bottom-9">
+  //                 {allColumns.map((column) => (
+  //                   <Listbox.Option
+  //                     as="label"
+  //                     key={`${column.id}Selector`}
+  //                     className={({active}) => `
+  //                             ${active
+  //                       ? 'bg-gray-200'
+  //                       : 'text-gray-900'
+  //                     } cursor-pointer relative px-4 py-2 min-w-full block`
+  //                     }
+  //                     value={column.id}
+  //                   >
+  //                     {() => (
+  //                       <>
+  //                         <input type="checkbox"
+  //                                className="form-checkbox h-5 w-5 text-gray-600" {...column.getToggleHiddenProps()} />
+  //                         <span className={
+  //                           `${column.isVisible
+  //                             ? 'font-semibold'
+  //                             : 'font-normal'
+  //                           } ml-2 truncate text-xs'`
+  //                         }
+  //                         >
+  //                           {column.id}
+  //                         </span>
+  //                       </>
+  //                     )}
+  //                   </Listbox.Option>
+  //                 ))}
+  //               </Listbox.Options>
+  //             </Transition>
+  //           </div>
+  //         </>
+  //       )}
+  //     </Listbox>
+  //   );
+  // };
 
   const NumberOfElementsSelector = () => {
-    const pSizes = [10, 20, 50, 100, data.length];
+    const pSizes = [10, 20, 50, 100, total ?? data.length];
     return (
       <Listbox value={pageSize} onChange={(e) => { setPageSize(Number(e)); }}>
-        {({open}) => (
+        {({ open }) => (
           <>
-            <div className="relative flex items-center" style={{width: '220px'}}>
+            <div className="relative flex items-center" style={{ width: '220px' }}>
               <Listbox.Button
                 className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-pointer focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
                 <span className="block truncate">
-                  {`Показать ${pageSize === data.length ? `все элементы` : `${pageSize} элементов`}`}
+                  {`Показать ${pageSize === (total ?? data.length) ? `все элементы` : `${pageSize} элементов`}`}
                 </span>
                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                   <SelectorIcon className="h-5 w-5 text-gray-600" aria-hidden="true"/>
@@ -236,10 +246,10 @@ export default function Table({dataValue, columnsValue, updateData, skipPageRese
               >
                 <Listbox.Options
                   className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none text-sm bottom-8">
-                  {pSizes.map((pSize) => (
+                  {pSizes.map((pSize, i) => (
                     <Listbox.Option
-                      key={`pSize${pSize === data.length ? `All` : pSize}`}
-                      className={({active}) => `
+                      key={`pSize${i === pSizes.length - 1 ? `All` : pSize}`}
+                      className={({ active }) => `
                       ${active
                         ? 'bg-gray-200'
                         : 'text-gray-900'
@@ -256,7 +266,7 @@ export default function Table({dataValue, columnsValue, updateData, skipPageRese
                             } block truncate text-xs'`
                           }
                           >
-                            {`Показать ${pSize === data.length ? `все элементы` : `${pSize} элементов`}`}
+                            {`Показать ${i === pSizes.length - 1 ? `все элементы` : `${pSize} элементов`}`}
                           </span>
 
                           {pageSize === pSize ? (
@@ -284,62 +294,69 @@ export default function Table({dataValue, columnsValue, updateData, skipPageRese
     );
   };
 
-  const PageSelector = () => {
-    const [pageToGo, setPageToGo] = useState(pageIndex + 1);
-    return (
-      <div>
-        <label htmlFor="goToPage" className="block text-sm font-medium text-gray-700 max-w-fit">
-          Перейти на страницу
-        </label>
-        <div className="mt-1 flex rounded-md shadow-sm">
-          <div className="relative flex items-stretch flex-grow focus-within:z-10">
-            <input
-              type="number"
-              name="goToPage"
-              value={pageToGo}
-              min={1}
-              max={pageCount}
-              id="goToPage"
-              className="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
-              placeholder="John Doe"
-              onChange={(e) => setPageToGo(e.target.value)}
-            />
-          </div>
-          <button
-            type="button"
-            className="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-            onClick={() => gotoPage(pageToGo - 1)}
-          >
-            <span>Перейти</span>
-          </button>
-        </div>
-      </div>
-    );
-  };
+  // PageSelector is deprecated. If you want to use it, you have to rewrite it with new pagination system
+  // const PageSelector = () => {
+  //   const [pageToGo, setPageToGo] = useState(pageIndex + 1);
+  //   return (
+  //     <div>
+  //       <label htmlFor="goToPage" className="block text-sm font-medium text-gray-700 max-w-fit">
+  //         Перейти на страницу
+  //       </label>
+  //       <div className="mt-1 flex rounded-md shadow-sm">
+  //         <div className="relative flex items-stretch flex-grow focus-within:z-10">
+  //           <input
+  //             type="number"
+  //             name="goToPage"
+  //             value={pageToGo}
+  //             min={1}
+  //             max={pageCount}
+  //             id="goToPage"
+  //             className="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
+  //             placeholder="John Doe"
+  //             onChange={(e) => setPageToGo(e.target.value)}
+  //           />
+  //         </div>
+  //         <button
+  //           type="button"
+  //           className="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+  //           onClick={() => gotoPage(pageToGo - 1)}
+  //         >
+  //           <span>Перейти</span>
+  //         </button>
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
   const Pagination = () => {
     return (
       <div className="flex items-center justify-between min-w-full">
-        <div className="flex-1 flex justify-between sm:hidden">
-          <button
-            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-            onClick={previousPage}
-            disabled={!canPreviousPage}
-            key="buttonPrev"
-          >
-            Previous
-          </button>
-          <button
-            className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-            onClick={nextPage}
-            disabled={!canNextPage}
-            key="buttonNext"
-          >
-            Next
-          </button>
+        <div className="flex-1 flex flex-wrap justify-between sm:hidden">
+          {showElementsPerPage &&
+            <div className="w-full flex justify-center mb-2">
+              <NumberOfElementsSelector/>
+            </div>}
+          <div className="w-full flex justify-between">
+            <button
+              className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              onClick={previousPage}
+              disabled={!canPreviousPage}
+              key="buttonPrev"
+            >
+              Previous
+            </button>
+            <button
+              className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              onClick={nextPage}
+              disabled={!canNextPage}
+              key="buttonNext"
+            >
+              Next
+            </button>
+          </div>
         </div>
-        <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">
-          {/* <NumberOfElementsSelector /> */}
+        <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+          {showElementsPerPage && <NumberOfElementsSelector/>}
           <div>
             <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
               <button
@@ -413,7 +430,7 @@ export default function Table({dataValue, columnsValue, updateData, skipPageRese
                 {headerGroups.map((headerGroup) => (
                   <tr {...headerGroup.getHeaderGroupProps()}>
                     {headerGroup.headers.map((column) => {
-                      const getSortByToggleProps = {...column.getSortByToggleProps()};
+                      const getSortByToggleProps = { ...column.getSortByToggleProps() };
                       return (
                         <th
                           scope="col"
@@ -482,11 +499,10 @@ export default function Table({dataValue, columnsValue, updateData, skipPageRese
 
             <div
               className="px-2 pt-3 flex flex-wrap items-center justify-center sm:justify-between w-full space-y-2 sm:space-y-0">
-              {showColumnSelection && <VisibleColumnsSelector/>}
-              {showElementsPerPage && <NumberOfElementsSelector/>}
+              {/*{showColumnSelection && <VisibleColumnsSelector/>}*/}
             </div>
             <div className="px-2 py-3 flex flex-wrap items-center justify-center w-full space-y-2">
-              {showGoToPage && <PageSelector/>}
+              {/*{showGoToPage && <PageSelector/>}*/}
               {showPagination && <Pagination/>}
 
             </div>

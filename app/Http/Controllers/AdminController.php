@@ -25,10 +25,18 @@ class AdminController extends BaseController
      * @param int $id
      * @return \Inertia\Response
      */
-    public function courses()
+    public function courses(Request $request)
     {
-        $courses = LearnService::getCourses();
-        return Inertia::render('Admin/Courses', compact('courses'));
+        $orderBy = $request->orderby;
+        $sort = $request->sort;
+        $perPage = $request->perpage;
+        if ($request->has('page')) {
+            return Course::orderBy($orderBy ?? 'id', $sort ?? 'asc')->paginate($perPage ?? 10);
+        }
+
+        return Inertia::render('Admin/Courses', [
+            'paginatedCourses' =>  fn () => Course::orderBy($orderBy ?? 'id', $sort ?? 'asc')->paginate($perPage ?? 10)
+        ]);
     }
 
     public function editCourse(Request $request, $id)
@@ -80,10 +88,7 @@ class AdminController extends BaseController
 
     public function questions(Request $request, $cid, $lid)
     {
-//        $lessons = LearnService::getLessons();
-//        $questions = LearnService::getAllQuestions();
-        $lesson = LearnService::runLesson($lid);
-        $questions = $lesson->questions;
+        $questions = Question::where('lesson_id', $lid)->get();
         return Inertia::render('Admin/Questions', compact('questions'));
     }
 
@@ -106,9 +111,7 @@ class AdminController extends BaseController
 
     public function answers(Request $request, $cid, $lid, $qid)
     {
-        $lesson = LearnService::runLesson($lid);
-        $key = array_search($qid, array_column($lesson->questions, 'id'), false);
-        $answers = $lesson->questions[$key]->answers;
+        $answers = Answer::where('question_id', $qid)->get();
         return Inertia::render('Admin/Answers', compact('answers'));
     }
 

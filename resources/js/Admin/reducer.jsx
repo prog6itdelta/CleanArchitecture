@@ -19,6 +19,10 @@ export const initialState = {
       },
     },
   pageHeader: 'Админка',
+  table: {
+    page: null,
+    perpage: null
+  }
 };
 
 export const resetState = (state) => state;
@@ -62,6 +66,14 @@ export const adminReducer = (state, action) => {
       return {
         ...state,
         pageHeader: action.payload
+      };
+    case 'UPDATE_TABLE':
+      return {
+        ...state,
+        table: {
+          pageIndex: action.payload.pageIndex,
+          pageSize: action.payload.pageSize
+        }
       };
     case 'RESET':
       return resetState(action.payload);

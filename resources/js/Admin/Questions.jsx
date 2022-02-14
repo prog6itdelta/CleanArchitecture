@@ -10,63 +10,36 @@ import Modal from './Components/Modal.jsx';
 import { AdminContext } from './reducer.jsx';
 
 export default function Questions({ questions, page_count: controlledPageCount }) {
-  const [showModal, setShowModal] = useState(false);
   const [skipPageReset, setSkipPageReset] = React.useState(false);
   const [editedQuestion, setEditedQuestion] = useState(null);
-  const {state: { navigation: nav }, dispatch} = useContext(AdminContext);
+  const { state: { navigation: nav }, dispatch } = useContext(AdminContext);
   useEffect(() => {
     setSkipPageReset(false);
   }, [questions]);
 
-  const showQuestionAnswers = (question) => {
+  const showQuestionAnswers = () => {
     dispatch({
-      type: 'CHOSE_QUESTION',
-      payload: {
-        id: question.id,
-        name: question.name
+        type: 'CHOSE_QUESTION',
+        payload: {
+          id: editedQuestion.id,
+          name: editedQuestion.name
+        },
+      },
+      {
+        type: 'CHANGE_HEADER',
+        payload: `Ответы вопроса ${editedQuestion.name}`
       }
-    });
+    );
 
-    Inertia.post(route('admin.answers', [nav.currentCourse.id, nav.currentLesson.id, question.id]));
+    Inertia.post(route('admin.answers', [nav.currentCourse.id, nav.currentLesson.id, editedQuestion.id]));
   };
 
-  // todo create questions table
-
   const columns = [
-    {
-      Header: 'ACTIONS',
-      accessor: 'rowActions',
-      disableFilters: true,
-      Filter: '',
-      width: 100,
-      Cell: ActionsCell,
-    },
-    {
-      Header: 'ID',
-      accessor: 'id',
-      Filter: '',
-      width: 50,
-      // Cell: EditableCell,
-    },
     {
       Header: 'Name',
       accessor: 'name',
       Filter: '',
       width: 250,
-      Cell: EditableCell,
-    },
-    {
-      Header: 'Type',
-      accessor: 'type',
-      Filter: '',
-      width: 300,
-      Cell: OneLineCell,
-    },
-    {
-      Header: 'Point',
-      accessor: 'point',
-      Filter: '',
-      width: 300,
       Cell: OneLineCell,
     },
     {
@@ -75,6 +48,14 @@ export default function Questions({ questions, page_count: controlledPageCount }
       Filter: '',
       width: 70,
       Cell: OneLineCell,
+    },
+    {
+      Header: 'ACTIONS',
+      accessor: 'rowActions',
+      disableFilters: true,
+      Filter: '',
+      width: 100,
+      Cell: ActionsCell,
     },
   ];
   const tableData = questions.map((question, i) => {
@@ -86,14 +67,12 @@ export default function Questions({ questions, page_count: controlledPageCount }
           type: 'edit',
           action: () => {
             setEditedQuestion(question);
-            setShowModal(true);
+            dispatch({
+              type: 'CHANGE_HEADER',
+              payload: `Редактирование вопроса ${question.name}`
+            });
           },
           disabled: false,
-        },
-        {
-          name: 'Открыть',
-          type: 'open',
-          action: () => showQuestionAnswers(question),
         },
         {
           name: 'delete',
@@ -106,22 +85,10 @@ export default function Questions({ questions, page_count: controlledPageCount }
   });
   const tableOptions = {
     showGlobalFilter: true,
-    showColumnSelection: true,
+    showColumnSelection: false,
     showElementsPerPage: true,
     showGoToPage: false,
     showPagination: true,
-  };
-  const updateData = (rowIndex, columnId, value) => {
-    const oldValue = questions[rowIndex][columnId];
-    setSkipPageReset(true);
-    if (value !== oldValue) {
-      const oldQuestion = questions[rowIndex];
-      const newQuestion = {
-        ...oldQuestion,
-        [columnId]: value
-      };
-      Inertia.post(route('admin.questions.edit', [nav.currentCourse.id, nav.currentLesson.id, newQuestion.id]), newQuestion);
-    }
   };
 
   const EditQuestionForm = () => {
@@ -134,10 +101,7 @@ export default function Questions({ questions, page_count: controlledPageCount }
 
     return (
       <>
-        <div className="bg-white -mx-6 -mt-5 shadow overflow-hidden">
-          <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">Редактирование вопроса: {data.name}</h3>
-          </div>
+        <div className="bg-white shadow overflow-hidden rounded-md">
           <div className="border-t border-gray-200">
             <ul>
               <li className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -228,8 +192,8 @@ export default function Questions({ questions, page_count: controlledPageCount }
                               `}
                               aria-hidden="true"
                             >
-                                <span className="rounded-full bg-white w-1.5 h-1.5"/>
-                              </span>
+                              <span className="rounded-full bg-white w-1.5 h-1.5"/>
+                            </span>
                             <RadioGroup.Label
                               as="span"
                               className={`${checked ? 'text-indigo-900' : 'text-gray-900'} ml-3 font-medium`}
@@ -258,23 +222,42 @@ export default function Questions({ questions, page_count: controlledPageCount }
             </ul>
           </div>
         </div>
-        <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+        <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-3 sm:gap-3 sm:grid-flow-row-dense">
           <button
             type="button"
-            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-3 sm:text-sm"
             onClick={() => {
               post(route('admin.questions.edit', [nav.currentCourse.id, nav.currentLesson.id, editedQuestion.id]),
-                { data, onSuccess: () => {Inertia.get(route(route().current(), [nav.currentCourse.id, nav.currentLesson.id]));} });
-              setShowModal(false);
-
+                {
+                  data, onSuccess: () => {
+                    dispatch({
+                      type: 'CHANGE_HEADER',
+                      payload: `Вопросы урока ${nav.currentLesson.name}`
+                    });
+                  }
+                });
+              setEditedQuestion(null);
             }}
           >
             Сохранить
           </button>
           <button
             type="button"
+            className="mt-3 sm:mt-0 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+            onClick={showQuestionAnswers}
+          >
+            Показать ответы
+          </button>
+          <button
+            type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
-            onClick={() => setShowModal(false)}
+            onClick={() => {
+              setEditedQuestion(null);
+              dispatch({
+                type: 'CHANGE_HEADER',
+                payload: `Вопросы урока ${nav.currentLesson.name}`
+              });
+            }}
           >
             Отмена
           </button>
@@ -284,37 +267,17 @@ export default function Questions({ questions, page_count: controlledPageCount }
   };
 
   return (
-    <>
-      <header>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold leading-tight text-gray-900 text-center">Админка</h1>
-        </div>
-      </header>
-      <main className="w-full h-fit">
-        {/*<Table*/}
-        {/*  dataValue={lessonsTableData}*/}
-        {/*  columnsValue={lessonsColumns}*/}
-        {/*  skipPageReset={skipPageReset}*/}
-        {/*  updateData={updateData}*/}
-        {/*  options={tableOptions}*/}
-        {/*  controlledPageCount={controlledPageCount}*/}
-        {/*/>*/}
-
-        <Table
+    <main className="w-full h-fit">
+      {editedQuestion === null
+        ? <Table
           dataValue={tableData}
           columnsValue={columns}
           skipPageReset={skipPageReset}
-          updateData={updateData}
           options={tableOptions}
           controlledPageCount={controlledPageCount}
         />
-        <Modal
-          open={showModal}
-          onClose={() => setShowModal(false)}
-        >
-          <EditQuestionForm/>
-        </Modal>
-      </main>
-    </>
+        : <EditQuestionForm/>
+      }
+    </main>
   );
 }
