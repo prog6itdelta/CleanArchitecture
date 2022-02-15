@@ -27,6 +27,7 @@ class AdminController extends BaseController
      */
     public function courses(Request $request)
     {
+        // todo return only accessible courses for current user
         $orderBy = $request->orderby;
         $sort = $request->sort;
         $perPage = $request->perpage;
@@ -35,7 +36,7 @@ class AdminController extends BaseController
         }
 
         return Inertia::render('Admin/Courses', [
-            'paginatedCourses' =>  fn () => Course::orderBy($orderBy ?? 'id', $sort ?? 'asc')->paginate($perPage ?? 10)
+            'paginatedCourses' => fn() => Course::orderBy($orderBy ?? 'id', $sort ?? 'asc')->paginate($perPage ?? 10)
         ]);
     }
 
@@ -44,7 +45,7 @@ class AdminController extends BaseController
         $path = 'empty';
         $changedFields = [];
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $imagePath = '/' . $request->image->store('images/'. explode('.', $_SERVER['HTTP_HOST'])[0].'/course_images');
+            $imagePath = '/' . $request->image->store('images/' . explode('.', $_SERVER['HTTP_HOST'])[0] . '/course_images');
             $changedFields['image'] = $imagePath;
         }
 

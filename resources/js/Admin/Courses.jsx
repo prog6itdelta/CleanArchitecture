@@ -3,9 +3,9 @@ import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import axios from 'axios';
 import { Switch } from '@headlessui/react';
-import Table from './Components/Table.jsx';
-import OneLineCell from './Components/OneLineCell.jsx';
-import ActionsCell from './Components/ActionsCell.jsx';
+import Table from '../Components/Table.jsx';
+import OneLineCell from '../Components/OneLineCell.jsx';
+import ActionsCell from '../Components/ActionsCell.jsx';
 import { AdminContext } from './reducer.jsx';
 
 export default function Courses({ paginatedCourses }) {

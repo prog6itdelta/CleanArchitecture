@@ -11,27 +11,40 @@ import {
 import { SearchIcon } from '@heroicons/react/solid';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import { AdminContext, initialState, adminReducer, resetState } from './reducer.jsx';
-import Accordion from './Components/Accordion';
+import Accordion from '../Components/Accordion';
+import Notification from '../Components/Notification.jsx';
 
 export default function Navigation({ children }) {
-
+  const [showNotification, setShowNotification] = useState(false);
   const [state, disp] = useReducer(adminReducer, initialState, resetState);
   const dispatch = (...actions) => {
     actions.forEach((action) => disp(action));
   };
 
-  const { navigation: storeNav } = state;
+  const { auth, userNavigation, notification: {position, type, header, message} } = usePage().props;
+  const user = auth.user;
 
   useEffect(() => {
     const curLoc = window.location.href;
     const regURLParse = /\/courses(\/)?(?<course>\d*)?(\/lessons)?(\/)?(?<lesson>\d*)?(\/questions)?(\/)?(?<question>\d*)?/g;
-    const { groups: { course, lesson, question } } = regURLParse.exec(curLoc);
+    const parsedURL = regURLParse.exec(curLoc);
+    const { groups: { course, lesson, question } } = parsedURL ?? {
+      groups: {
+        course: undefined,
+        lesson: undefined,
+        question: undefined,
+      }};
 
 
     if (course !== undefined) { dispatch({ type: 'CHOSE_COURSE', payload: { id: course } }); }
     if (lesson !== undefined) { dispatch({ type: 'CHOSE_LESSON', payload: { id: lesson } }); }
     if (question !== undefined) { dispatch({ type: 'CHOSE_QUESTION', payload: { id: question } }); }
-  }, []);
+
+    if (type !== null) {
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 3000);
+    }
+  }, [position, type, header, message]);
 
   const navigation = [
     {
@@ -55,9 +68,6 @@ export default function Navigation({ children }) {
 
   ];
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const { auth, userNavigation } = usePage().props;
-  const user = auth.user;
 
   const currentLocation = location.href;
   const setCurrentNavItem = (navArr) => {
@@ -267,6 +277,7 @@ export default function Navigation({ children }) {
           </div>
         </div>
       </div>
+      {showNotification && <Notification position={position} type={type} header={header} message={message} />}
     </AdminContext.Provider>
   );
 }

@@ -1,6 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
 import React from 'react';
-import Navigation from './Components/Navigation.jsx';
+import Navigation from './Navigation.jsx';
 
 const navigation = [
   { name: 'Курсы', href: route('learning'), current: true },

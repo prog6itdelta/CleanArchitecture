@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch, RadioGroup } from '@headlessui/react';
-import Table from './Components/Table.jsx';
-import EditableCell from './Components/EditableCell.jsx';
-import OneLineCell from './Components/OneLineCell.jsx';
-import ActionsCell from './Components/ActionsCell.jsx';
-import Modal from './Components/Modal.jsx';
+import Table from '../Components/Table.jsx';
+import EditableCell from '../Components/EditableCell.jsx';
+import OneLineCell from '../Components/OneLineCell.jsx';
+import ActionsCell from '../Components/ActionsCell.jsx';
+import Modal from '../Components/Modal.jsx';
 import { AdminContext } from './reducer.jsx';
 
 export default function Answers({ answers, page_count: controlledPageCount }) {
