@@ -55,7 +55,13 @@ export default function Navigation({ children }) {
           icon: AcademicCapIcon,
           href: route('admin.courses'),
           current: true,
-          active: true
+          active: true,
+          action: () => {
+            dispatch({
+              type: 'CHANGE_HEADER',
+              payload: 'Курсы'
+            })
+          },
         },
       ],
     },
@@ -63,7 +69,13 @@ export default function Navigation({ children }) {
       name: 'Департаменты',
       icon: HomeIcon,
       href: route('admin.departments'),
-      current: true
+      current: true,
+      action: () => {
+        dispatch({
+          type: 'CHANGE_HEADER',
+          payload: 'Департаменты'
+        })
+      },
     }
 
   ];
@@ -105,6 +117,7 @@ export default function Navigation({ children }) {
                 }
                         group flex items-center px-2 py-2 text-sm font-medium rounded-md`
               }
+              onClick={navItem.action}
             >
               <navItem.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true"/>
               {navItem.name}

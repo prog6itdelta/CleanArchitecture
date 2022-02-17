@@ -15,6 +15,7 @@ export default function Navigation({ navigation }) {
   const user = auth.user;
 
   useEffect(() => {
+    // probably we have to use reducer in future
     if (type !== null) {
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 3000);

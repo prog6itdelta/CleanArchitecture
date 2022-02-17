@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useContext } from 'react';
+import React, { useState, useCallback, useRef, useContext, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import axios from 'axios';
@@ -16,6 +16,14 @@ export default function Courses({ paginatedCourses }) {
   const courses = paginatedCourses.data;
   const [editedCourse, setEditedCourse] = useState(null);
   const { state, dispatch } = useContext(AdminContext);
+
+  useEffect(() => {
+    dispatch({
+      type: 'CHANGE_HEADER',
+      payload: `Курсы`
+    });
+  }, []);
+
 
   const showCourseLessons = () => {
     dispatch(
@@ -259,7 +267,7 @@ export default function Courses({ paginatedCourses }) {
                   data, onSuccess: (res) => {
                     dispatch({
                       type: 'CHANGE_HEADER',
-                      payload: `Админка`
+                      payload: `Курсы`
                     });
                     Inertia.get(route(route().current()));
                   }
@@ -284,7 +292,7 @@ export default function Courses({ paginatedCourses }) {
               setEditedCourse(null);
               dispatch({
                 type: 'CHANGE_HEADER',
-                payload: `Админка`
+                payload: `Курсы`
               });
             }}
           >
