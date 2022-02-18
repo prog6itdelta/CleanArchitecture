@@ -22,6 +22,13 @@ export const initialState = {
   table: {
     page: null,
     perpage: null
+  },
+  notification: {
+    show: false,
+    position: null,
+    type: null,
+    header: null,
+    message: null
   }
 };
 
@@ -73,6 +80,28 @@ export const adminReducer = (state, action) => {
         table: {
           pageIndex: action.payload.pageIndex,
           pageSize: action.payload.pageSize
+        }
+      };
+    case 'SHOW_NOTIFICATION':
+      return {
+        ...state,
+        notification: {
+          show: true,
+          position: action.payload.position,
+          type: action.payload.type,
+          header: action.payload.header,
+          message: action.payload.message
+        }
+      };
+    case 'HIDE_NOTIFICATION':
+      return {
+        ...state,
+        notification: {
+          show: false,
+          position: null,
+          type: null,
+          header: null,
+          message: null
         }
       };
     case 'RESET':

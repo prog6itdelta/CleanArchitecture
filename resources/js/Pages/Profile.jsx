@@ -1,12 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { usePage, useForm } from '@inertiajs/inertia-react';
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
+import { UserContext } from './reducer';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function Profile() {
+  const { state, dispatch } = useContext(UserContext);
   const { auth } = usePage().props;
   const user = auth.user;
 
@@ -35,18 +37,28 @@ export default function Profile() {
   };
 
   const onClear = () => {
-    setAvatarFormImg(user.avatar);
     setNewPassword('');
     setData('password', '');
-    // reset();
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (passwordsMatch()) {
-      post('/profile/edit');
+      post('/profile/edit', {
+        onSuccess: (resp) => {
+          dispatch({
+            type: 'SHOW_NOTIFICATION',
+            payload: {
+              position: 'bottom',
+              type: 'success',
+              header: 'Success!',
+              message: 'Profile data updated!'
+            }
+          });
+          setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
+        }
+      });
       onClear();
-      history.back(-2);
     }
   };
 

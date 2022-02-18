@@ -22,14 +22,11 @@ export default function Layout(children) {
   });
 
   return (
-    <div className="min-h-screen bg-white grid gap-0 grid-cols-1" style={{ gridTemplateRows: 'min-content auto' }}>
-      <Navigation navigation={navigation} userNavigation={userNavigation} />
-
+    <Navigation navigation={navigation} userNavigation={userNavigation}>
       {typeof children.children === 'object'
         ? children.children
         : children
       }
-
-    </div>
+    </Navigation>
   );
 }

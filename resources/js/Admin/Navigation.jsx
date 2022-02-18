@@ -15,7 +15,6 @@ import Accordion from '../Components/Accordion';
 import Notification from '../Components/Notification.jsx';
 
 export default function Navigation({ children }) {
-  const [showNotification, setShowNotification] = useState(false);
   const [state, disp] = useReducer(adminReducer, initialState, resetState);
   const dispatch = (...actions) => {
     actions.forEach((action) => disp(action));
@@ -39,12 +38,20 @@ export default function Navigation({ children }) {
     if (course !== undefined) { dispatch({ type: 'CHOSE_COURSE', payload: { id: course } }); }
     if (lesson !== undefined) { dispatch({ type: 'CHOSE_LESSON', payload: { id: lesson } }); }
     if (question !== undefined) { dispatch({ type: 'CHOSE_QUESTION', payload: { id: question } }); }
+  }, []);
 
+  useEffect(() => {
     if (type !== null) {
-      setShowNotification(true);
-      setTimeout(() => setShowNotification(false), 3000);
+      dispatch({
+        type: 'SHOW_NOTIFICATION',
+        payload: {
+          position, type, header, message
+        }
+      });
+      setTimeout(() => dispatch({type:'HIDE_NOTIFICATION'}), 3000);
     }
   }, [position, type, header, message]);
+
 
   const navigation = [
     {
@@ -290,7 +297,14 @@ export default function Navigation({ children }) {
           </div>
         </div>
       </div>
-      {showNotification && <Notification position={position} type={type} header={header} message={message} />}
+      {state.notification.show &&
+        <Notification
+          position={state.notification.position}
+          type={state.notification.type}
+          header={state.notification.header}
+          message={state.notification.message}
+        />
+      }
     </AdminContext.Provider>
   );
 }
