@@ -7,6 +7,8 @@ use App\Packages\Learn\UseCases\LearnService;
 use App\Packages\Learn\UseCases\JournalService;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Question;
+use App\Models\Answer;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
@@ -23,10 +25,19 @@ class AdminController extends BaseController
      * @param int $id
      * @return \Inertia\Response
      */
-    public function courses()
+    public function courses(Request $request)
     {
-        $courses = LearnService::getCourses();
-        return Inertia::render('Admin/Courses', compact('courses'));
+        // todo return only accessible courses for current user
+        $orderBy = $request->orderby;
+        $sort = $request->sort;
+        $perPage = $request->perpage;
+        if ($request->has('page')) {
+            return Course::orderBy($orderBy ?? 'id', $sort ?? 'asc')->paginate($perPage ?? 10);
+        }
+
+        return Inertia::render('Admin/Courses', [
+            'paginatedCourses' => fn() => Course::orderBy($orderBy ?? 'id', $sort ?? 'asc')->paginate($perPage ?? 10)
+        ]);
     }
 
     public function editCourse(Request $request, $id)
@@ -34,7 +45,7 @@ class AdminController extends BaseController
         $path = 'empty';
         $changedFields = [];
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $imagePath = '/' . $request->image->store('images/'. explode('.', $_SERVER['HTTP_HOST'])[0].'/course_images');
+            $imagePath = '/' . $request->image->store('images/' . explode('.', $_SERVER['HTTP_HOST'])[0] . '/course_images');
             $changedFields['image'] = $imagePath;
         }
 
@@ -52,39 +63,74 @@ class AdminController extends BaseController
         return redirect()->route('admin.courses');
     }
 
-    public function lessons()
+    public function lessons(Request $request, $cid)
     {
-        $lessons = LearnService::getLessons();
+        $course = LearnService::getCourse($cid);
+        $lessons = array_values($course->lessons);
         return Inertia::render('Admin/Lessons', compact('lessons'));
     }
 
-    public function editLesson(Request $request, $id)
+    public function editLesson(Request $request, $cid, $lid)
     {
         $changedFields = [];
         $input = $request->collect();
 
         foreach ($input as $key => $item) {
-            if ($key !== 'id' && strpos($key, 'image') === false && $item !== null) {
+            if ($key !== 'id' && $item !== null) {
                 $changedFields[$key] = $item;
             }
         }
         Lesson::updateOrCreate(
-            ['id' => $id],
+            ['id' => $lid],
             $changedFields
         );
-        return redirect()->route('admin.lessons');
+        return redirect()->route('admin.lessons', [$cid]);
     }
 
-    public function questions()
+    public function questions(Request $request, $cid, $lid)
     {
-        $lessons = LearnService::getLessons();
-        return Inertia::render('Admin/Lessons', compact('lessons'));
+        $questions = Question::where('lesson_id', $lid)->get();
+        return Inertia::render('Admin/Questions', compact('questions'));
     }
 
-    public function answers()
+    public function editQuestion(Request $request, $cid, $lid, $qid)
     {
-        $lessons = LearnService::getLessons();
-        return Inertia::render('Admin/Lessons', compact('lessons'));
+        $changedFields = [];
+        $input = $request->collect();
+
+        foreach ($input as $key => $item) {
+            if ($key !== 'id' && $item !== null) {
+                $changedFields[$key] = $item;
+            }
+        }
+        Question::updateOrCreate(
+            ['id' => $qid],
+            $changedFields
+        );
+        return redirect()->route('admin.questions', [$cid, $lid]);
+    }
+
+    public function answers(Request $request, $cid, $lid, $qid)
+    {
+        $answers = Answer::where('question_id', $qid)->get();
+        return Inertia::render('Admin/Answers', compact('answers'));
+    }
+
+    public function editAnswer(Request $request, $cid, $lid, $qid, $aid)
+    {
+        $changedFields = [];
+        $input = $request->collect();
+
+        foreach ($input as $key => $item) {
+            if ($key !== 'id' && $item !== null) {
+                $changedFields[$key] = $item;
+            }
+        }
+        Answer::updateOrCreate(
+            ['id' => $aid],
+            $changedFields
+        );
+        return redirect()->route('admin.answers', [$cid, $lid, $qid]);
     }
 
     /**

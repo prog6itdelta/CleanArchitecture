@@ -1,6 +1,6 @@
 import React, { state, setState } from 'react';
 import { useFilters } from 'react-table';
-import { SelectColumnFilter } from './Components/ColumnFilter.jsx';
+import { SelectColumnFilter } from '../Components/ColumnFilter.jsx';
 
 export const columns = [
   {

@@ -14,8 +14,8 @@ import {
   BadgeCheckIcon
 } from '@heroicons/react/outline';
 import Layout from '../Layout.jsx';
-import List from '../Components/List.jsx';
-import Notification from '../Components/Notification.jsx';
+import List from '../../Components/List.jsx';
+import Notification from '../../Components/Notification.jsx';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');

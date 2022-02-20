@@ -52,6 +52,12 @@ class HandleInertiaRequests extends Middleware
                 'nextLessonId' => fn () => $request->session()->get('nextLessonId'),
                 'dataUpdated' => fn () => $request->session()->get('dataUpdated'),
             ],
+            'notification' => [
+                'position' => fn () => $request->session()->get('position'),
+                'type' => fn () => $request->session()->get('type'),
+                'header' => fn () => $request->session()->get('header'),
+                'message' => fn () => $request->session()->get('message'),
+            ],
         ]);
     }
 }

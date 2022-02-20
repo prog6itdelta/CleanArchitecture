@@ -192,4 +192,10 @@ class LearnService implements LearnServiceInterface
         return $lessons;
     }
 
+    public static function getAllQuestions()
+    {
+        $rep = new QuestionRepository();
+        return $rep->all();
+    }
+
 }

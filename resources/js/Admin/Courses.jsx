@@ -1,56 +1,53 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useRef, useContext, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
+import axios from 'axios';
 import { Switch } from '@headlessui/react';
-import Table from './Components/Table.jsx';
-import EditableCell from './Components/EditableCell.jsx';
-import OneLineCell from './Components/OneLineCell.jsx';
-import ActionsCell from './Components/ActionsCell.jsx';
-import Modal from './Components/Modal.jsx';
+import Table from '../Components/Table.jsx';
+import OneLineCell from '../Components/OneLineCell.jsx';
+import ActionsCell from '../Components/ActionsCell.jsx';
+import { AdminContext } from './reducer.jsx';
 
-export default function Courses({ courses, page_count: controlledPageCount }) {
-  const [showModal, setShowModal] = useState(false);
-  const [skipPageReset, setSkipPageReset] = React.useState(false);
+export default function Courses({ paginatedCourses }) {
+  // todo refactor Courses and Table to make the code clearly
+  const [loading, setLoading] = useState(false);
+  const [curPage, setCurPage] = useState(0);
+  const [controlledPageCount, setControlledPageCount] = useState(paginatedCourses.last_page);
+  const courses = paginatedCourses.data;
   const [editedCourse, setEditedCourse] = useState(null);
+  const { state, dispatch } = useContext(AdminContext);
+
   useEffect(() => {
-    setSkipPageReset(false);
-  }, [courses]);
+    dispatch({
+      type: 'CHANGE_HEADER',
+      payload: `Курсы`
+    });
+  }, []);
+
+
+  const showCourseLessons = () => {
+    dispatch(
+      {
+        type: 'CHOSE_COURSE',
+        payload: {
+          id: editedCourse.id,
+          name: editedCourse.name
+        }
+      },
+      {
+        type: 'CHANGE_HEADER',
+        payload: `Уроки курса ${editedCourse.name}`
+      }
+    );
+    Inertia.post(route('admin.lessons', editedCourse.id));
+  };
 
   const columns = [
-    {
-      Header: 'ACTIONS',
-      accessor: 'rowActions',
-      disableFilters: true,
-      Filter: '',
-      width: 100,
-      Cell: ActionsCell,
-    },
-    {
-      Header: 'ID',
-      accessor: 'id',
-      Filter: '',
-      width: 50,
-      // Cell: EditableCell,
-    },
     {
       Header: 'Name',
       accessor: 'name',
       Filter: '',
       width: 250,
-      Cell: EditableCell,
-    },
-    {
-      Header: 'description',
-      accessor: 'description',
-      Filter: '',
-      width: 300,
-      Cell: OneLineCell,
-    },
-    {
-      Header: 'image',
-      accessor: 'image',
-      Filter: '',
-      width: 300,
       Cell: OneLineCell,
     },
     {
@@ -60,8 +57,16 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
       width: 70,
       Cell: OneLineCell,
     },
+    {
+      Header: 'Действия',
+      accessor: 'rowActions',
+      disableFilters: true,
+      Filter: '',
+      width: 100,
+      Cell: ActionsCell,
+    },
   ];
-  const tableData = courses.map((course, i) => {
+  const [data, setData] = useState(courses.map((course, i) => {
     return {
       ...course,
       rowActions: [
@@ -70,7 +75,10 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
           type: 'edit',
           action: () => {
             setEditedCourse(course);
-            setShowModal(true);
+            dispatch({
+              type: 'CHANGE_HEADER',
+              payload: `Редактирование курса ${course.name}`
+            });
           },
           disabled: false,
         },
@@ -82,26 +90,49 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
         },
       ]
     };
-  });
+  }));
   const tableOptions = {
-    showGlobalFilter: true,
-    showColumnSelection: true,
+    // showGlobalFilter: true,
+    // showColumnSelection: false,
     showElementsPerPage: true,
-    showGoToPage: false,
+    // showGoToPage: false,
     showPagination: true,
   };
-  const updateData = (rowIndex, columnId, value) => {
-    const oldValue = courses[rowIndex][columnId];
-    setSkipPageReset(true);
-    if (value !== oldValue) {
-      const oldCourse = courses[rowIndex];
-      const newCourse = {
-        ...oldCourse,
-        [columnId]: value
-      };
-      Inertia.post(route('admin.course.edit', newCourse.id), newCourse);
-    }
-  };
+
+  const fetchData = useCallback(({pageIndex, pageSize}) => {
+    setLoading(true);
+
+    axios.get(`${route(route().current())}?page=${pageIndex}&perpage=${pageSize}`).then((resp) => {
+      setCurPage(Number(resp.data.current_page - 1));
+      setControlledPageCount(resp.data.last_page);
+      setData(resp.data.data.map((course, i) => {
+        return {
+          ...course,
+          rowActions: [
+            {
+              name: 'edit',
+              type: 'edit',
+              action: () => {
+                setEditedCourse(course);
+                dispatch({
+                  type: 'CHANGE_HEADER',
+                  payload: `Редактирование курса ${course.name}`
+                });
+              },
+              disabled: false,
+            },
+            {
+              name: 'delete',
+              type: 'delete',
+              action: () => console.log('delete'),
+              disabled: Boolean(i % 2),
+            },
+          ]
+        };
+      }));
+    })
+      .then(() => setLoading(false));
+  }, []);
 
   const EditCourseForm = () => {
     const [courseImg, setCourseImg] = useState(editedCourse.image);
@@ -125,11 +156,7 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
 
     return (
       <>
-        <div className="bg-white -mx-6 -mt-5 shadow overflow-hidden">
-          <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">Редактирование курса: {data.name}</h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p>
-          </div>
+        <div className="bg-white shadow overflow-hidden rounded-md">
           <div className="border-t border-gray-200">
             <ul>
               <li className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -141,12 +168,12 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
                   className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
                 />
               </li>
-              <li className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <span className="text-sm font-medium text-gray-500">Статус</span>
+              <li className="bg-white px-4 py-5 grid grid-cols-2 sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <span className="text-sm font-medium text-gray-500 flex items-center sm:block">Статус</span>
                 <span className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                   <Switch
                     checked={Boolean(data.active)}
-                    onChange={(e) => {console.log(Number(e)); setData('active', Number(e))}}
+                    onChange={(e) => {setData('active', Number(e));}}
                     className={`
                     ${Boolean(data.active) ? 'bg-indigo-600' : 'bg-gray-200'} relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
                     `}
@@ -218,11 +245,10 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
                 <span className="text-sm font-medium text-gray-500">Время между попытками</span>
                 <input
                   type="text"
-                  value={JSON.parse(data.options) !== null ? JSON.parse(data.options).delayTime : '' }
+                  value={JSON.parse(data.options) !== null ? JSON.parse(data.options).delayTime : ''}
                   onChange={(e) => {
                     let courseOptions = JSON.parse(data.options);
-                    if (courseOptions !== null) { courseOptions.delayTime = e.target.value; }
-                    else { courseOptions = { delayTime: e.target.value }; }
+                    if (courseOptions !== null) { courseOptions.delayTime = e.target.value; } else { courseOptions = { delayTime: e.target.value }; }
                     setData('options', JSON.stringify(courseOptions));
                   }}
                   className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
@@ -231,14 +257,22 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
             </ul>
           </div>
         </div>
-        <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+        <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-3 sm:gap-3 sm:grid-flow-row-dense">
           <button
             type="button"
-            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-3 sm:text-sm"
             onClick={() => {
               post(route('admin.course.edit', editedCourse.id),
-                { data, onSuccess: (res) => {Inertia.get(route(route().current()));} });
-              setShowModal(false);
+                {
+                  data, onSuccess: (res) => {
+                    dispatch({
+                      type: 'CHANGE_HEADER',
+                      payload: `Курсы`
+                    });
+                    Inertia.get(route(route().current()));
+                  }
+                });
+              setEditedCourse(null);
 
             }}
           >
@@ -246,8 +280,21 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
           </button>
           <button
             type="button"
+            className="mt-3 sm:mt-0 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+            onClick={showCourseLessons}
+          >
+            Показать уроки
+          </button>
+          <button
+            type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
-            onClick={() => setShowModal(false)}
+            onClick={() => {
+              setEditedCourse(null);
+              dispatch({
+                type: 'CHANGE_HEADER',
+                payload: `Курсы`
+              });
+            }}
           >
             Отмена
           </button>
@@ -257,28 +304,20 @@ export default function Courses({ courses, page_count: controlledPageCount }) {
   };
 
   return (
-    <>
-      <header>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold leading-tight text-gray-900 text-center">Админка</h1>
-        </div>
-      </header>
-      <main className="w-full h-fit">
-        <Table
-          dataValue={tableData}
+    <main className="w-full h-fit">
+      {editedCourse === null
+        ? <Table
+          dataValue={data}
           columnsValue={columns}
-          skipPageReset={skipPageReset}
-          updateData={updateData}
           options={tableOptions}
           controlledPageCount={controlledPageCount}
+          total={paginatedCourses.total}
+          fetchData={fetchData}
+          loading={loading}
+          curPage={curPage}
         />
-        <Modal
-          open={showModal}
-          onClose={() => setShowModal(false)}
-        >
-          <EditCourseForm/>
-        </Modal>
-      </main>
-    </>
+        : <EditCourseForm/>
+      }
+    </main>
   );
 }

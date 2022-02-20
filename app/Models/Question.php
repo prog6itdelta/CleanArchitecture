@@ -11,6 +11,13 @@ class Question extends Model
 
     protected $table = 'learn_questions';
 
+    protected $fillable = [
+        'name',
+        'active',
+        'type',
+        'point',
+    ];
+
     public function answers()
     {
         return $this->hasMany(Answer::class);
