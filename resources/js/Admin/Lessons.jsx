@@ -3,19 +3,13 @@ import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch } from '@headlessui/react';
 import Table from '../Components/Table.jsx';
-import EditableCell from '../Components/EditableCell.jsx';
 import OneLineCell from '../Components/OneLineCell.jsx';
 import ActionsCell from '../Components/ActionsCell.jsx';
-import Modal from '../Components/Modal.jsx';
 import { AdminContext } from './reducer.jsx';
 
-export default function Lessons({ lessons, page_count: controlledPageCount }) {
-  const [skipPageReset, setSkipPageReset] = React.useState(false);
+export default function Lessons({ lessons }) {
   const [editedLesson, setEditedLesson] = useState(null);
   const { state: { navigation: nav }, dispatch } = useContext(AdminContext);
-  useEffect(() => {
-    setSkipPageReset(false);
-  }, [lessons]);
 
   const showLessonQuestions = () => {
     dispatch(
@@ -59,45 +53,64 @@ export default function Lessons({ lessons, page_count: controlledPageCount }) {
       Cell: ActionsCell,
     },
   ];
-  const tableData = lessons.map((lesson, i) => {
-    return {
-      ...lesson,
-      rowActions: [
-        {
-          name: 'edit',
-          type: 'edit',
-          action: () => {
-            setEditedLesson(lesson);
-            dispatch({
-              type: 'CHANGE_HEADER',
-              payload: `Редактирование урока ${lesson.name}`
-            });
+  const addActions = (items) => {
+    return items.map((item, i) => {
+      return {
+        ...item,
+        rowActions: [
+          {
+            name: 'edit',
+            type: 'edit',
+            action: () => {
+              setEditedLesson(item);
+              dispatch({
+                type: 'CHANGE_HEADER',
+                payload: `Редактирование урока ${item.name}`
+              });
+            },
+            disabled: false,
           },
-          disabled: false,
-        },
-        {
-          name: 'delete',
-          type: 'delete',
-          action: () => console.log('delete'),
-          disabled: Boolean(i % 2),
-        },
-      ]
-    };
-  });
+          {
+            name: 'delete',
+            type: 'delete',
+            action: () => {
+              Inertia.post(route('admin.lessons.delete', [nav.currentCourse.id, item.id]), {}, {
+                onSuccess: () => {
+                  dispatch({
+                    type: 'SHOW_NOTIFICATION',
+                    payload: {
+                      position: 'bottom',
+                      type: 'success',
+                      header: 'Success!',
+                      message: 'Lesson deleted!',
+                    }
+                  });
+                  setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
+                  Inertia.get(route('admin.lessons', nav.currentCourse.id));
+                }
+              });
+            },
+            disabled: false,
+          },
+        ]
+      };
+    });
+  };
+  const [data, setData] = useState(addActions(lessons));
   const tableOptions = {
-    showGlobalFilter: true,
-    showColumnSelection: false,
+    // showGlobalFilter: true,
+    // showColumnSelection: false,
     showElementsPerPage: true,
-    showGoToPage: false,
+    // showGoToPage: false,
     showPagination: true,
   };
 
   const EditLessonForm = () => {
     const { data, setData, post } = useForm({
-      name: editedLesson.name,
-      active: editedLesson.active,
-      description: editedLesson.description,
-      detail_text: editedLesson.detail_text
+      name: editedLesson.name ?? '',
+      active: editedLesson.active ?? '',
+      description: editedLesson.description ?? '',
+      detail_text: editedLesson.detail_text ?? ''
     });
 
     return (
@@ -165,14 +178,14 @@ export default function Lessons({ lessons, page_count: controlledPageCount }) {
                 <span className="text-sm font-medium text-gray-500">Описание урока</span>
                 <textarea
                   className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
-                  defaultValue={editedLesson.description}
+                  defaultValue={data.description}
                 />
               </li>
               <li className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <span className="text-sm font-medium text-gray-500">Изображение урока</span>
                 <textarea
                   className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
-                  defaultValue={editedLesson.detail_text}
+                  defaultValue={data.detail_text}
                 />
               </li>
             </ul>
@@ -183,27 +196,52 @@ export default function Lessons({ lessons, page_count: controlledPageCount }) {
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-3 sm:text-sm"
             onClick={() => {
-              post(route('admin.lessons.edit', [nav.currentCourse.id, editedLesson.id]),
-                {
-                  data, onSuccess: () => {
-                    dispatch({
-                      type: 'CHANGE_HEADER',
-                      payload: `Уроки курса ${nav.currentCourse.name}`
-                    });
-                  }
-                });
+              if (typeof editedLesson.id !== 'undefined') {
+                post(route('admin.lessons.edit', [nav.currentCourse.id, editedLesson.id]),
+                  {
+                    data, onSuccess: () => {
+                      dispatch({
+                        type: 'CHANGE_HEADER',
+                        payload: `Уроки курса ${nav.currentCourse.name}`
+                      });
+                    }
+                  });
+              } else {
+                post(route('admin.lessons.create', nav.currentCourse.id),
+                  {
+                    data, onSuccess: () => {
+                      dispatch({
+                          type: 'CHANGE_HEADER',
+                          payload: `Уроки курса ${nav.currentCourse.name}`
+                        },
+                        {
+                          type: 'SHOW_NOTIFICATION',
+                          payload: {
+                            position: 'bottom',
+                            type: 'success',
+                            header: 'Success!',
+                            message: 'New lesson created!',
+                          }
+                        }
+                      );
+                      setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
+                    }
+                  });
+              }
               setEditedLesson(null);
             }}
           >
             Сохранить
           </button>
-          <button
-            type="button"
-            className="mt-3 sm:mt-0 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
-            onClick={showLessonQuestions}
-          >
-            Показать вопросы
-          </button>
+          {typeof editedLesson.id !== 'undefined' &&
+            <button
+              type="button"
+              className="mt-3 sm:mt-0 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+              onClick={showLessonQuestions}
+            >
+              Показать вопросы
+            </button>
+          }
           <button
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
@@ -225,13 +263,27 @@ export default function Lessons({ lessons, page_count: controlledPageCount }) {
   return (
     <main className="w-full h-fit">
       {editedLesson === null
-        ? <Table
-          dataValue={tableData}
-          columnsValue={columns}
-          skipPageReset={skipPageReset}
-          options={tableOptions}
-          controlledPageCount={controlledPageCount}
-        />
+        ? <>
+          <Table
+            dataValue={data}
+            columnsValue={columns}
+            options={tableOptions}
+          />
+          <button
+            type="button"
+            className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 mt-4 text-base font-medium text-white
+            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm
+            bg-indigo-500 hover:bg-indigo-700"
+            onClick={() => {
+              setEditedLesson(true);
+              dispatch({
+                type: 'CHANGE_HEADER',
+                payload: `Добавление урока`
+              });
+            }}
+          >Add Lesson
+          </button>
+        </>
         : <EditLessonForm/>
       }
     </main>

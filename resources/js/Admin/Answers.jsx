@@ -3,20 +3,13 @@ import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch, RadioGroup } from '@headlessui/react';
 import Table from '../Components/Table.jsx';
-import EditableCell from '../Components/EditableCell.jsx';
 import OneLineCell from '../Components/OneLineCell.jsx';
 import ActionsCell from '../Components/ActionsCell.jsx';
-import Modal from '../Components/Modal.jsx';
 import { AdminContext } from './reducer.jsx';
 
-export default function Answers({ answers, page_count: controlledPageCount }) {
-  const [showModal, setShowModal] = useState(false);
-  const [skipPageReset, setSkipPageReset] = React.useState(false);
+export default function Answers({ answers }) {
   const [editedAnswer, setEditedAnswer] = useState(null);
   const { state: { navigation: nav }, dispatch } = useContext(AdminContext);
-  useEffect(() => {
-    setSkipPageReset(false);
-  }, [answers]);
 
   const columns = [
     {
@@ -42,45 +35,65 @@ export default function Answers({ answers, page_count: controlledPageCount }) {
       Cell: ActionsCell,
     },
   ];
-  const tableData = answers.map((answer, i) => {
-    return {
-      ...answer,
-      rowActions: [
-        {
-          name: 'edit',
-          type: 'edit',
-          action: () => {
-            setEditedAnswer(answer);
-            dispatch({
-              type: 'CHANGE_HEADER',
-              payload: `Редактирование ответа ${answer.name}`
-            });
+  const addActions = (items) => {
+    return items.map((item, i) => {
+      return {
+        ...item,
+        rowActions: [
+          {
+            name: 'edit',
+            type: 'edit',
+            action: () => {
+              setEditedQuestion(item);
+              dispatch({
+                type: 'CHANGE_HEADER',
+                payload: `Редактирование ответа ${item.name}`
+              });
+            },
+            disabled: false,
           },
-          disabled: false,
-        },
-        {
-          name: 'delete',
-          type: 'delete',
-          action: () => console.log('delete'),
-          disabled: Boolean(i % 2),
-        },
-      ]
-    };
-  });
+          {
+            name: 'delete',
+            type: 'delete',
+            action: () => {
+              Inertia.post(route('admin.answers.delete', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id, item.id]), {}, {
+                onSuccess: () => {
+                  dispatch({
+                    type: 'SHOW_NOTIFICATION',
+                    payload: {
+                      position: 'bottom',
+                      type: 'success',
+                      header: 'Success!',
+                      message: 'Answer deleted!',
+                    }
+                  });
+                  setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
+                  Inertia.get(route('admin.answers', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id]));
+                }
+              });
+            },
+            disabled: false,
+          },
+        ]
+      };
+    });
+  };
+  const [data, setData] = useState(addActions(answers));
   const tableOptions = {
-    showGlobalFilter: true,
-    showColumnSelection: false,
+    // showGlobalFilter: true,
+    // showColumnSelection: false,
     showElementsPerPage: true,
-    showGoToPage: false,
+    // showGoToPage: false,
     showPagination: true,
   };
 
+
   const EditAnswerForm = () => {
     const { data, setData, post } = useForm({
-      name: editedAnswer.name,
-      active: editedAnswer.active,
-      correct: editedAnswer.correct,
-      sort: editedAnswer.sort,
+      name: editedAnswer.name ?? '',
+      active: editedAnswer.active ?? '',
+      correct: editedAnswer.correct ?? '',
+      sort: editedAnswer.sort ?? '',
     });
 
     return (
@@ -215,16 +228,40 @@ export default function Answers({ answers, page_count: controlledPageCount }) {
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
             onClick={() => {
-              post(route('admin.answers.edit', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id, editedAnswer.id]),
-                {
-                  data,
-                  onSuccess: () => {
-                    dispatch({
-                      type: 'CHANGE_HEADER',
-                      payload: `Ответы вопроса ${nav.currentQuestion.name}`
-                    });
-                  }
-                });
+              if (typeof editedAnswer.id !== 'undefined') {
+                post(route('admin.answers.edit', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id, editedAnswer.id]),
+                  {
+                    data,
+                    onSuccess: () => {
+                      dispatch({
+                        type: 'CHANGE_HEADER',
+                        payload: `Ответы вопроса ${nav.currentQuestion.name}`
+                      });
+                    }
+                  });
+              } else {
+                post(route('admin.answers.create', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id]),
+                  {
+                    data,
+                    onSuccess: () => {
+                      dispatch({
+                          type: 'CHANGE_HEADER',
+                          payload: `Ответы вопроса ${nav.currentQuestion.name}`
+                        },
+                        {
+                          type: 'SHOW_NOTIFICATION',
+                          payload: {
+                            position: 'bottom',
+                            type: 'success',
+                            header: 'Success!',
+                            message: 'New answer created!',
+                          }
+                        }
+                      );
+                      setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
+                    }
+                  });
+              }
               setEditedAnswer(null);
             }}
           >
@@ -252,11 +289,9 @@ export default function Answers({ answers, page_count: controlledPageCount }) {
     <main className="w-full h-fit">
       {editedAnswer === null
         ? <Table
-          dataValue={tableData}
+          dataValue={data}
           columnsValue={columns}
-          skipPageReset={skipPageReset}
           options={tableOptions}
-          controlledPageCount={controlledPageCount}
         />
         : <EditAnswerForm/>
       }

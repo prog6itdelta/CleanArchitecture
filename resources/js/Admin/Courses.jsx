@@ -9,7 +9,6 @@ import ActionsCell from '../Components/ActionsCell.jsx';
 import { AdminContext } from './reducer.jsx';
 
 export default function Courses({ paginatedCourses }) {
-  // todo refactor Courses and Table to make the code clearly
   const [loading, setLoading] = useState(false);
   const [curPage, setCurPage] = useState(0);
   const [controlledPageCount, setControlledPageCount] = useState(paginatedCourses.last_page);
@@ -66,31 +65,50 @@ export default function Courses({ paginatedCourses }) {
       Cell: ActionsCell,
     },
   ];
-  const [data, setData] = useState(courses.map((course, i) => {
-    return {
-      ...course,
-      rowActions: [
-        {
-          name: 'edit',
-          type: 'edit',
-          action: () => {
-            setEditedCourse(course);
-            dispatch({
-              type: 'CHANGE_HEADER',
-              payload: `Редактирование курса ${course.name}`
-            });
+  const addActions = (items) => {
+    return items.map((item, i) => {
+      return {
+        ...item,
+        rowActions: [
+          {
+            name: 'edit',
+            type: 'edit',
+            action: () => {
+              setEditedCourse(item);
+              dispatch({
+                type: 'CHANGE_HEADER',
+                payload: `Редактирование курса ${item.name}`
+              });
+            },
+            disabled: false,
           },
-          disabled: false,
-        },
-        {
-          name: 'delete',
-          type: 'delete',
-          action: () => console.log('delete'),
-          disabled: Boolean(i % 2),
-        },
-      ]
-    };
-  }));
+          {
+            name: 'delete',
+            type: 'delete',
+            action: () => {
+              Inertia.post(route('admin.courses.delete', item.id), {}, {
+                onSuccess: () => {
+                  dispatch({
+                    type: 'SHOW_NOTIFICATION',
+                    payload: {
+                      position: 'bottom',
+                      type: 'success',
+                      header: 'Success!',
+                      message: 'Course deleted!',
+                    }
+                  });
+                  setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
+                  Inertia.get(route('admin.courses'));
+                }
+              });
+            },
+            disabled: false,
+          },
+        ]
+      };
+    });
+  };
+  const [data, setData] = useState(addActions(courses));
   const tableOptions = {
     // showGlobalFilter: true,
     // showColumnSelection: false,
@@ -99,50 +117,28 @@ export default function Courses({ paginatedCourses }) {
     showPagination: true,
   };
 
-  const fetchData = useCallback(({pageIndex, pageSize}) => {
+  const fetchData = useCallback(({ pageIndex, pageSize }) => {
     setLoading(true);
 
-    axios.get(`${route(route().current())}?page=${pageIndex}&perpage=${pageSize}`).then((resp) => {
-      setCurPage(Number(resp.data.current_page - 1));
-      setControlledPageCount(resp.data.last_page);
-      setData(resp.data.data.map((course, i) => {
-        return {
-          ...course,
-          rowActions: [
-            {
-              name: 'edit',
-              type: 'edit',
-              action: () => {
-                setEditedCourse(course);
-                dispatch({
-                  type: 'CHANGE_HEADER',
-                  payload: `Редактирование курса ${course.name}`
-                });
-              },
-              disabled: false,
-            },
-            {
-              name: 'delete',
-              type: 'delete',
-              action: () => console.log('delete'),
-              disabled: Boolean(i % 2),
-            },
-          ]
-        };
-      }));
-    })
+    axios
+      .get(`${route(route().current())}?page=${pageIndex}&perpage=${pageSize}`)
+      .then((resp) => {
+        setCurPage(Number(resp.data.current_page - 1));
+        setControlledPageCount(resp.data.last_page);
+        setData(addActions(resp.data.data));
+      })
       .then(() => setLoading(false));
   }, []);
 
   const EditCourseForm = () => {
-    const [courseImg, setCourseImg] = useState(editedCourse.image);
+    const [courseImg, setCourseImg] = useState(editedCourse.image ?? '');
     const courseImgInput = useRef();
     const { data, setData, post } = useForm({
-      name: editedCourse.name,
-      active: editedCourse.active,
-      description: editedCourse.description,
-      image: editedCourse.image,
-      options: editedCourse.options
+      name: editedCourse.name ?? '',
+      active: editedCourse.active ?? '',
+      description: editedCourse.description ?? '',
+      image: editedCourse.image ?? '',
+      options: editedCourse.options ?? null
     });
 
     const onCourseImgChange = (e) => {
@@ -219,7 +215,7 @@ export default function Courses({ paginatedCourses }) {
                 <span className="text-sm font-medium text-gray-500">Описание курса</span>
                 <textarea
                   className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
-                  defaultValue={editedCourse.description}
+                  defaultValue={data.description}
                 />
               </li>
               <li className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -262,29 +258,53 @@ export default function Courses({ paginatedCourses }) {
             type="button"
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-3 sm:text-sm"
             onClick={() => {
-              post(route('admin.course.edit', editedCourse.id),
-                {
-                  data, onSuccess: (res) => {
-                    dispatch({
-                      type: 'CHANGE_HEADER',
-                      payload: `Курсы`
-                    });
-                    Inertia.get(route(route().current()));
-                  }
-                });
+              if (typeof editedCourse.id !== 'undefined') {
+                post(route('admin.courses.edit', editedCourse.id),
+                  {
+                    data, onSuccess: (res) => {
+                      dispatch({
+                        type: 'CHANGE_HEADER',
+                        payload: `Курсы`
+                      });
+                    }
+                  });
+              } else {
+                post(route('admin.courses.create'),
+                  {
+                    data, onSuccess: (res) => {
+                      dispatch(
+                        {
+                          type: 'CHANGE_HEADER',
+                          payload: `Курсы`
+                        },
+                        {
+                          type: 'SHOW_NOTIFICATION',
+                          payload: {
+                            position: 'bottom',
+                            type: 'success',
+                            header: 'Success!',
+                            message: 'New course created!',
+                          }
+                        }
+                      );
+                      setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
+                    }
+                  });
+              }
               setEditedCourse(null);
-
             }}
           >
             Сохранить
           </button>
-          <button
-            type="button"
-            className="mt-3 sm:mt-0 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
-            onClick={showCourseLessons}
-          >
-            Показать уроки
-          </button>
+          {typeof editedCourse.id !== 'undefined' &&
+            <button
+              type="button"
+              className="mt-3 sm:mt-0 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+              onClick={showCourseLessons}
+            >
+              Показать уроки
+            </button>
+          }
           <button
             type="button"
             className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
@@ -306,16 +326,32 @@ export default function Courses({ paginatedCourses }) {
   return (
     <main className="w-full h-fit">
       {editedCourse === null
-        ? <Table
-          dataValue={data}
-          columnsValue={columns}
-          options={tableOptions}
-          controlledPageCount={controlledPageCount}
-          total={paginatedCourses.total}
-          fetchData={fetchData}
-          loading={loading}
-          curPage={curPage}
-        />
+        ? <>
+          <Table
+            dataValue={data}
+            columnsValue={columns}
+            options={tableOptions}
+            controlledPageCount={controlledPageCount}
+            total={paginatedCourses.total}
+            fetchData={fetchData}
+            loading={loading}
+            curPage={curPage}
+          />
+          <button
+            type="button"
+            className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 mt-4 text-base font-medium text-white
+            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm
+            bg-indigo-500 hover:bg-indigo-700"
+            onClick={() => {
+              setEditedCourse(true);
+              dispatch({
+                type: 'CHANGE_HEADER',
+                payload: `Добавление курса`
+              });
+            }}
+          >Add Course
+          </button>
+        </>
         : <EditCourseForm/>
       }
     </main>
