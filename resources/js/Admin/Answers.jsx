@@ -87,6 +87,9 @@ export default function Answers({ answers }) {
     showPagination: true,
   };
 
+  useEffect(() => {
+    setData(addActions(answers));
+  }, [nav]);
 
   const EditAnswerForm = () => {
     const { data, setData, post } = useForm({
@@ -237,6 +240,7 @@ export default function Answers({ answers }) {
                         type: 'CHANGE_HEADER',
                         payload: `Ответы вопроса ${nav.currentQuestion.name}`
                       });
+                      Inertia.get(route('admin.answers', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id]));
                     }
                   });
               } else {
@@ -259,6 +263,7 @@ export default function Answers({ answers }) {
                         }
                       );
                       setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
+                      Inertia.get(route('admin.answers', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id]));
                     }
                   });
               }
@@ -288,11 +293,27 @@ export default function Answers({ answers }) {
   return (
     <main className="w-full h-fit">
       {editedAnswer === null
-        ? <Table
-          dataValue={data}
-          columnsValue={columns}
-          options={tableOptions}
-        />
+        ? <>
+          <Table
+            dataValue={data}
+            columnsValue={columns}
+            options={tableOptions}
+          />
+          <button
+            type="button"
+            className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 mt-4 text-base font-medium text-white
+            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm
+            bg-indigo-500 hover:bg-indigo-700"
+            onClick={() => {
+              setEditedAnswer(true);
+              dispatch({
+                type: 'CHANGE_HEADER',
+                payload: `Добавление  ответа`
+              });
+            }}
+          >Add Answer
+          </button>
+        </>
         : <EditAnswerForm/>
       }
     </main>

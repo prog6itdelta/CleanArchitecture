@@ -105,6 +105,10 @@ export default function Lessons({ lessons }) {
     showPagination: true,
   };
 
+  useEffect(()=>{
+    setData(addActions(lessons));
+  }, [nav]);
+
   const EditLessonForm = () => {
     const { data, setData, post } = useForm({
       name: editedLesson.name ?? '',
@@ -204,6 +208,7 @@ export default function Lessons({ lessons }) {
                         type: 'CHANGE_HEADER',
                         payload: `Уроки курса ${nav.currentCourse.name}`
                       });
+                      Inertia.get(route('admin.lessons', nav.currentCourse.id));
                     }
                   });
               } else {
@@ -225,6 +230,7 @@ export default function Lessons({ lessons }) {
                         }
                       );
                       setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
+                      Inertia.get(route('admin.lessons', nav.currentCourse.id));
                     }
                   });
               }

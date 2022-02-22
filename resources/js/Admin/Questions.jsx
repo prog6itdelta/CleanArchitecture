@@ -104,6 +104,9 @@ export default function Questions({ questions }) {
     showPagination: true,
   };
 
+  useEffect(()=>{
+    setData(addActions(questions));
+  }, [nav]);
 
   const EditQuestionForm = () => {
     const { data, setData, post } = useForm({
@@ -249,6 +252,7 @@ export default function Questions({ questions }) {
                         type: 'CHANGE_HEADER',
                         payload: `Вопросы урока ${nav.currentLesson.name}`
                       });
+                      Inertia.get(route('admin.questions', [nav.currentCourse.id, nav.currentLesson.id]));
                     }
                   });
               } else {
@@ -270,6 +274,7 @@ export default function Questions({ questions }) {
                         }
                       );
                       setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
+                      Inertia.get(route('admin.questions', [nav.currentCourse.id, nav.currentLesson.id]));
                     }
                   });
               }
@@ -281,8 +286,7 @@ export default function Questions({ questions }) {
           {typeof editedQuestion.id !== 'undefined' &&
             <button
               type="button"
-              className="mt-3 sm:mt-0 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 b
-            g-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+              className="mt-3 sm:mt-0 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
               onClick={showQuestionAnswers}
             >
               Показать ответы

@@ -12,11 +12,12 @@ use App\Models\Answer;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
+use Enforcer;
 
 //use Illuminate\Support\Facades\Auth;
 //use App\Models\User;
 
-
+// TODO refactor and optimize models usage
 class AdminController extends BaseController
 {
     /**
@@ -27,7 +28,8 @@ class AdminController extends BaseController
      */
     public function courses(Request $request)
     {
-        // todo return only accessible courses for current user
+        // TODO return only courses accessible for editing by current user
+        // NOTE probably I have to do this by using LearnService
         $orderBy = $request->orderby;
         $sort = $request->sort;
         $perPage = $request->perpage;
@@ -63,6 +65,35 @@ class AdminController extends BaseController
         return redirect()->route('admin.courses');
     }
 
+    public function deleteCourse(Request $request, $id) {
+        Course::find($id)->delete();
+        return redirect()->route('admin.courses');
+    }
+
+    public function createCourse(Request $request)
+    {
+        $course = new Course;
+        $path = 'empty';
+        $changedFields = [];
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $imagePath = '/' . $request->image->store('images/' . explode('.', $_SERVER['HTTP_HOST'])[0] . '/course_images');
+            $course->image = $imagePath;
+        }
+
+        $input = $request->collect();
+
+        foreach ($input as $key => $item) {
+            if ($key !== 'id' && strpos($key, 'image') === false && $item !== null) {
+                $course->$key = $item;
+            }
+        }
+
+        $course->save();
+        // TODO create standalone access rights element instead of adding rules directly
+        Enforcer::addPolicy('AU', "LC{$course->id}", 'read');
+        return redirect()->route('admin.courses');
+    }
+
     public function lessons(Request $request, $cid)
     {
         $course = LearnService::getCourse($cid);
@@ -84,6 +115,30 @@ class AdminController extends BaseController
             ['id' => $lid],
             $changedFields
         );
+        return redirect()->route('admin.lessons', [$cid]);
+    }
+
+    public function deleteLesson(Request $request, $cid, $lid) {
+        Lesson::find($lid)->delete();
+        return redirect()->route('admin.lessons', [$cid]);
+    }
+
+    public function createLesson(Request $request, $cid)
+    {
+        $course = Course::find($cid);
+        $lesson = new Lesson;
+
+        $input = $request->collect();
+
+        foreach ($input as $key => $item) {
+            if ($key !== 'id' && $item !== null) {
+                $lesson->$key = $item;
+            }
+        }
+
+        $course->lessons()->save($lesson);
+        // TODO create standalone access rights element instead of adding rules directly
+        Enforcer::addPolicy('AU', "LL{$lesson->id}", 'read');
         return redirect()->route('admin.lessons', [$cid]);
     }
 
@@ -110,6 +165,30 @@ class AdminController extends BaseController
         return redirect()->route('admin.questions', [$cid, $lid]);
     }
 
+    public function deleteQuestion(Request $request, $cid, $lid, $qid) {
+        Question::find($qid)->delete();
+        return redirect()->route('admin.questions', [$cid, $lid]);
+    }
+
+    public function createQuestion(Request $request, $cid, $lid)
+    {
+        $lesson = Lesson::find($lid);
+        $question = new Question;
+
+        $input = $request->collect();
+
+        foreach ($input as $key => $item) {
+            if ($key !== 'id' && $item !== null) {
+                $question->$key = $item;
+            }
+        }
+
+        $lesson->questions()->save($question);
+//        // TODO create standalone access rights element instead of adding rules directly
+//        Enforcer::addPolicy('AU', "LL{$lesson->id}", 'read');
+        return redirect()->route('admin.questions', [$cid, $lid]);
+    }
+
     public function answers(Request $request, $cid, $lid, $qid)
     {
         $answers = Answer::where('question_id', $qid)->get();
@@ -130,6 +209,30 @@ class AdminController extends BaseController
             ['id' => $aid],
             $changedFields
         );
+        return redirect()->route('admin.answers', [$cid, $lid, $qid]);
+    }
+
+    public function deleteAnswer(Request $request, $cid, $lid, $qid, $aid) {
+        Answer::find($aid)->delete();
+        return redirect()->route('admin.answers', [$cid, $lid, $qid]);
+    }
+
+    public function createAnswer(Request $request, $cid, $lid, $qid)
+    {
+        $question = Question::find($qid);
+        $answer = new Answer;
+
+        $input = $request->collect();
+
+        foreach ($input as $key => $item) {
+            if ($key !== 'id' && $item !== null) {
+                $answer->$key = $item;
+            }
+        }
+
+        $question->answers()->save($answer);
+//        // TODO create standalone access rights element instead of adding rules directly
+//        Enforcer::addPolicy('AU', "LL{$lesson->id}", 'read');
         return redirect()->route('admin.answers', [$cid, $lid, $qid]);
     }
 
