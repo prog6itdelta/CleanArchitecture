@@ -11,13 +11,13 @@ use App\Models\User;
 use Illuminate\Http\Request;
 //use Enforcer;
 
-//use Inertia\Inertia;
+use Inertia\Inertia;
+
+Route::get('/', function () {
+    return Inertia::render('Public/Index');
+})->name('home');
 
 Route::middleware(['auth'])->group(function () {
-
-    Route::get('/', function () {
-        return redirect()->route('courses');
-    })->name('home');
 
     Route::prefix('learning')->group(function () {
         Route::get('/courses', [LearnController::class, 'index'])
