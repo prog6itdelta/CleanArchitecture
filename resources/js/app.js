@@ -5,6 +5,7 @@ import { render } from 'react-dom';
 import { InertiaProgress } from '@inertiajs/progress';
 import Layout from './Pages/Layout.jsx';
 import AdminLayout from './Admin/Layout.jsx';
+import PublicLayout from './Public/Layout';
 
 require('./bootstrap');
 
@@ -14,7 +15,14 @@ createInertiaApp({
     const page = require(`./${name}`).default;
     if (name.startsWith('Admin/')) {
       page.layout = AdminLayout;
-    } else if (page.layout === undefined) {
+    }
+    if (name.startsWith('Public/')) {
+      page.layout = PublicLayout;
+    }
+    if (name.startsWith('Pages/')) {
+      page.layout = Layout;
+    }
+    if (page.layout === undefined) {
       page.layout = Layout;
     }
     return page;
