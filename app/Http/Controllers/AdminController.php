@@ -33,7 +33,7 @@ class AdminController extends BaseController
         $orderBy = $request->orderby;
         $sort = $request->sort;
         $perPage = $request->perpage;
-        if ($request->has('page')) {
+        if ($request->has('page')) { // response for pagination
             return Course::orderBy($orderBy ?? 'id', $sort ?? 'asc')->paginate($perPage ?? 10);
         }
 

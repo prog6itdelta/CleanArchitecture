@@ -24,7 +24,7 @@ import ColumnFilter from './ColumnFilter.jsx';
 // import GlobalFilter from './GlobalFilter.jsx';
 // import EditableCell from './EditableCell.jsx';
 
-export default function CourseTable({ dataValue: data, columnsValue, ...props }) {
+export default function OldTable({ dataValue: data, columnsValue, ...props }) {
   const {
     options: {
       // showGlobalFilter = true,
@@ -32,14 +32,12 @@ export default function CourseTable({ dataValue: data, columnsValue, ...props })
       showElementsPerPage = true,
       // showGoToPage = true,
       showPagination = true,
-      showRowCheckboxes = false,
     } = {
       // showGlobalFilter,
       // showColumnSelection,
       showElementsPerPage,
       // showGoToPage,
       showPagination,
-      showRowCheckboxes
     },
     fetchData = null,
     controlledPageCount = null,
@@ -116,31 +114,29 @@ export default function CourseTable({ dataValue: data, columnsValue, ...props })
     useFlexLayout,
     useResizeColumns,
     (hooks) => {
-      if (showRowCheckboxes === true) {
-        hooks.visibleColumns.push((columns) => [
-          // Let's make a column for selection
-          {
-            id: 'selection',
-            disableResizing: true,
-            minWidth: 50,
-            width: 50,
-            maxWidth: 50,
-            // The header can use the table's getToggleAllRowsSelectedProps method
-            // to render a checkbox
-            Header: ({ getToggleAllRowsSelectedProps }) => (
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+      hooks.visibleColumns.push((columns) => [
+        // Let's make a column for selection
+        {
+          id: 'selection',
+          disableResizing: true,
+          minWidth: 50,
+          width: 50,
+          maxWidth: 50,
+          // The header can use the table's getToggleAllRowsSelectedProps method
+          // to render a checkbox
+          Header: ({ getToggleAllRowsSelectedProps }) => (
+            <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
 
-            ),
-            // The cell can use the individual row's getToggleRowSelectedProps method
-            // to the render a checkbox
-            Cell: ({ row }) => (
-              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-            ),
-            disableFilters: true
-          },
-          ...columns,
-        ]);
-      }
+          ),
+          // The cell can use the individual row's getToggleRowSelectedProps method
+          // to the render a checkbox
+          Cell: ({ row }) => (
+            <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+          ),
+          disableFilters: true
+        },
+        ...columns,
+      ]);
       hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
         // fix the parent group of the selection button to not be resizable
         const selectionGroupHeader = headerGroups[0].headers[0];
@@ -159,8 +155,8 @@ export default function CourseTable({ dataValue: data, columnsValue, ...props })
 
   const SortingIndicator = ({ column, className }) => {
     if (column.isSorted) {
-      if (column.isSortedDesc) { return <SortDescendingIcon className={className}/>; }
-      return <SortAscendingIcon className={className}/>;
+      if (column.isSortedDesc) { return <SortAscendingIcon className={className}/>; }
+      return <SortDescendingIcon className={className}/>;
     }
 
     if (column.disableFilters !== true) { return <SelectorIcon className={`${className} text-gray-300`}/>; }
@@ -433,22 +429,22 @@ export default function CourseTable({ dataValue: data, columnsValue, ...props })
             {/*{showGlobalFilter && <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>}*/}
             <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div
-                className="min-w-full divide-y divide-gray-200 sm:px-6 lg:px-8"
+                className="min-w-full divide-y divide-gray-400 border-collapse sm:px-6 lg:px-8"
                 {...getTableProps()}
               >
-                <div className="bg-gray-50">
-                  {headerGroups.map((headerGroup) => (
-                      <div {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map((column, idx) => {
-                          const getSortByToggleProps = { ...column.getSortByToggleProps() };
-                          return (
+                <div>
+                {headerGroups.map((headerGroup) => (
+                    <div {...headerGroup.getHeaderGroupProps()}>
+                      {headerGroup.headers.map((column, idx) => {
+                        const getSortByToggleProps = { ...column.getSortByToggleProps() };
+                        return (
+                          <div
+                            scope="col"
+                            className={`px-3 py-3 text-center ${idx === headerGroup.headers.length - 1 ? '' : 'border-r'} border-gray-300 text-xs font-medium text-gray-500 tracking-wider flex flex-wrap items-center justify-center`}
+                            {...column.getHeaderProps()}
+                          >
                             <div
-                              scope="col"
-                              className={`px-6 py-4 text-left border-gray-300 text-xs font-medium text-gray-500 tracking-wider flex flex-wrap items-center justify-center`} // ${idx === headerGroup.headers.length - 1 ? '' : 'border-r'}
-                              {...column.getHeaderProps()}
-                            >
-                              <div
-                                className="flex w-full items-center justify-left" {...column.disableFilters ? null : getSortByToggleProps}>
+                              className="flex w-full items-center justify-center" {...column.disableFilters ? null : getSortByToggleProps}>
                             <span className="relative">
                               {column.render('Header')}
                               <SortingIndicator
@@ -456,62 +452,58 @@ export default function CourseTable({ dataValue: data, columnsValue, ...props })
                                 className="absolute top-0 -right-4 w-4 h-4"
                               />
                             </span>
-                              </div>
-
-                              {column.canFilter ? column.render('Filter') : null}
-
-                              {column.disableResizing !== true
-                                ? <div
-                                  className={`resizer isResizing`}
-                                  {...column.getResizerProps()}
-                                ></div>
-                                : null
-                              }
                             </div>
-                          );
-                        })}
-                      </div>
-                    )
+
+                            {column.canFilter ? column.render('Filter') : null}
+
+                            {column.disableResizing !== true
+                              ? <div
+                                className={`resizer isResizing`}
+                                {...column.getResizerProps()}
+                              ></div>
+                              : null
+                            }
+                          </div>
+                        );
+                      })}
+                    </div>
                   )
-                  }
+                )
+                }
                 </div>
                 {/* Apply the table body props */}
                 <div
-                  className="bg-white divide-y divide-gray-200"
                   {...getTableBodyProps()}
                 >
-                  {
-                    // Loop over the table rows
-                    page.map((row, i) => {
-                      // Prepare the row for display
-                      prepareRow(row);
-                      return (
-                        // Apply the row props
-                        <div
-                          // className={`${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`} // border-b border-gray-300
-                          className="bg-white"
-                          {...row.getRowProps()}
-                        >
-                          {
-                            // Loop over the rows cells
-                            row.cells.map((cell, idx) => {
-                              // Apply the cell props
-                              return (
-                                <div
-                                  className="px-6 py-4 whitespace-nowrap"
-                                  // className={`p-2 whitespace-nowrap text-sm text-gray-500 justify-center ${idx === row.cells.length - 1 ? '' : 'border-r'} border-gray-300 flex flex-wrap items-center overflow-hidden`}
-
-                                  {...cell.getCellProps()}
-                                >
-                                  {cell.render('Cell')}
-                                </div>
-                              );
-                            })
-                          }
-                        </div>
-                      );
-                    })
-                  }
+                {
+                  // Loop over the table rows
+                  page.map((row, i) => {
+                    // Prepare the row for display
+                    prepareRow(row);
+                    return (
+                      // Apply the row props
+                      <div
+                        className={`${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'} border-b border-gray-300`}
+                        {...row.getRowProps()}
+                      >
+                        {
+                          // Loop over the rows cells
+                          row.cells.map((cell, idx) => {
+                            // Apply the cell props
+                            return (
+                              <div
+                                className={`p-2 whitespace-nowrap text-sm text-gray-500 justify-center ${idx === row.cells.length - 1 ? '' : 'border-r'} border-gray-300 flex flex-wrap items-center overflow-hidden`}
+                                {...cell.getCellProps()}
+                              >
+                                {cell.render('Cell')}
+                              </div>
+                            );
+                          })
+                        }
+                      </div>
+                    );
+                  })
+                }
                 </div>
               </div>
             </div>

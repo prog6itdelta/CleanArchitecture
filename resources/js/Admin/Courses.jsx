@@ -5,6 +5,9 @@ import axios from 'axios';
 import { Switch } from '@headlessui/react';
 import Table from '../Components/Table.jsx';
 import OneLineCell from '../Components/OneLineCell.jsx';
+import NameCell from '../Components/NameCell.jsx';
+import TwoLineCell from '../Components/TwoLineCell.jsx';
+import StatusCell from '../Components/StatusCell.jsx';
 import ActionsCell from '../Components/ActionsCell.jsx';
 import { AdminContext } from './reducer.jsx';
 
@@ -43,18 +46,33 @@ export default function Courses({ paginatedCourses }) {
 
   const columns = [
     {
-      Header: 'Name',
-      accessor: 'name',
+      Header: 'Курс',
+      accessor: (row) => {
+        return {
+          name: row.name,
+          image: row.image,
+          signature: `course_group_id: ${row.course_group_id}`
+        };
+      },
+      id: 'name',
       Filter: '',
       width: 250,
-      Cell: OneLineCell,
+      Cell: NameCell,
     },
     {
-      Header: 'active',
+      Header: 'Описание',
+      accessor: 'description',
+      disableFilters: true,
+      Filter: '',
+      width: 250,
+      Cell: TwoLineCell,
+    },
+    {
+      Header: 'Статус',
       accessor: 'active',
       Filter: '',
       width: 70,
-      Cell: OneLineCell,
+      Cell: StatusCell,
     },
     {
       Header: 'Действия',
