@@ -48,6 +48,7 @@ class HandleInertiaRequests extends Middleware
                 ['name' => 'Выход', 'href' => '/logout'],
             ],
             'flash' => [
+                'test' => fn () => $request->session()->get('test'),
                 'lessonCheckMessage' => fn () => $request->session()->get('lessonCheckMessage'),
                 'nextLessonId' => fn () => $request->session()->get('nextLessonId'),
                 'dataUpdated' => fn () => $request->session()->get('dataUpdated'),

@@ -74,7 +74,7 @@ export default function Lessons({ lessons }) {
             name: 'delete',
             type: 'delete',
             action: () => {
-              Inertia.post(route('admin.lessons.delete', [nav.currentCourse.id, item.id]), {}, {
+              Inertia.post(route('admin.lesson.delete', [nav.currentCourse.id, item.id]), {}, {
                 onSuccess: () => {
                   dispatch({
                     type: 'SHOW_NOTIFICATION',
@@ -201,7 +201,7 @@ export default function Lessons({ lessons }) {
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-3 sm:text-sm"
             onClick={() => {
               if (typeof editedLesson.id !== 'undefined') {
-                post(route('admin.lessons.edit', [nav.currentCourse.id, editedLesson.id]),
+                post(route('admin.lesson.edit', [nav.currentCourse.id, editedLesson.id]),
                   {
                     data, onSuccess: () => {
                       dispatch({
@@ -212,7 +212,7 @@ export default function Lessons({ lessons }) {
                     }
                   });
               } else {
-                post(route('admin.lessons.create', nav.currentCourse.id),
+                post(route('admin.lesson.create', nav.currentCourse.id),
                   {
                     data, onSuccess: () => {
                       dispatch({

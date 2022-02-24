@@ -17,9 +17,17 @@ const ActionsCell = ({ value: actions, row: { index }, column: { id } }) => {
         (()=> {
           switch (action.type) {
             case 'edit':
-              return <PencilIcon key={action.type} className="w-5 h-5 mx-1 text-indigo-600 hover:text-indigo-900 cursor-pointer"/>;
+              return <PencilIcon
+                key={action.type}
+                className={`w-5 h-5 mx-1 ${action.disabled ? 'text-gray-300' : 'text-indigo-600 hover:text-indigo-900 cursor-pointer'}`}
+                onClick={action.disabled ? null : action.action}
+              />;
             case 'delete':
-              return <TrashIcon key={action.type} className="w-5 h-5 mx-1 text-red-600 hover:text-red-900 cursor-pointer"/>;
+              return <TrashIcon
+                key={action.type}
+                className={`w-5 h-5 mx-1 ${action.disabled ? 'text-gray-300' : 'text-red-600 hover:text-red-900 cursor-pointer'}`}
+                onClick={action.disabled ? null : action.action}
+              />;
             default: return null;
           }
         })()

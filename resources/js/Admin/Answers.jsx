@@ -56,7 +56,7 @@ export default function Answers({ answers }) {
             name: 'delete',
             type: 'delete',
             action: () => {
-              Inertia.post(route('admin.answers.delete', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id, item.id]), {}, {
+              Inertia.post(route('admin.answer.delete', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id, item.id]), {}, {
                 onSuccess: () => {
                   dispatch({
                     type: 'SHOW_NOTIFICATION',
@@ -232,7 +232,7 @@ export default function Answers({ answers }) {
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
             onClick={() => {
               if (typeof editedAnswer.id !== 'undefined') {
-                post(route('admin.answers.edit', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id, editedAnswer.id]),
+                post(route('admin.answer.edit', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id, editedAnswer.id]),
                   {
                     data,
                     onSuccess: () => {
@@ -244,7 +244,7 @@ export default function Answers({ answers }) {
                     }
                   });
               } else {
-                post(route('admin.answers.create', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id]),
+                post(route('admin.answer.create', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id]),
                   {
                     data,
                     onSuccess: () => {

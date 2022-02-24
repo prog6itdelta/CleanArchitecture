@@ -42,7 +42,14 @@ class AdminController extends BaseController
         ]);
     }
 
-    public function editCourse(Request $request, $id)
+    public function editCourse(Request $request, $id = null)
+    {
+        $course = [];
+        if ($id !== null){ $course = LearnService::getCourse($id); }
+        return Inertia::render('Admin/EditCourse', compact('course'));
+    }
+
+    public function saveEditedCourse(Request $request, $id)
     {
         $path = 'empty';
         $changedFields = [];
@@ -62,10 +69,16 @@ class AdminController extends BaseController
             ['id' => $id],
             $changedFields
         );
-        return redirect()->route('admin.courses');
+        return redirect()->route('admin.courses')->with([
+            'position' => 'bottom',
+            'type' => 'success',
+            'header' => 'Success!',
+            'message' => 'Course updated successfully!',
+        ]);
     }
 
-    public function deleteCourse(Request $request, $id) {
+    public function deleteCourse(Request $request, $id)
+    {
         Course::find($id)->delete();
         return redirect()->route('admin.courses');
     }
@@ -91,7 +104,12 @@ class AdminController extends BaseController
         $course->save();
         // TODO create standalone access rights element instead of adding rules directly
         Enforcer::addPolicy('AU', "LC{$course->id}", 'read');
-        return redirect()->route('admin.courses');
+        return redirect()->route('admin.courses')->with([
+            'position' => 'bottom',
+            'type' => 'success',
+            'header' => 'Success!',
+            'message' => 'Course created successfully!',
+        ]);
     }
 
     public function lessons(Request $request, $cid)
@@ -118,7 +136,8 @@ class AdminController extends BaseController
         return redirect()->route('admin.lessons', [$cid]);
     }
 
-    public function deleteLesson(Request $request, $cid, $lid) {
+    public function deleteLesson(Request $request, $cid, $lid)
+    {
         Lesson::find($lid)->delete();
         return redirect()->route('admin.lessons', [$cid]);
     }
@@ -165,7 +184,8 @@ class AdminController extends BaseController
         return redirect()->route('admin.questions', [$cid, $lid]);
     }
 
-    public function deleteQuestion(Request $request, $cid, $lid, $qid) {
+    public function deleteQuestion(Request $request, $cid, $lid, $qid)
+    {
         Question::find($qid)->delete();
         return redirect()->route('admin.questions', [$cid, $lid]);
     }
@@ -212,7 +232,8 @@ class AdminController extends BaseController
         return redirect()->route('admin.answers', [$cid, $lid, $qid]);
     }
 
-    public function deleteAnswer(Request $request, $cid, $lid, $qid, $aid) {
+    public function deleteAnswer(Request $request, $cid, $lid, $qid, $aid)
+    {
         Answer::find($aid)->delete();
         return redirect()->route('admin.answers', [$cid, $lid, $qid]);
     }

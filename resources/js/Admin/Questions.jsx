@@ -73,7 +73,7 @@ export default function Questions({ questions }) {
             name: 'delete',
             type: 'delete',
             action: () => {
-              Inertia.post(route('admin.questions.delete', [nav.currentCourse.id, nav.currentLesson.id, item.id]), {}, {
+              Inertia.post(route('admin.question.delete', [nav.currentCourse.id, nav.currentLesson.id, item.id]), {}, {
                 onSuccess: () => {
                   dispatch({
                     type: 'SHOW_NOTIFICATION',
@@ -245,7 +245,7 @@ export default function Questions({ questions }) {
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-3 sm:text-sm"
             onClick={() => {
               if (typeof editedQuestion.id !== 'undefined') {
-                post(route('admin.questions.edit', [nav.currentCourse.id, nav.currentLesson.id, editedQuestion.id]),
+                post(route('admin.question.edit', [nav.currentCourse.id, nav.currentLesson.id, editedQuestion.id]),
                   {
                     data, onSuccess: () => {
                       dispatch({
@@ -256,7 +256,7 @@ export default function Questions({ questions }) {
                     }
                   });
               } else {
-                post(route('admin.questions.create', [nav.currentCourse.id, nav.currentLesson.id]),
+                post(route('admin.question.create', [nav.currentCourse.id, nav.currentLesson.id]),
                   {
                     data, onSuccess: () => {
                       dispatch({
