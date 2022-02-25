@@ -25,6 +25,7 @@ import ColumnFilter from './ColumnFilter.jsx';
 // import EditableCell from './EditableCell.jsx';
 
 export default function CourseTable({ dataValue: data, columnsValue, ...props }) {
+  // todo integrate sorting with requests
   const {
     options: {
       showGlobalFilter = false,

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Packages\Department\UseCases\DepartmentService;
 use App\Packages\Learn\UseCases\LearnService;
-use App\Packages\Learn\UseCases\JournalService;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Question;
@@ -13,9 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
 use Enforcer;
-
-//use Illuminate\Support\Facades\Auth;
-//use App\Models\User;
 
 // TODO refactor and optimize models usage
 class AdminController extends BaseController
@@ -126,11 +122,9 @@ class AdminController extends BaseController
         $lesson = [];
         if ($lid !== null) {
             $course = LearnService::getCourse($cid);
-//            dd($course->lessons);
             $lesson = array_values(array_filter( $course->lessons, function ($item) use ($lid) {
                 return $item->id === (int) $lid;
             }))[0];
-//            dd($lesson);
         }
         return Inertia::render('Admin/EditLesson', compact('lesson'));
     }
@@ -149,7 +143,12 @@ class AdminController extends BaseController
             ['id' => $lid],
             $changedFields
         );
-        return redirect()->route('admin.lessons', [$cid]);
+        return redirect()->route('admin.lessons', [$cid])->with([
+            'position' => 'bottom',
+            'type' => 'success',
+            'header' => 'Success!',
+            'message' => 'Lesson updated successfully!',
+        ]);
     }
 
     public function deleteLesson(Request $request, $cid, $lid)
@@ -174,7 +173,12 @@ class AdminController extends BaseController
         $course->lessons()->save($lesson);
         // TODO create standalone access rights element instead of adding rules directly
         Enforcer::addPolicy('AU', "LL{$lesson->id}", 'read');
-        return redirect()->route('admin.lessons', [$cid]);
+        return redirect()->route('admin.lessons', [$cid])->with([
+            'position' => 'bottom',
+            'type' => 'success',
+            'header' => 'Success!',
+            'message' => 'Lesson created successfully!',
+        ]);
     }
 
     public function questions(Request $request, $cid, $lid)
@@ -209,7 +213,12 @@ class AdminController extends BaseController
             ['id' => $qid],
             $changedFields
         );
-        return redirect()->route('admin.questions', [$cid, $lid]);
+        return redirect()->route('admin.questions', [$cid, $lid])->with([
+            'position' => 'bottom',
+            'type' => 'success',
+            'header' => 'Success!',
+            'message' => 'Question updated successfully!',
+        ]);
     }
 
     public function deleteQuestion(Request $request, $cid, $lid, $qid)
@@ -232,7 +241,12 @@ class AdminController extends BaseController
         }
 
         $lesson->questions()->save($question);
-        return redirect()->route('admin.questions', [$cid, $lid]);
+        return redirect()->route('admin.questions', [$cid, $lid])->with([
+            'position' => 'bottom',
+            'type' => 'success',
+            'header' => 'Success!',
+            'message' => 'Question created successfully!',
+        ]);
     }
 
     public function answers(Request $request, $cid, $lid, $qid)
@@ -267,7 +281,12 @@ class AdminController extends BaseController
             ['id' => $aid],
             $changedFields
         );
-        return redirect()->route('admin.answers', [$cid, $lid, $qid]);
+        return redirect()->route('admin.answers', [$cid, $lid, $qid])->with([
+            'position' => 'bottom',
+            'type' => 'success',
+            'header' => 'Success!',
+            'message' => 'Answer updated successfully!',
+        ]);
     }
 
     public function deleteAnswer(Request $request, $cid, $lid, $qid, $aid)
@@ -290,9 +309,12 @@ class AdminController extends BaseController
         }
 
         $question->answers()->save($answer);
-//        // TODO create standalone access rights element instead of adding rules directly
-//        Enforcer::addPolicy('AU', "LL{$lesson->id}", 'read');
-        return redirect()->route('admin.answers', [$cid, $lid, $qid]);
+        return redirect()->route('admin.answers', [$cid, $lid, $qid])->with([
+            'position' => 'bottom',
+            'type' => 'success',
+            'header' => 'Success!',
+            'message' => 'Answer created successfully!',
+        ]);
     }
 
     /**
