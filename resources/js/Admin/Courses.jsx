@@ -1,10 +1,7 @@
-import React, { useState, useCallback, useRef, useContext, useEffect } from 'react';
+import React, { useState, useCallback, useContext, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
-import { useForm } from '@inertiajs/inertia-react';
 import axios from 'axios';
-import { Switch } from '@headlessui/react';
 import Table from '../Components/Table.jsx';
-import OneLineCell from '../Components/OneLineCell.jsx';
 import NameCell from '../Components/NameCell.jsx';
 import TwoLineCell from '../Components/TwoLineCell.jsx';
 import StatusCell from '../Components/StatusCell.jsx';
@@ -16,7 +13,6 @@ export default function Courses({ paginatedCourses }) {
   const [curPage, setCurPage] = useState(0);
   const [controlledPageCount, setControlledPageCount] = useState(paginatedCourses.last_page);
   const courses = paginatedCourses.data;
-  const [editedCourse, setEditedCourse] = useState(null);
   const { state, dispatch } = useContext(AdminContext);
 
   useEffect(() => {
@@ -25,24 +21,6 @@ export default function Courses({ paginatedCourses }) {
       payload: `Курсы`
     });
   }, []);
-
-
-  const showCourseLessons = () => {
-    dispatch(
-      {
-        type: 'CHOSE_COURSE',
-        payload: {
-          id: editedCourse.id,
-          name: editedCourse.name
-        }
-      },
-      {
-        type: 'CHANGE_HEADER',
-        payload: `Уроки курса ${editedCourse.name}`
-      }
-    );
-    Inertia.post(route('admin.lessons', editedCourse.id));
-  };
 
   const columns = [
     {
@@ -92,11 +70,6 @@ export default function Courses({ paginatedCourses }) {
             name: 'edit',
             type: 'edit',
             action: () => {
-              // setEditedCourse(item);
-              dispatch({
-                type: 'CHANGE_HEADER',
-                payload: `Редактирование курса ${item.name}`
-              });
               Inertia.get(route('admin.course.edit', item.id));
             },
             disabled: false,
@@ -127,14 +100,8 @@ export default function Courses({ paginatedCourses }) {
       };
     });
   };
+
   const [data, setData] = useState(addActions(courses));
-  const tableOptions = {
-    // showGlobalFilter: true,
-    // showColumnSelection: false,
-    showElementsPerPage: true,
-    // showGoToPage: false,
-    showPagination: true,
-  };
 
   const fetchData = useCallback(({ pageIndex, pageSize }) => {
     setLoading(true);
@@ -151,35 +118,25 @@ export default function Courses({ paginatedCourses }) {
 
   return (
     <main className="w-full h-fit">
-      {editedCourse === null
-        ? <>
-          <Table
-            dataValue={data}
-            columnsValue={columns}
-            options={tableOptions}
-            controlledPageCount={controlledPageCount}
-            total={paginatedCourses.total}
-            fetchData={fetchData}
-            loading={loading}
-            curPage={curPage}
-          />
-          <button
-            type="button"
-            className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 mt-4 text-base font-medium text-white
+      <Table
+        dataValue={data}
+        columnsValue={columns}
+        controlledPageCount={controlledPageCount}
+        total={paginatedCourses.total}
+        fetchData={fetchData}
+        loading={loading}
+        curPage={curPage}
+      />
+      <button
+        type="button"
+        className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 mt-4 text-base font-medium text-white
             focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm
             bg-indigo-500 hover:bg-indigo-700"
-            onClick={() => {
-              dispatch({
-                type: 'CHANGE_HEADER',
-                payload: `Добавление курса`
-              });
-              Inertia.get(route('admin.course.create'));
-            }}
-          >Add Course
-          </button>
-        </>
-        : <EditCourseForm/>
-      }
+        onClick={() => {
+          Inertia.get(route('admin.course.create'));
+        }}
+      >Add Course
+      </button>
     </main>
   );
 }

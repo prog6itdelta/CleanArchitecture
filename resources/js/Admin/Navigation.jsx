@@ -23,6 +23,12 @@ export default function Navigation({ children }) {
   const { auth, userNavigation, notification: {position, type, header, message} } = usePage().props;
   const user = auth.user;
 
+  /**
+   * NOTE
+   * I bind this useEffects to auth
+   * because I want to run it on every page change
+   * and auth receive updates on every page change
+   */
   useEffect(() => {
     const curLoc = window.location.href;
     const regURLParse = /\/courses(\/)?(?<course>\d*)?(\/lessons)?(\/)?(?<lesson>\d*)?(\/questions)?(\/)?(?<question>\d*)?/g;
@@ -34,11 +40,10 @@ export default function Navigation({ children }) {
         question: undefined,
       }};
 
-
     if (course !== undefined) { dispatch({ type: 'CHOSE_COURSE', payload: { id: course } }); }
     if (lesson !== undefined) { dispatch({ type: 'CHOSE_LESSON', payload: { id: lesson } }); }
     if (question !== undefined) { dispatch({ type: 'CHOSE_QUESTION', payload: { id: question } }); }
-  }, []);
+  }, [auth]);
 
   useEffect(() => {
     if (type !== null) {

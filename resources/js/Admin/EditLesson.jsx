@@ -1,42 +1,32 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch } from '@headlessui/react';
 import { AdminContext } from './reducer.jsx';
 
-export default function EditCourse({ course }) {
-  const { state, dispatch } = useContext(AdminContext);
+export default function EditLesson({ lesson }) {
+  const { state: { navigation: nav }, dispatch } = useContext(AdminContext);
 
   useEffect(() => {
     dispatch({
-      type: 'CHANGE_HEADER', payload: course.id === undefined ? 'Создание курса' : `Редактирование курса`
+      type: 'CHANGE_HEADER', payload: lesson.id === undefined ? 'Создание урока' : `Редактирование урока`
     });
   }, []);
-  const [courseImg, setCourseImg] = useState(course.image ?? '');
-  const courseImgInput = useRef();
+
   const { data, setData, post } = useForm({
-    name: course.name ?? '',
-    active: course.active ?? '',
-    description: course.description ?? '',
-    image: course.image ?? '',
-    options: course.options ?? null
+    name: lesson.name ?? '',
+    active: lesson.active ?? '',
+    description: lesson.description ?? '',
+    detail_text: lesson.detail_text ?? ''
   });
 
-  const onCourseImgChange = (e) => {
-    setData('image', e.target.files[0]);
-    const reader = new FileReader();
-    reader.onload = function (ev) {
-      setCourseImg(ev.target.result);
-    };
-    reader.readAsDataURL(e.target.files[0]);
-  };
-
-  return (<>
-      <div className="bg-white shadow rounded-md">
+  return (
+    <>
+      <div className="bg-white shadow overflow-hidden rounded-md">
         <div className="border-t border-gray-200">
           <ul>
             <li className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <span className="text-sm font-medium text-gray-500">Название курса</span>
+              <span className="text-sm font-medium text-gray-500">Название урока</span>
               <input
                 type="text"
                 value={data.name}
@@ -44,8 +34,8 @@ export default function EditCourse({ course }) {
                 className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
               />
             </li>
-            <li className="bg-white px-4 py-5 grid grid-cols-2 sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <span className="text-sm font-medium text-gray-500 flex items-center sm:block">Статус</span>
+            <li className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <span className="text-sm font-medium text-gray-500">Статус</span>
               <span className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                   <Switch
                     checked={Boolean(data.active)}
@@ -54,7 +44,7 @@ export default function EditCourse({ course }) {
                     ${Boolean(data.active) ? 'bg-indigo-600' : 'bg-gray-200'} relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
                     `}
                   >
-                    <span className="sr-only">Course state</span>
+                    <span className="sr-only">Lesson state</span>
                     <span
                       className={`
                       ${Boolean(data.active) ? 'translate-x-5' : 'translate-x-0'}
@@ -92,42 +82,17 @@ export default function EditCourse({ course }) {
                 </span>
             </li>
             <li className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <span className="text-sm font-medium text-gray-500">Описание курса</span>
+              <span className="text-sm font-medium text-gray-500">Описание урока</span>
               <textarea
                 className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
                 defaultValue={data.description}
               />
             </li>
             <li className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <span className="text-sm font-medium text-gray-500">Изображение курса</span>
-              <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  <span className="w-full mb-4 flex justify-center rounded-md overflow-hidden bg-gray-100 col-span-2">
-                    <img src={courseImg} alt="course image"/>
-                  </span>
-                <input
-                  ref={courseImgInput}
-                  type="file"
-                  name="avatar"
-                  id="avatar"
-                  onChange={onCourseImgChange}
-                  className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 col-span-10 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                />
-              </div>
-            </li>
-            <li className="bg-gray-50 px-4 py-5 sm:px-6">
-              <span className="block text-sm font-medium text-gray-500 text-center">Параметры курса</span>
-            </li>
-            <li className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <span className="text-sm font-medium text-gray-500">Время между попытками</span>
-              <input
-                type="text"
-                value={JSON.parse(data.options) !== null ? JSON.parse(data.options).delayTime : ''}
-                onChange={(e) => {
-                  let courseOptions = JSON.parse(data.options);
-                  if (courseOptions !== null) { courseOptions.delayTime = e.target.value; } else { courseOptions = { delayTime: e.target.value }; }
-                  setData('options', JSON.stringify(courseOptions));
-                }}
+              <span className="text-sm font-medium text-gray-500">Изображение урока</span>
+              <textarea
                 className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
+                defaultValue={data.detail_text}
               />
             </li>
           </ul>
@@ -138,42 +103,50 @@ export default function EditCourse({ course }) {
           type="button"
           className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-3 sm:text-sm"
           onClick={() => {
-            if (course.id !== undefined) { post(route('admin.course.edit', course.id), { data });
+            if (lesson.id !== undefined) { post(route('admin.lesson.edit', [nav.currentCourse.id, lesson.id]),
+                { data });
             } else {
-              post(route('admin.course.create'), {
-                data, onSuccess: (res) => {
-                  dispatch({
-                    type: 'SHOW_NOTIFICATION',
-                    payload: {
-                      position: 'bottom',
-                      type: 'success',
-                      header: 'Success!',
-                      message: 'New course created!',
-                    }
-                  });
-                  setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
-                }
-              });
+              post(route('admin.lesson.create', nav.currentCourse.id),
+                {
+                  data, onSuccess: () => {
+                    dispatch(
+                      {
+                        type: 'SHOW_NOTIFICATION',
+                        payload: {
+                          position: 'bottom',
+                          type: 'success',
+                          header: 'Success!',
+                          message: 'New lesson created!',
+                        }
+                      }
+                    );
+                    setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
+                  }
+                });
             }
           }}
         >
           Сохранить
         </button>
-        {course.id !== undefined && <button
-          type="button"
-          className="mt-3 sm:mt-0 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
-          onClick={() => Inertia.get(route('admin.lessons', course.id))}
-        >
-          Показать уроки
-        </button>}
+        {lesson.id !== undefined &&
+          <button
+            type="button"
+            className="mt-3 sm:mt-0 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+            onClick={() => Inertia.get(route('admin.questions', [nav.currentCourse.id, lesson.id]))}
+          >
+            Показать вопросы
+          </button>
+        }
         <button
           type="button"
           className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
-          onClick={() => Inertia.get(route('admin.courses'))}
+          onClick={() => {
+            Inertia.get(route('admin.lessons', nav.currentCourse.id));
+          }}
         >
           Отмена
         </button>
       </div>
-    </>);
+    </>
+  );
 };
-  

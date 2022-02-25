@@ -45,7 +45,9 @@ class AdminController extends BaseController
     public function editCourse(Request $request, $id = null)
     {
         $course = [];
-        if ($id !== null){ $course = LearnService::getCourse($id); }
+        if ($id !== null) {
+            $course = LearnService::getCourse($id);
+        }
         return Inertia::render('Admin/EditCourse', compact('course'));
     }
 
@@ -119,7 +121,21 @@ class AdminController extends BaseController
         return Inertia::render('Admin/Lessons', compact('lessons'));
     }
 
-    public function editLesson(Request $request, $cid, $lid)
+    public function editLesson(Request $request, $cid, $lid = null)
+    {
+        $lesson = [];
+        if ($lid !== null) {
+            $course = LearnService::getCourse($cid);
+//            dd($course->lessons);
+            $lesson = array_values(array_filter( $course->lessons, function ($item) use ($lid) {
+                return $item->id === (int) $lid;
+            }))[0];
+//            dd($lesson);
+        }
+        return Inertia::render('Admin/EditLesson', compact('lesson'));
+    }
+
+    public function saveEditedLesson(Request $request, $cid, $lid)
     {
         $changedFields = [];
         $input = $request->collect();
@@ -167,7 +183,19 @@ class AdminController extends BaseController
         return Inertia::render('Admin/Questions', compact('questions'));
     }
 
-    public function editQuestion(Request $request, $cid, $lid, $qid)
+    public function editQuestion(Request $request, $cid, $lid, $qid = null)
+    {
+        $question = [];
+        if ($qid !== null) {
+            $questions = Question::where('lesson_id', $lid)->get()->all();
+            $question = array_values(array_filter( $questions, function ($item) use ($qid) {
+                return $item->id === (int) $qid;
+            }))[0];
+        }
+        return Inertia::render('Admin/EditQuestion', compact('question'));
+    }
+
+    public function saveEditedQuestion(Request $request, $cid, $lid, $qid)
     {
         $changedFields = [];
         $input = $request->collect();
@@ -204,8 +232,6 @@ class AdminController extends BaseController
         }
 
         $lesson->questions()->save($question);
-//        // TODO create standalone access rights element instead of adding rules directly
-//        Enforcer::addPolicy('AU', "LL{$lesson->id}", 'read');
         return redirect()->route('admin.questions', [$cid, $lid]);
     }
 
@@ -215,7 +241,19 @@ class AdminController extends BaseController
         return Inertia::render('Admin/Answers', compact('answers'));
     }
 
-    public function editAnswer(Request $request, $cid, $lid, $qid, $aid)
+    public function editAnswer(Request $request, $cid, $lid, $qid, $aid = null)
+    {
+        $answer = [];
+        if ($aid !== null) {
+            $answers = Answer::where('question_id', $qid)->get()->all();
+            $answer = array_values(array_filter( $answers, function ($item) use ($aid) {
+                return $item->id === (int) $aid;
+            }))[0];
+        }
+        return Inertia::render('Admin/EditAnswer', compact('answer'));
+    }
+
+    public function saveEditedAnswer(Request $request, $cid, $lid, $qid, $aid)
     {
         $changedFields = [];
         $input = $request->collect();

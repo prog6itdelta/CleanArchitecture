@@ -27,17 +27,17 @@ import ColumnFilter from './ColumnFilter.jsx';
 export default function CourseTable({ dataValue: data, columnsValue, ...props }) {
   const {
     options: {
-      // showGlobalFilter = true,
-      // showColumnSelection = true,
+      showGlobalFilter = false,
+      showColumnSelection = false,
       showElementsPerPage = true,
-      // showGoToPage = true,
+      showGoToPage = false,
       showPagination = true,
       showRowCheckboxes = false,
     } = {
-      // showGlobalFilter,
-      // showColumnSelection,
+      showGlobalFilter,
+      showColumnSelection,
       showElementsPerPage,
-      // showGoToPage,
+      showGoToPage,
       showPagination,
       showRowCheckboxes
     },
