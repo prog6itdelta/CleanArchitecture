@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LearnAdminController;
 use App\Http\Controllers\LearnController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AccessController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
@@ -133,6 +134,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::post('/courses/{cid}/lessons/{lid}/questions/{qid}/answers/{aid}/delete', [LearnAdminController::class, 'deleteAnswer'])
             ->name('admin.answer.delete');
+
+        Route::get('/access', [AccessController::class, 'index'])
+            ->name('admin.access');
 
         Route::get('/departments', [AdminController::class, 'departments'])
             ->name('admin.departments');

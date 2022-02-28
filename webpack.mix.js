@@ -24,4 +24,5 @@ mix.js('resources/js/app.js', 'public/js').react()
   proxy: 'tenant1.localhost:8002',
   // port: 8002,
   // localOnly: true
-});
+})
+  .disableSuccessNotifications(); // I'm tired of this notification

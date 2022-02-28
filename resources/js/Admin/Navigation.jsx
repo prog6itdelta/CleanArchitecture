@@ -88,6 +88,18 @@ export default function Navigation({ children }) {
           payload: 'Департаменты'
         })
       },
+    },
+    {
+      name: 'Права доступа',
+      icon: HomeIcon,
+      href: route('admin.access'),
+      current: true,
+      action: () => {
+        dispatch({
+          type: 'CHANGE_HEADER',
+          payload: 'Права доступа'
+        })
+      },
     }
 
   ];

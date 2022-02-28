@@ -26,7 +26,7 @@ class LearnAdminController extends BaseController
             return Course::orderBy($orderBy ?? 'id', $sort ?? 'asc')->paginate($perPage ?? 10);
         }
 
-        return Inertia::render('Admin/Courses', [
+        return Inertia::render('Admin/Learning/Courses', [
             'paginatedCourses' => fn() => Course::orderBy($orderBy ?? 'id', $sort ?? 'asc')->paginate($perPage ?? 10)
         ]);
     }
@@ -37,7 +37,7 @@ class LearnAdminController extends BaseController
         if ($id !== null) {
             $course = LearnService::getCourse($id);
         }
-        return Inertia::render('Admin/EditCourse', compact('course'));
+        return Inertia::render('Admin/Learning/EditCourse', compact('course'));
     }
 
     public function saveEditedCourse(Request $request, $id)
@@ -107,7 +107,7 @@ class LearnAdminController extends BaseController
     {
         $course = LearnService::getCourse($cid);
         $lessons = array_values($course->lessons);
-        return Inertia::render('Admin/Lessons', compact('lessons'));
+        return Inertia::render('Admin/Learning/Lessons', compact('lessons'));
     }
 
     public function editLesson(Request $request, $cid, $lid = null)
@@ -119,7 +119,7 @@ class LearnAdminController extends BaseController
                 return $item->id === (int) $lid;
             }))[0];
         }
-        return Inertia::render('Admin/EditLesson', compact('lesson'));
+        return Inertia::render('Admin/Learning/EditLesson', compact('lesson'));
     }
 
     public function saveEditedLesson(Request $request, $cid, $lid)
@@ -177,7 +177,7 @@ class LearnAdminController extends BaseController
     public function questions(Request $request, $cid, $lid)
     {
         $questions = Question::where('lesson_id', $lid)->get();
-        return Inertia::render('Admin/Questions', compact('questions'));
+        return Inertia::render('Admin/Learning/Questions', compact('questions'));
     }
 
     public function editQuestion(Request $request, $cid, $lid, $qid = null)
@@ -189,7 +189,7 @@ class LearnAdminController extends BaseController
                 return $item->id === (int) $qid;
             }))[0];
         }
-        return Inertia::render('Admin/EditQuestion', compact('question'));
+        return Inertia::render('Admin/Learning/EditQuestion', compact('question'));
     }
 
     public function saveEditedQuestion(Request $request, $cid, $lid, $qid)
@@ -245,7 +245,7 @@ class LearnAdminController extends BaseController
     public function answers(Request $request, $cid, $lid, $qid)
     {
         $answers = Answer::where('question_id', $qid)->get();
-        return Inertia::render('Admin/Answers', compact('answers'));
+        return Inertia::render('Admin/Learning/Answers', compact('answers'));
     }
 
     public function editAnswer(Request $request, $cid, $lid, $qid, $aid = null)
@@ -257,7 +257,7 @@ class LearnAdminController extends BaseController
                 return $item->id === (int) $aid;
             }))[0];
         }
-        return Inertia::render('Admin/EditAnswer', compact('answer'));
+        return Inertia::render('Admin/Learning/EditAnswer', compact('answer'));
     }
 
     public function saveEditedAnswer(Request $request, $cid, $lid, $qid, $aid)
