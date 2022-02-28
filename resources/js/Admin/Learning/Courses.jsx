@@ -1,12 +1,12 @@
 import React, { useState, useCallback, useContext, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import axios from 'axios';
-import Table from '../Components/Table.jsx';
-import NameCell from '../Components/NameCell.jsx';
-import TwoLineCell from '../Components/TwoLineCell.jsx';
-import StatusCell from '../Components/StatusCell.jsx';
-import ActionsCell from '../Components/ActionsCell.jsx';
-import { AdminContext } from './reducer.jsx';
+import Table from '../../Components/Table.jsx';
+import NameCell from '../../Components/NameCell.jsx';
+import TwoLineCell from '../../Components/TwoLineCell.jsx';
+import StatusCell from '../../Components/StatusCell.jsx';
+import ActionsCell from '../../Components/ActionsCell.jsx';
+import { AdminContext } from '../reducer.jsx';
 
 export default function Courses({ paginatedCourses }) {
   const [loading, setLoading] = useState(false);

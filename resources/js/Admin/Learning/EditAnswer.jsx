@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch } from '@headlessui/react';
-import { AdminContext } from './reducer.jsx';
+import { AdminContext } from '../reducer.jsx';
 
 export default function EditAnswer({ answer }) {
   const { state: { navigation: nav }, dispatch } = useContext(AdminContext);

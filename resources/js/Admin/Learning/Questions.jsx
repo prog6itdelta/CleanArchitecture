@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Inertia } from '@inertiajs/inertia';
-import Table from '../Components/Table.jsx';
-import OneLineCell from '../Components/OneLineCell.jsx';
-import ActionsCell from '../Components/ActionsCell.jsx';
-import { AdminContext } from './reducer.jsx';
+import Table from '../../Components/Table.jsx';
+import OneLineCell from '../../Components/OneLineCell.jsx';
+import ActionsCell from '../../Components/ActionsCell.jsx';
+import { AdminContext } from '../reducer.jsx';
 
-export default function Lessons({ lessons }) {
+export default function Questions({ questions }) {
   const { state: { navigation: nav }, dispatch } = useContext(AdminContext);
 
   const columns = [
@@ -32,6 +32,7 @@ export default function Lessons({ lessons }) {
       Cell: ActionsCell,
     },
   ];
+
   const addActions = (items) => {
     return items.map((item, i) => {
       return {
@@ -41,7 +42,7 @@ export default function Lessons({ lessons }) {
             name: 'edit',
             type: 'edit',
             action: () => {
-              Inertia.get(route('admin.lesson.edit', [nav.currentCourse.id, item.id]));
+              Inertia.get(route('admin.question.edit', [nav.currentCourse.id, nav.currentLesson.id, item.id]));
             },
             disabled: false,
           },
@@ -49,7 +50,7 @@ export default function Lessons({ lessons }) {
             name: 'delete',
             type: 'delete',
             action: () => {
-              Inertia.post(route('admin.lesson.delete', [nav.currentCourse.id, item.id]), {}, {
+              Inertia.post(route('admin.question.delete', [nav.currentCourse.id, nav.currentLesson.id, item.id]), {}, {
                 onSuccess: () => {
                   dispatch({
                     type: 'SHOW_NOTIFICATION',
@@ -57,11 +58,11 @@ export default function Lessons({ lessons }) {
                       position: 'bottom',
                       type: 'success',
                       header: 'Success!',
-                      message: 'Lesson deleted!',
+                      message: 'Question deleted!',
                     }
                   });
                   setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
-                  Inertia.get(route('admin.lessons', nav.currentCourse.id));
+                  Inertia.get(route('admin.questions', [nav.currentCourse.id, nav.currentLesson.id]));
                 }
               });
             },
@@ -72,15 +73,16 @@ export default function Lessons({ lessons }) {
     });
   };
 
-  const [data, setData] = useState(addActions(lessons));
+  const [data, setData] = useState(addActions(questions));
+
 
   useEffect(() => {
-    setData(addActions(lessons));
+    setData(addActions(questions));
   }, [nav]);
 
   useEffect(() => {
     dispatch({
-      type: 'CHANGE_HEADER', payload: 'Уроки'
+      type: 'CHANGE_HEADER', payload: 'Вопросы'
     });
   }, []);
 
@@ -96,9 +98,9 @@ export default function Lessons({ lessons }) {
             focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm
             bg-indigo-500 hover:bg-indigo-700"
         onClick={() => {
-          Inertia.get(route('admin.lesson.create', nav.currentCourse.id));
+          Inertia.get(route('admin.question.create', [nav.currentCourse.id, nav.currentLesson.id]));
         }}
-      >Add Lesson
+      >Add Question
       </button>
     </main>
   );
