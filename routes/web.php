@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LearnAdminController;
 use App\Http\Controllers\LearnController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AccessController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
@@ -61,29 +63,80 @@ Route::middleware(['auth'])->group(function () {
             return redirect()->route('admin.courses');
         })->name('admin.index');
 
-        Route::match(['get', 'post'], '/courses', [AdminController::class, 'courses'])
+        Route::get( '/courses', [LearnAdminController::class, 'courses'])
             ->name('admin.courses');
 
-        Route::post('/courses/{id}/edit', [AdminController::class, 'editCourse'])
+        Route::get('/courses/create', [LearnAdminController::class, 'editCourse'])
+            ->name('admin.course.create');
+
+        Route::post('/courses/create', [LearnAdminController::class, 'createCourse'])
+            ->name('admin.course.create');
+
+        Route::get('/courses/{id}', [LearnAdminController::class, 'editCourse'])
             ->name('admin.course.edit');
 
-        Route::match(['get', 'post'], '/courses/{cid}/lessons', [AdminController::class, 'lessons'])
+        Route::post('/courses/{id}', [LearnAdminController::class, 'saveEditedCourse'])
+            ->name('admin.course.edit');
+
+        Route::post('/courses/{id}/delete', [LearnAdminController::class, 'deleteCourse'])
+            ->name('admin.course.delete');
+
+        Route::get( '/courses/{cid}/lessons', [LearnAdminController::class, 'lessons'])
             ->name('admin.lessons');
 
-        Route::post('courses/{cid}/lessons/{lid}/edit', [AdminController::class, 'editLesson'])
-            ->name('admin.lessons.edit');
+        Route::get('/courses/{cid}/lessons/create', [LearnAdminController::class, 'editLesson'])
+            ->name('admin.lesson.create');
 
-        Route::match(['get', 'post'], 'courses/{cid}/lessons/{lid}/questions', [AdminController::class, 'questions'])
+        Route::post('/courses/{cid}/lessons/create', [LearnAdminController::class, 'createLesson'])
+            ->name('admin.lesson.create');
+
+        Route::get('/courses/{cid}/lessons/{lid}', [LearnAdminController::class, 'editLesson'])
+            ->name('admin.lesson.edit');
+
+        Route::post('/courses/{cid}/lessons/{lid}', [LearnAdminController::class, 'saveEditedLesson'])
+            ->name('admin.lesson.edit');
+
+        Route::post('/courses/{cid}/lessons/{lid}/delete', [LearnAdminController::class, 'deleteLesson'])
+            ->name('admin.lesson.delete');
+
+        Route::get( '/courses/{cid}/lessons/{lid}/questions', [LearnAdminController::class, 'questions'])
             ->name('admin.questions');
 
-        Route::post('courses/{cid}/lessons/{lid}/questions/{qid}/edit', [AdminController::class, 'editQuestion'])
-            ->name('admin.questions.edit');
+        Route::get('/courses/{cid}/lessons/{lid}/questions/create', [LearnAdminController::class, 'editQuestion'])
+            ->name('admin.question.create');
 
-        Route::match(['get', 'post'],'courses/{cid}/lessons/{lid}/questions/{qid}/answers', [AdminController::class, 'answers'])
+        Route::post('/courses/{cid}/lessons/{lid}/questions/create', [LearnAdminController::class, 'createQuestion'])
+            ->name('admin.question.create');
+
+        Route::get('/courses/{cid}/lessons/{lid}/questions/{qid}', [LearnAdminController::class, 'editQuestion'])
+            ->name('admin.question.edit');
+
+        Route::post('/courses/{cid}/lessons/{lid}/questions/{qid}', [LearnAdminController::class, 'saveEditedQuestion'])
+            ->name('admin.question.edit');
+
+        Route::post('/courses/{cid}/lessons/{lid}/questions/{qid}/delete', [LearnAdminController::class, 'deleteQuestion'])
+            ->name('admin.question.delete');
+
+        Route::get('/courses/{cid}/lessons/{lid}/questions/{qid}/answers', [LearnAdminController::class, 'answers'])
             ->name('admin.answers');
 
-        Route::post('courses/{cid}/lessons/{lid}/questions/{qid}/answers/{aid}/edit', [AdminController::class, 'editAnswer'])
-            ->name('admin.answers.edit');
+        Route::get('/courses/{cid}/lessons/{lid}/questions/{qid}/answers/create', [LearnAdminController::class, 'editAnswer'])
+            ->name('admin.answer.create');
+
+        Route::post('/courses/{cid}/lessons/{lid}/questions/{qid}/answers/create', [LearnAdminController::class, 'createAnswer'])
+            ->name('admin.answer.create');
+
+        Route::get('/courses/{cid}/lessons/{lid}/questions/{qid}/answers/{aid}', [LearnAdminController::class, 'editAnswer'])
+            ->name('admin.answer.edit');
+
+        Route::post('/courses/{cid}/lessons/{lid}/questions/{qid}/answers/{aid}', [LearnAdminController::class, 'saveEditedAnswer'])
+            ->name('admin.answer.edit');
+
+        Route::post('/courses/{cid}/lessons/{lid}/questions/{qid}/answers/{aid}/delete', [LearnAdminController::class, 'deleteAnswer'])
+            ->name('admin.answer.delete');
+
+        Route::get('/access', [AccessController::class, 'index'])
+            ->name('admin.access');
 
         Route::get('/departments', [AdminController::class, 'departments'])
             ->name('admin.departments');
