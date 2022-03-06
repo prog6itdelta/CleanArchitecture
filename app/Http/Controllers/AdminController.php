@@ -19,6 +19,6 @@ class AdminController extends BaseController
     {
         $departments = DepartmentService::getDepartments();
 
-        return Inertia::render('Admin/Department', $departments);
+        return Inertia::render('Admin/Department', compact('departments'));
     }
 }

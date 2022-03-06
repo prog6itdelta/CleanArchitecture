@@ -33,8 +33,8 @@ export default function Navigation({ navigation, children }) {
 
   return (
     <UserContext.Provider value={{ dispatch, state }}>
-      <div className="min-h-screen bg-white grid gap-0 grid-cols-1">
-        <Disclosure as="nav" className="bg-white border-b border-gray-200">
+      <div className="min-h-screen bg-white grid gap-0 grid-cols-1 grid-rows-[65px]">
+        <Disclosure as="nav" className="bg-white border-b border-gray-200 h-16">
           {({ open }) => (
             <>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
