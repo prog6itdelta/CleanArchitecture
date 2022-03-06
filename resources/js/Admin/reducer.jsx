@@ -7,15 +7,12 @@ export const initialState = {
     {
       currentCourse: {
         id: null,
-        name: null
       },
       currentLesson: {
         id: null,
-        name: null
       },
       currentQuestion: {
         id: null,
-        name: null
       },
     },
   pageHeader: 'Админка',
@@ -43,7 +40,6 @@ export const adminReducer = (state, action) => {
           ...state.navigation,
           currentCourse: {
             id: action.payload.id,
-            name: action.payload.name ?? ''
           },
         }
       };
@@ -54,7 +50,6 @@ export const adminReducer = (state, action) => {
           ...state.navigation,
           currentLesson: {
             id: action.payload.id,
-            name: action.payload.name ?? ''
           },
         }
       };
@@ -65,7 +60,6 @@ export const adminReducer = (state, action) => {
           ...state.navigation,
           currentQuestion: {
             id: action.payload.id,
-            name: action.payload.name ?? ''
           },
         }
       };
