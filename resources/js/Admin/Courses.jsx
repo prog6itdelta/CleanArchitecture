@@ -44,21 +44,21 @@ export default function Courses({ paginatedCourses }) {
 
   const columns = [
     {
-      Header: 'Name',
+      Header: 'Наименование',
       accessor: 'name',
       Filter: '',
       width: 250,
       Cell: OneLineCell,
     },
     {
-      Header: 'active',
+      Header: 'Статус',
       accessor: 'active',
       Filter: '',
       width: 70,
       Cell: OneLineCell,
     },
     {
-      Header: 'Действия',
+      Header: '',
       accessor: 'rowActions',
       disableFilters: true,
       Filter: '',
