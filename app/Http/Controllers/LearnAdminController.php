@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\Answer;
+use App\Models\Curriculum;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
@@ -309,4 +310,74 @@ class LearnAdminController extends BaseController
             'message' => 'Answer created successfully!',
         ]);
     }
+
+    public function saveEditedCurriculum(Request $request, $id)
+    {
+        $changedFields = [];
+        $input = $request->collect();
+
+        foreach ($input as $key => $item) {
+            if ($key !== 'id' && strpos($key, 'image') === false && $item !== null) {
+                $changedFields[$key] = $item;
+            }
+        }
+
+        Curriculum::updateOrCreate(
+            ['id' => $id],
+            $changedFields
+        );
+
+        return redirect()->route('admin.curriculums')->with([
+            'position' => 'bottom',
+            'type' => 'success',
+            'header' => 'Success!',
+            'message' => 'Curriculum updated successfully!',
+        ]);
+
+    }
+
+    public function curriculums()
+    {
+        $curriculums = LearnService::getCurriculumsFullList();
+    
+        return Inertia::render('Admin/Learning/Curriculums', compact('curriculums'));
+     }
+    
+    public function editCurriculum($id = null)
+    {
+        $curriculum = [];
+        if ($id !== null ) {
+            $curriculum = LearnService::getCurriculum($id);
+        }
+        return Inertia::render('Admin/Learning/EditCurriculum', compact('curriculum'));
+    }
+
+    public function deleteCurriculum(Request $request, $id)
+    {
+        Curriculum::find($id)->delete();
+        return redirect()->route('admin.curriculums');
+    }
+
+    public function createCurriculum(Request $request)
+    {
+        $curriculum = new Curriculum;
+        $changedFields = [];
+
+        $input = $request->collect();
+
+        foreach ($input as $key => $item) {
+            if ($key !== 'id' && $item !== null) {
+                $curriculum->$key = $item;
+            }
+        }
+        $curriculum->save();
+        return redirect()->route('admin.curriculums')->with([
+            'position' => 'bottom',
+            'type' => 'success',
+            'header' => 'Success!',
+            'message' => 'Curriculums created successfully!',
+        ]);
+    }
+    
+
 }

@@ -266,7 +266,7 @@ const Course = ({
   };
 
   return (
-    <div className="flex flex-col justify-center w-full mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl mt-4">
+    <div className="flex flex-col w-full mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl mt-4">
       <div className="flex overflow-hidden bg-gray-100">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog as="div" className="fixed inset-0 flex z-40 md:hidden" onClose={setSidebarOpen}>
