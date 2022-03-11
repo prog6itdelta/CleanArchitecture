@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Inertia } from '@inertiajs/inertia';
-import Table from '../Components/Table.jsx';
-import ActionsCell from '../Components/ActionsCell.jsx';
-import { AdminContext } from './reducer.jsx';
+import Table from '../../Components/Table.jsx';
+import ActionsCell from '../../Components/ActionsCell.jsx';
+import StatusCell from '../../Components/StatusCell.jsx';
+import { AdminContext } from '../reducer.jsx';
 
 export default function Curriculums({ curriculums }) {
   const { state: { navigation: nav }, dispatch } = useContext(AdminContext);
-  
-  console.log(curriculums); 
 
   const columns =  [
     {
@@ -21,6 +20,12 @@ export default function Curriculums({ curriculums }) {
       Filter: '',
     },
     {
+      Header: 'Status',
+      accessor: 'active',
+      Filter: '',
+      Cell: StatusCell,
+    },
+    {
       Header: 'ACTIONS',
       accessor: 'rowActions',
       disableFilters: true,
@@ -32,7 +37,6 @@ export default function Curriculums({ curriculums }) {
 
   const addActions = (items) => {
     return  items.map((item, i) => {
-      console.log(item.id);
       return {
         ...item,
         rowActions: [
@@ -99,7 +103,7 @@ const [data, setData] = useState(addActions(curriculums));
           onClick={() => {
             Inertia.get(route('admin.curriculums.create'));
           }}
-        >Add Сurriculums
+        >Add Сurriculum
         </button>
       </main>
   );

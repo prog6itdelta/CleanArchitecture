@@ -11,6 +11,12 @@ class Curriculum extends Model
 
     protected $table = 'learn_curriculums';
 
+    protected $fillable = [
+        'name',
+        'active',
+        'description'
+    ];
+
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'learn_course_curriculum');

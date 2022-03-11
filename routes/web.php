@@ -156,22 +156,22 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/departments/{id}/delete', [AdminController::class, 'deleteDepartment'])
             ->name('admin.departments.delete');
 
-         Route::get('/curriculums', [AdminController::class, 'curriculums'])
+         Route::get('/curriculums', [LearnAdminController::class, 'curriculums'])
             ->name('admin.curriculums');
 
-        Route::get('/curriculums/create', [AdminController::class, 'editCurriculum'])
+        Route::get('/curriculums/create', [LearnAdminController::class, 'editCurriculum'])
             ->name('admin.curriculums.create');
 
-        Route::post('/curriculums/create', [AdminController::class, 'createCurriculum'])
+        Route::post('/curriculums/create', [LearnAdminController::class, 'createCurriculum'])
             ->name('admin.curriculums.create');
 
-        Route::get('/curriculums/{id}', [AdminController::class, 'editCurriculum'])
+        Route::get('/curriculums/{id}', [LearnAdminController::class, 'editCurriculum'])
             ->name('admin.curriculums.edit');
 
-        Route::post('/curriculums/{id}', [AdminController::class, 'saveEditedCurriculum'])
+        Route::post('/curriculums/{id}', [LearnAdminController::class, 'saveEditedCurriculum'])
             ->name('admin.curriculums.edit');
 
-        Route::post('/curriculums/{id}/delete', [AdminController::class, 'deleteCurriculum'])
+        Route::post('/curriculums/{id}/delete', [LearnAdminController::class, 'deleteCurriculum'])
             ->name('admin.curriculums.delete');
 
     });
