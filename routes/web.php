@@ -156,6 +156,24 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/departments/{id}/delete', [AdminController::class, 'deleteDepartment'])
             ->name('admin.departments.delete');
 
+         Route::get('/curriculums', [AdminController::class, 'curriculums'])
+            ->name('admin.curriculums');
+
+        Route::get('/curriculums/create', [AdminController::class, 'editCurriculum'])
+            ->name('admin.curriculums.create');
+
+        Route::post('/curriculums/create', [AdminController::class, 'createCurriculum'])
+            ->name('admin.curriculums.create');
+
+        Route::get('/curriculums/{id}', [AdminController::class, 'editCurriculum'])
+            ->name('admin.curriculums.edit');
+
+        Route::post('/curriculums/{id}', [AdminController::class, 'saveEditedCurriculum'])
+            ->name('admin.curriculums.edit');
+
+        Route::post('/curriculums/{id}/delete', [AdminController::class, 'deleteCurriculum'])
+            ->name('admin.curriculums.delete');
+
     });
 
 });

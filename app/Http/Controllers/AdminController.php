@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Packages\Department\UseCases\DepartmentService;
+use App\Packages\Learn\UseCases\LearnService;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
 use App\Models\Department;
+use App\Models\Corriculum;
 use Enforcer;
 use Illuminate\Http\Request;
 
@@ -84,4 +86,39 @@ class AdminController extends BaseController
             'message' => 'Course created successfully!',
         ]);
     }
+
+    // todo: refactor
+    public function curriculums()
+    {
+        $curriculums = LearnService::getCurriculumsFullList();;
+
+        return Inertia::render('Admin/Curriculums', compact('curriculums'));
+    }
+
+    public function editCurriculum($id = null)
+    {
+        $curriculum = [];
+        if ($id !== null ) {
+            // $corriculum = 
+            @dd('test');
+        }
+        @dd($id);
+    }
+
+    public function deleteCurriculum(Request $request, $id)
+    {
+        @dd($id);
+        // Department::find($id)->delete();
+        // return redirect()->route('admin.departments');
+    }
+
 }
+
+// public function editDepartment($id = null)
+// {
+//     $department = [];
+//     if ($id !== null) {
+//         $department = DepartmentService::getDepartment($id)['department'];
+//     }
+//     return Inertia::render('Admin/EditDepartment', compact('department'));
+// }
