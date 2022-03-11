@@ -3,6 +3,7 @@ import { Inertia } from '@inertiajs/inertia';
 import Table from '../../Components/Table.jsx';
 import OneLineCell from '../../Components/OneLineCell.jsx';
 import ActionsCell from '../../Components/ActionsCell.jsx';
+import StatusCell from '../../Components/StatusCell.jsx';
 import { AdminContext } from '../reducer.jsx';
 
 export default function Lessons({ lessons }) {
@@ -21,7 +22,7 @@ export default function Lessons({ lessons }) {
       accessor: 'active',
       Filter: '',
       width: 70,
-      Cell: OneLineCell,
+      Cell: StatusCell,
     },
     {
       Header: 'ACTIONS',
