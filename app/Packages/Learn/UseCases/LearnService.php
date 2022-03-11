@@ -2,6 +2,7 @@
 
 namespace App\Packages\Learn\UseCases;
 
+use App\Packages\Learn\Entities\Curriculum;
 use App\Packages\Common\Application\Services\IAuthorisationService;
 use App\Packages\Learn\Entities\Course;
 use App\Packages\Learn\Entities\Lesson;
@@ -64,6 +65,20 @@ class LearnService implements LearnServiceInterface
 
         return $list;
     }
+    
+    public static function getCurriculum(int $id): Curriculum
+    {
+        $rep = new CurriculumRepository();
+        $list = $rep->all()->toArray();
+        foreach ($list as $item) {
+            $item->courses = $rep->courses($item->id);
+        }
+
+        $curriculumKey = array_search($id, array_column($list,'id'));
+        $curriculumn = $list[$curriculumKey];
+        return $curriculumn;
+    }
+
 
     public static function runLesson(int $id)
     {
