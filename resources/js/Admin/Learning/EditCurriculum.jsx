@@ -3,9 +3,12 @@ import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch } from '@headlessui/react';
 import { AdminContext } from '../reducer.jsx';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 
 
-export default function editCurriculum({ curriculum }) {
+
+export default function editCurriculum({ curriculum, all_courses }) {
   const { state, dispatch } = useContext(AdminContext);
 
   const { data, setData, post } = useForm({
@@ -15,6 +18,8 @@ export default function editCurriculum({ curriculum }) {
     courses: curriculum.courses ?? [],
   });
 
+  console.log(all_courses);
+  
   useEffect(() => {
     dispatch({
       // have question
@@ -93,17 +98,15 @@ export default function editCurriculum({ curriculum }) {
             </li>
             <li className="bg-white px-4 py-5 grid grid-cols-2 sm:grid-cols-3 sm:gap-4 sm:px-6">
               <span className="text-sm font-medium text-gray-500">Список Курсов:</span>
-              <ul>
-                {
-                  data.courses.map( course => (
-                    <li key={course.id}>{course.name}</li>
-                  ))
-                }
-              </ul>
+              <Select 
+                options={all_courses}
+                isMulti
+                defaultValue={all_courses.filter((item) => curriculum.courses.find((course) => course.id === item.value) )}
+              />
             </li>
             </ul>
           </div>
-          <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-3 sm:gap-3 sm:grid-flow-row-dense pb-4 px-4">
+          <div className="mt-8 sm:mt-8 sm:grid sm:grid-cols-3 sm:gap-3 sm:grid-flow-row-dense pb-4 px-4">
               <button
                 type="button"
                 className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-3 sm:text-sm"
