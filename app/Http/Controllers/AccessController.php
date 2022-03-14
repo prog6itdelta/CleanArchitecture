@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Routing\Controller as BaseController;
@@ -18,19 +19,30 @@ class AccessController extends BaseController
      */
     public function index()
     {
-
         return Inertia::render('Admin/Access');
     }
 
-    public function users()
+    public function users(Request $request)
     {
-        $users = User::all();
+        if ($request->has('search')) {
+            $search = '%' . $request->search . '%';
+            $users = User::where('name', 'like', $search)->get();
+        } else {
+            $users = User::all()->take(10);
+        }
+
         return json_encode($users);
     }
 
-    public function departments()
+    public function departments(Request $request)
     {
-        $departments = Department::all();
+        if ($request->has('search')) {
+            $search = '%' . $request->search . '%';
+            $departments = Department::where('name', 'like', $search)->get();
+        } else {
+            $departments = Department::all();
+        }
+
         return json_encode($departments);
     }
 }
