@@ -1,151 +1,110 @@
-import React, { useMemo } from 'react';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { useTable } from 'react-table';
+import React, { useState, useEffect, useContext } from 'react';
+import { Inertia } from '@inertiajs/inertia';
+import Table from '../Components/Table.jsx';
+import ActionsCell from '../Components/ActionsCell.jsx';
+import { AdminContext } from './reducer.jsx';
 
-export default function Departments(props) {
-  const localeRu = {
-    toolbarColumns: 'Столбцы',
-    columnsPanelTextFieldLabel: 'Найти...',
-    columnsPanelTextFieldPlaceholder: 'Название столбца',
-    columnsPanelShowAllButton: 'Показать все',
-    columnsPanelHideAllButton: 'Скрыть все',
-    toolbarFilters: 'Фильтры',
-    filterPanelAddFilter: 'Добавить фильтр',
-    filterPanelDeleteIconLabel: 'Удалить',
-    filterPanelOperators: 'Операторы',
-    filterPanelOperatorAnd: 'И',
-    filterPanelOperatorOr: 'ИЛИ',
-    filterPanelColumns: 'Столбцы',
-    filterPanelInputLabel: 'Значение',
-    columnMenuLabel: 'Меню',
-    columnMenuShowColumns: 'Показать столбцы',
-    columnMenuFilter: 'Фильтр',
-    columnMenuHideColumn: 'Скрыть',
-    columnMenuUnsort: 'Отмена',
-    columnMenuSortAsc: 'Сортировать по возрастанию',
-    columnMenuSortDesc: 'Сортировать по убыванию',
-    filterPanelInputPlaceholder: 'Фильтровать',
-    filterOperatorContains: 'Содержит',
-    filterOperatorEquals: 'Равен',
-    filterOperatorStartsWith: 'Начинается с',
-    filterOperatorEndsWith: 'Заканчивается',
-    filterOperatorIsEmpty: 'Пусто',
-    filterOperatorIsNotEmpty: 'Не пусто',
-    toolbarDensity: 'Размер',
-    toolbarDensityLabel: 'Размер',
-    toolbarDensityCompact: 'Маленький',
-    toolbarDensityStandard: 'Средний',
-    toolbarDensityComfortable: 'Большой',
-    toolbarExport: 'Экспорт',
-    toolbarExportLabel: 'Экспорт',
-    toolbarExportCSV: 'Загрузить как CSV',
-    toolbarExportPrint: 'Распечатать',
-  };
+export default function Departments({ departments }) {
+  const { state: { navigation: nav }, dispatch } = useContext(AdminContext);
 
-  const columns = useMemo(() => [
+  const columns =  [
     {
       Header: 'ID',
-      accessor: 'id'
+      accessor: 'id',
+      Filter: '',
     },
     {
       Header: 'Name',
-      accessor: 'name'
+      accessor: 'name',
+      Filter: '',
     },
     {
       Header: 'Head',
-      accessor: 'head'
+      accessor: 'head',
+      Filter: '',
     },
     {
       Header: 'Parent',
-      accessor: 'parent'
-    }
-  ], []);
+      accessor: 'parent',
+      Filter: '',
+    },
+    {
+      Header: 'ACTIONS',
+      accessor: 'rowActions',
+      disableFilters: true,
+      Filter: '',
+      width: 100,
+      Cell: ActionsCell,
+    },
+  ];
+  const addActions = (items) => {
+    return  items.map((item, i) => {
+      return {
+        ...item,
+        rowActions: [
+          {
+            name: 'edit',
+            type: 'edit',
+            action: () => {
+              Inertia.get(route('admin.departments.edit',  item.id));
+            },
+            disabled: false,
+          },
+          {
+            name: 'delete',
+            type: 'delete',
+            action: () => {
+              Inertia.post(route('admin.departments.delete',  item.id), {}, {
+                onSuccess: () => {
+                  dispatch({
+                    type: 'SHOW_NOTIFICATION',
+                    payload: {
+                      position: 'bottom',
+                      type: 'success',
+                      header: 'Success!',
+                      message: 'Department deleted!',
+                    }
+                  });
+                  setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
+                  Inertia.get(route('admin.departments',  item.id));
+                }
+              });
+            },
+            disabled: false,
+          },
+        ]
+      }
+    })
+  };
 
-  const data = useMemo(() => props.data.map((department) => ({
-    id: department.id,
-    name: department.name,
-    head: department.head,
-    parent: department.parent
-  })), []);
+  const [data, setData] = useState(addActions(departments.data));
 
-  const tableInstance = useTable({ columns, data });
+  useEffect(() => {
+    setData(addActions(departments.data));
+  }, [nav]);
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow
-  } = tableInstance;
+  useEffect(() => {
+    dispatch({
+      type: 'CHANGE_HEADER', payload: 'Департаменты'
+    });
+  }, []);
+
   return (
-    <div>
-
-      <header>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold leading-tight text-gray-900 text-center">Департаменты</h1>
-        </div>
-      </header>
       <main>
-        <div className="flex flex-col">
-          <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-              <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200" {...getTableProps()}>
-                  <thead className="bg-gray-50">
-                    {// Loop over the header rows
-                      headerGroups.map((headerGroup) => (
-                        // Apply the header row props
-                        <tr {...headerGroup.getHeaderGroupProps()}>
-                          {// Loop over the headers in each row
-                            headerGroup.headers.map((column) => (
-                              // Apply the header cell props
-                              <th
-                                scope="col"
-                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                {...column.getHeaderProps()}
-                              >
-                                {// Render the header
-                                  column.render('Header')}
-                              </th>
-                            ))}
-                        </tr>
-                      ))}
-                  </thead>
-                  {/* Apply the table body props */}
-                  <tbody {...getTableBodyProps()}>
-                    {// Loop over the table rows
-                      rows.map((row, rowIdx) => {
-                        // Prepare the row for display
-                        prepareRow(row);
-                        return (
-                          // Apply the row props
-                          <tr
-                            className={rowIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
-                            {...row.getRowProps()}
-                          >
-                            {// Loop over the rows cells
-                              row.cells.map((cell) => {
-                                // Apply the cell props
-                                return (
-                                  <td
-                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                                    {...cell.getCellProps()}
-                                  >
-                                    {// Render the cell contents
-                                      cell.render('Cell')}
-                                  </td>
-                                );
-                              })}
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Table
+          dataValue={data}
+          columnsValue={columns}
+        />
+        <button
+          type="button"
+          className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 mt-4 text-base font-medium text-white
+              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm
+              bg-indigo-500 hover:bg-indigo-700"
+          onClick={() => {
+            Inertia.get(route('admin.departments.create'));
+          }}
+        >Add Department
+        </button>
       </main>
-    </div>
   );
 }

@@ -78,6 +78,18 @@ export default function Navigation({ children }) {
       ],
     },
     {
+      name: 'Программы обучения',
+      icon: HomeIcon,
+      href: route('admin.curriculums'),
+      current: true,
+      action: () => {
+        dispatch({
+          type: 'CHANGE_HEADER',
+          payload: 'Программы обучения'
+        })
+      },
+    },
+    {
       name: 'Департаменты',
       icon: HomeIcon,
       href: route('admin.departments'),
