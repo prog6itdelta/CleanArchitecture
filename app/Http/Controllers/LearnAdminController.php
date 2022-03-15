@@ -43,6 +43,7 @@ class LearnAdminController extends BaseController
 
     public function saveEditedCourse(Request $request, $id)
     {
+        dd(json_decode($request->users));
         $path = 'empty';
         $changedFields = [];
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -339,10 +340,10 @@ class LearnAdminController extends BaseController
     public function curriculums()
     {
         $curriculums = LearnService::getCurriculumsFullList();
-    
+
         return Inertia::render('Admin/Learning/Curriculums', compact('curriculums'));
      }
-    
+
     public function editCurriculum($id = null)
     {
         // add condition for status
@@ -381,6 +382,6 @@ class LearnAdminController extends BaseController
             'message' => 'Curriculums created successfully!',
         ]);
     }
-    
+
 
 }
