@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Packages\Department\UseCases;
+namespace App\Packages\Common\Application\Services;
 
 use App\Packages\Common\Application\Services\IAuthorisationService;
 use App\Packages\Department\Infrastructure\Repositories\DepartmentRepository;
