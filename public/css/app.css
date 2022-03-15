@@ -954,6 +954,9 @@ select {
 .-m-3 {
 	margin: -0.75rem;
 }
+.m-8 {
+	margin: 2rem;
+}
 .mx-auto {
 	margin-left: auto;
 	margin-right: auto;
@@ -1102,6 +1105,9 @@ select {
 }
 .mr-3 {
 	margin-right: 0.75rem;
+}
+.mb-8 {
+	margin-bottom: 2rem;
 }
 .block {
 	display: block;
@@ -1258,6 +1264,9 @@ select {
 }
 .w-0\.5 {
 	width: 0.125rem;
+}
+.w-16 {
+	width: 4rem;
 }
 .min-w-full {
 	min-width: 100%;
@@ -1842,12 +1851,18 @@ select {
 .to-indigo-300 {
 	--tw-gradient-to: #a5b4fc;
 }
+.bg-cover {
+	background-size: cover;
+}
 .bg-clip-padding {
 	background-clip: padding-box;
 }
 .bg-clip-text {
 	-webkit-background-clip: text;
 	        background-clip: text;
+}
+.bg-no-repeat {
+	background-repeat: no-repeat;
 }
 .bg-origin-border {
 	background-origin: border-box;
@@ -2092,6 +2107,10 @@ select {
 	font-size: 1.5rem;
 	line-height: 2rem;
 }
+.text-5xl {
+	font-size: 3rem;
+	line-height: 1;
+}
 .font-medium {
 	font-weight: 500;
 }
@@ -2107,6 +2126,12 @@ select {
 .font-extrabold {
 	font-weight: 800;
 }
+.font-light {
+	font-weight: 300;
+}
+.font-black {
+	font-weight: 900;
+}
 .uppercase {
 	text-transform: uppercase;
 }
@@ -2121,6 +2146,9 @@ select {
 }
 .leading-6 {
 	line-height: 1.5rem;
+}
+.leading-normal {
+	line-height: 1.5;
 }
 .tracking-wider {
 	letter-spacing: 0.05em;
@@ -2244,6 +2272,10 @@ select {
 .text-yellow-600 {
 	--tw-text-opacity: 1;
 	color: rgba(217, 119, 6, var(--tw-text-opacity));
+}
+.text-black {
+	--tw-text-opacity: 1;
+	color: rgba(0, 0, 0, var(--tw-text-opacity));
 }
 .underline {
 	text-decoration: underline;
@@ -3083,6 +3115,11 @@ select {
 		grid-column-start: 4;
 	}
 
+	.md\:my-6 {
+		margin-top: 1.5rem;
+		margin-bottom: 1.5rem;
+	}
+
 	.md\:ml-6 {
 		margin-left: 1.5rem;
 	}
@@ -3109,6 +3146,14 @@ select {
 
 	.md\:hidden {
 		display: none;
+	}
+
+	.md\:min-h-screen {
+		min-height: 100vh;
+	}
+
+	.md\:w-1\/2 {
+		width: 50%;
 	}
 
 	.md\:max-w-xl {
@@ -3172,6 +3217,10 @@ select {
 
 	.md\:pr-6 {
 		padding-right: 1.5rem;
+	}
+
+	.md\:pb-0 {
+		padding-bottom: 0px;
 	}
 
 	.md\:text-3xl {

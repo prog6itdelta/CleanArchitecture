@@ -6,6 +6,8 @@ use App\Packages\Department\UseCases\DepartmentService;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
 use App\Models\Department;
+use App\Models\User;
+use Illuminate\Pagination\Paginator;
 use Enforcer;
 use Illuminate\Http\Request;
 
@@ -82,6 +84,55 @@ class AdminController extends BaseController
             'type' => 'success',
             'header' => 'Success!',
             'message' => 'Departament created successfully!',
+        ]);
+    }
+
+    public function users()
+    {
+
+        $users = User::all();
+        $users = new Paginator($users, 50);
+        return Inertia::render('Admin/Users', compact('users'));
+    
+    }
+
+    public function editUser($id = null)
+    {
+
+        $user = [];
+        if ($id !== null) {
+            // $user =
+        }
+        return Inertia::render('Admn/EditUser', compact('user'));
+    }
+    // public function editDepartment($id = null)
+    // {
+    //     $department = [];
+    //     if ($id !== null) {
+    //         $department = DepartmentService::getDepartment($id)['department'];
+    //     }
+    //     return Inertia::render('Admin/EditDepartment', compact('department'));
+    // }
+    public function createUser(Request $request)
+    {
+        $user = new User;
+        $changedFields = [];
+
+        $input = $request->collect();
+
+        foreach ($input as $key => $item) {
+            if ($key !== 'id' && $item !== null) {
+                $user->$key = $item;
+            }
+        }
+
+        $user->save();
+
+        return redirect()->route('admin.users')->with([
+            'position' => 'bottom',
+            'type' => 'success',
+            'header' => 'Success!',
+            'message' => 'User created successfully!',
         ]);
     }
 
