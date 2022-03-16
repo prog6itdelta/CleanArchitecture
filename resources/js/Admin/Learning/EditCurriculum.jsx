@@ -15,11 +15,14 @@ export default function editCurriculum({ curriculum, all_courses }) {
     name: curriculum.name ?? '',
     active: curriculum.active ?? true,
     description: curriculum.description ?? '',
-    courses: curriculum.courses ?? [],
+    courses: curriculum.courses === undefined ? [] : curriculum.courses.map(item => item.id),
   });
 
-  console.log(all_courses);
-  
+
+  const handleInputChanges = (inputValue) => {
+    setData('courses', inputValue.map(item => item.value));
+  };
+
   useEffect(() => {
     dispatch({
       // have question
@@ -101,7 +104,8 @@ export default function editCurriculum({ curriculum, all_courses }) {
               <Select 
                 options={all_courses}
                 isMulti
-                defaultValue={all_courses.filter((item) => curriculum.courses.find((course) => course.id === item.value) )}
+                defaultValue={all_courses.filter((item) => data.courses.find((courseId) => courseId === item.value) )}
+                onChange={handleInputChanges}
               />
             </li>
             </ul>
