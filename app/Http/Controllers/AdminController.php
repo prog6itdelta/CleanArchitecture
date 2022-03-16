@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Packages\Common\Application\DepartmentService;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
 use App\Models\Department;
+use App\Packages\Common\Application\Services\DepartmentService;
 use Enforcer;
 use Illuminate\Http\Request;
 

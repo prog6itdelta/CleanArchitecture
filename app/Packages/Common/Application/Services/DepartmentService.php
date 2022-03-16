@@ -2,8 +2,9 @@
 
 namespace App\Packages\Common\Application\Services;
 
+use App\Packages\Common\Application\Interfaces\DepartmentServiceInterface;
 use App\Packages\Common\Application\Services\IAuthorisationService;
-use App\Packages\Department\Infrastructure\Repositories\DepartmentRepository;
+use App\Packages\Common\Infrastructure\Repositories\DepartmentRepository;
 use Illuminate\Pagination\Paginator;
 
 class DepartmentService implements DepartmentServiceInterface
