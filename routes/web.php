@@ -59,6 +59,31 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
 
     Route::prefix('admin')->group(function () {
+
+        // Common part
+        Route::get('/access', [AccessController::class, 'index'])
+            ->name('admin.access');
+
+        Route::get('/departments', [AdminController::class, 'departments'])
+            ->name('admin.departments');
+
+        Route::get('/departments/create', [AdminController::class, 'editDepartment'])
+            ->name('admin.departments.create');
+
+        Route::post('/departments/create', [AdminController::class, 'createDepartment'])
+            ->name('admin.departments.create');
+
+        Route::get('/departments/{id}', [AdminController::class, 'editDepartment'])
+            ->name('admin.departments.edit');
+
+        Route::post('/departments/{id}', [AdminController::class, 'saveEditedDepartment'])
+            ->name('admin.departments.edit');
+
+        Route::post('/departments/{id}/delete', [AdminController::class, 'deleteDepartment'])
+            ->name('admin.departments.delete');
+
+
+        // Learn packege
         Route::get('/', function () {
             return redirect()->route('admin.courses');
         })->name('admin.index');
@@ -134,27 +159,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::post('/courses/{cid}/lessons/{lid}/questions/{qid}/answers/{aid}/delete', [LearnAdminController::class, 'deleteAnswer'])
             ->name('admin.answer.delete');
-
-        Route::get('/access', [AccessController::class, 'index'])
-            ->name('admin.access');
-
-        Route::get('/departments', [AdminController::class, 'departments'])
-            ->name('admin.departments');
-
-        Route::get('/departments/create', [AdminController::class, 'editDepartment'])
-            ->name('admin.departments.create');
-
-        Route::post('/departments/create', [AdminController::class, 'createDepartment'])
-            ->name('admin.departments.create');
-
-        Route::get('/departments/{id}', [AdminController::class, 'editDepartment'])
-            ->name('admin.departments.edit');
-
-        Route::post('/departments/{id}', [AdminController::class, 'saveEditedDepartment'])
-            ->name('admin.departments.edit');
-
-        Route::post('/departments/{id}/delete', [AdminController::class, 'deleteDepartment'])
-            ->name('admin.departments.delete');
 
          Route::get('/curriculums', [LearnAdminController::class, 'curriculums'])
             ->name('admin.curriculums');
