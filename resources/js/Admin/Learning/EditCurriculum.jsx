@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch } from '@headlessui/react';
+import Select from 'react-select'
 import { AdminContext } from '../reducer.jsx';
 
 
@@ -12,8 +13,13 @@ export default function editCurriculum({ curriculum }) {
     name: curriculum.name ?? '',
     active: curriculum.active ?? true,
     description: curriculum.description ?? '',
-    courses: curriculum.courses ?? [],
+    courses: curriculum.courses === undefined ? [] : curriculum.courses.map(item => item.id),
   });
+
+
+  const handleInputChanges = (inputValue) => {
+    setData('courses', inputValue.map(item => item.value));
+  };
 
   useEffect(() => {
     dispatch({
@@ -93,13 +99,12 @@ export default function editCurriculum({ curriculum }) {
             </li>
             <li className="bg-white px-4 py-5 grid grid-cols-2 sm:grid-cols-3 sm:gap-4 sm:px-6">
               <span className="text-sm font-medium text-gray-500">Список Курсов:</span>
-              <ul>
-                {
-                  data.courses.map( course => (
-                    <li key={course.id}>{course.name}</li>
-                  ))
-                }
-              </ul>
+              <Select 
+                options={all_courses}
+                isMulti
+                defaultValue={all_courses.filter((item) => data.courses.find((courseId) => courseId === item.value) )}
+                onChange={handleInputChanges}
+              />
             </li>
             </ul>
           </div>
