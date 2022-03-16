@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Packages\Department\UseCases\DepartmentService;
+use App\Packages\Common\Application\DepartmentService;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
 use App\Models\Department;
@@ -32,7 +32,7 @@ class AdminController extends BaseController
         }
         return Inertia::render('Admin/EditDepartment', compact('department'));
     }
-    
+
     public function saveEditedDepartment(Request $request, $id)
     {
         $changedFields = [];
@@ -56,7 +56,7 @@ class AdminController extends BaseController
             'message' => 'department updated successfully!',
         ]);
     }
-    
+
     public function deleteDepartment(Request $request, $id)
     {
         Department::find($id)->delete();
