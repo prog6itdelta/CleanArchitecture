@@ -352,11 +352,14 @@ class LearnAdminController extends BaseController
     
     public function editCurriculum($id = null)
     {
+        // add condition for status
+        $all_courses = LearnService::getCourses();
+        $all_courses = array_map(fn($item) => ["value" => $item->id, "label" => $item->name], $all_courses);
         $curriculum = [];
         if ($id !== null ) {
             $curriculum = LearnService::getCurriculum($id);
         }
-        return Inertia::render('Admin/Learning/EditCurriculum', compact('curriculum'));
+        return Inertia::render('Admin/Learning/EditCurriculum', compact('curriculum','all_courses'));
     }
 
     public function deleteCurriculum(Request $request, $id)

@@ -4,9 +4,11 @@ import { useForm } from '@inertiajs/inertia-react';
 import { Switch } from '@headlessui/react';
 import Select from 'react-select'
 import { AdminContext } from '../reducer.jsx';
+import makeAnimated from 'react-select/animated';
 
 
-export default function editCurriculum({ curriculum }) {
+
+export default function editCurriculum({ curriculum, all_courses }) {
   const { state, dispatch } = useContext(AdminContext);
 
   const { data, setData, post } = useForm({
@@ -108,7 +110,7 @@ export default function editCurriculum({ curriculum }) {
             </li>
             </ul>
           </div>
-          <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-3 sm:gap-3 sm:grid-flow-row-dense pb-4 px-4">
+          <div className="mt-8 sm:mt-8 sm:grid sm:grid-cols-3 sm:gap-3 sm:grid-flow-row-dense pb-4 px-4">
               <button
                 type="button"
                 className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-3 sm:text-sm"

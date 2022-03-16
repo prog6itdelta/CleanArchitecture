@@ -95,6 +95,7 @@ const [data, setData] = useState(addActions(curriculums));
           dataValue={data}
           columnsValue={columns}
         />
+
         <button
           type="button"
           className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 mt-4 text-base font-medium text-white
