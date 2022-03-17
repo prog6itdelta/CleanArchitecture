@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.0",
+        "php": "^7.3|^8.0",
         "casbin/laravel-authz": "^3.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -14,7 +14,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "socialiteproviders/bitrix24": "^4.0",
-        "spatie/laravel-multitenancy": "^2.0",
+        "spatie/laravel-multitenancy": "^1.0",
         "tightenco/ziggy": "^1.4",
         "v.chetkov/php-clean-architecture": "^0.1.0"
     },
