@@ -8,6 +8,7 @@ use App\Models\Lesson;
 use App\Models\Question;
 use App\Models\Answer;
 use App\Models\Curriculum;
+use App\Models\LearnCurriculum;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
@@ -316,16 +317,22 @@ class LearnAdminController extends BaseController
         $changedFields = [];
         $input = $request->collect();
 
+
         foreach ($input as $key => $item) {
             if ($key !== 'id' && strpos($key, 'image') === false && $item !== null) {
                 $changedFields[$key] = $item;
             }
         }
-
         Curriculum::updateOrCreate(
             ['id' => $id],
             $changedFields
         );
+        LearnCurriculum::where('curriculum_id', $id)->delete();
+        $curr = Curriculum::find($id);
+        foreach ($changedFields['courses'] as $item) {
+            $curr->courses()->attach($item);
+        }
+        $curr->save();
 
         return redirect()->route('admin.curriculums')->with([
             'position' => 'bottom',
@@ -345,11 +352,14 @@ class LearnAdminController extends BaseController
     
     public function editCurriculum($id = null)
     {
+        // add condition for status
+        $all_courses = LearnService::getCourses();
+        $all_courses = array_map(fn($item) => ["value" => $item->id, "label" => $item->name], $all_courses);
         $curriculum = [];
         if ($id !== null ) {
             $curriculum = LearnService::getCurriculum($id);
         }
-        return Inertia::render('Admin/Learning/EditCurriculum', compact('curriculum'));
+        return Inertia::render('Admin/Learning/EditCurriculum', compact('curriculum','all_courses'));
     }
 
     public function deleteCurriculum(Request $request, $id)

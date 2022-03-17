@@ -2,8 +2,8 @@
 
 namespace App\Packages\Common\Infrastructure\Repositories;
 
+use App\Packages\Common\Domain\Department;
 use App\Packages\Common\Infrastructure\Repositories\AbstractRepository;
-use App\Packages\Department\Entities\Department;
 
 class DepartmentRepository extends AbstractRepository
 {
