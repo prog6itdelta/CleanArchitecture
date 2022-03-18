@@ -10,6 +10,7 @@ use App\Packages\Common\Application\Services\DepartmentService;
 use Enforcer;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends BaseController
 {
@@ -98,17 +99,27 @@ class AdminController extends BaseController
 
     public function createUser(Request $request)
     {
-        $user = new User;
         $changedFields = [];
 
+        
+        $path = 'empty';
+        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
+            $avatarPath = '/' . $request->avatar->store('images/'. explode('.', $_SERVER['HTTP_HOST'])[0].'/avatars');
+            $changedFields['avatar'] = $avatarPath;
+        }
+        
         $input = $request->collect();
 
         foreach ($input as $key => $item) {
-            if ($key !== 'id' && $item !== null) {
-                $user->$key = $item;
+            if ($key !== 'id' && strpos($key, 'avatar') === false && $item !== null) {
+                if ($key === 'password') {
+                    $changedFields[$key] = Hash::make($item, ['rounds' => 12]);
+                } else {
+                    $changedFields[$key] = $item;
+                }
             }
         }
-
+        $user = User::create($changedFields);
         $user->save();
 
         return redirect()->route('admin.users')->with([
@@ -141,7 +152,11 @@ class AdminController extends BaseController
         
         foreach ($input as $key => $item) {
             if ($key !== 'id' && strpos($key, 'avatar') === false && $item !== null) {
-                $changedFields[$key] = $item;
+                if ($key === 'password') {
+                    $changedFields[$key] = Hash::make($item, ['rounds' => 12]);
+                } else {
+                    $changedFields[$key] = $item;
+                }
             }
         }
 

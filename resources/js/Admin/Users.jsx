@@ -8,7 +8,6 @@ import { AdminContext } from './reducer.jsx';
 
 export default function Users({ users }) {
   const { state: { navigation: nav }, dispatch } = useContext(AdminContext);
-  console.log(users);
 
   const columns =  [
     {
