@@ -6,7 +6,11 @@ import {
   CalendarIcon, ClipboardListIcon,
   HomeIcon,
   MenuAlt2Icon, QuestionMarkCircleIcon,
-  XIcon
+  XIcon,
+  UsersIcon,
+  TemplateIcon,
+  LibraryIcon,
+  BriefcaseIcon
 } from '@heroicons/react/outline';
 import { SearchIcon } from '@heroicons/react/solid';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
@@ -75,23 +79,23 @@ export default function Navigation({ children }) {
             })
           },
         },
+        {
+          name: 'Программы обучения',
+          icon: TemplateIcon,
+          href: route('admin.curriculums'),
+          current: true,
+          action: () => {
+            dispatch({
+              type: 'CHANGE_HEADER',
+              payload: 'Программы обучения'
+            })
+          },
+        },
       ],
     },
     {
-      name: 'Программы обучения',
-      icon: HomeIcon,
-      href: route('admin.curriculums'),
-      current: true,
-      action: () => {
-        dispatch({
-          type: 'CHANGE_HEADER',
-          payload: 'Программы обучения'
-        })
-      },
-    },
-    {
       name: 'Департаменты',
-      icon: HomeIcon,
+      icon:  LibraryIcon,
       href: route('admin.departments'),
       current: true,
       action: () => {
@@ -100,7 +104,19 @@ export default function Navigation({ children }) {
           payload: 'Департаменты'
         })
       },
-    }
+    },
+    {
+      name: 'Пользователи',
+      icon: UsersIcon,
+      href: route('admin.users'),
+      current: true,
+      action: () => {
+        dispatch({
+          type: 'CHANGE_HEADER',
+          payload: 'Пользователи'
+        })
+      },
+    },
 
   ];
   const [sidebarOpen, setSidebarOpen] = useState(false);
