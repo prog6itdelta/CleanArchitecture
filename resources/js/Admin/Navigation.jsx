@@ -8,7 +8,9 @@ import {
   MenuAlt2Icon, QuestionMarkCircleIcon,
   XIcon,
   UsersIcon,
-  TemplateIcon
+  TemplateIcon,
+  LibraryIcon,
+  BriefcaseIcon
 } from '@heroicons/react/outline';
 import { SearchIcon } from '@heroicons/react/solid';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
@@ -93,7 +95,7 @@ export default function Navigation({ children }) {
     },
     {
       name: 'Департаменты',
-      icon: HomeIcon,
+      icon:  LibraryIcon,
       href: route('admin.departments'),
       current: true,
       action: () => {
@@ -117,7 +119,7 @@ export default function Navigation({ children }) {
     },
     {
       name: 'Права доступа',
-      icon: HomeIcon,
+      icon: BriefcaseIcon,
       href: route('admin.access'),
       current: true,
       action: () => {

@@ -6,17 +6,16 @@ import { AdminContext } from './reducer.jsx';
 
 export default function EditUser({ user }) {
   const { state, dispatch } = useContext(AdminContext);
-
+  // console.log(user);
   const { data, setData, post } = useForm({
-    head: user.head ?? '',
     name: user.name ?? '',
-    parent: user.parent ?? ''
+    email: user.email ?? '',
+    phone: user.phone ?? ''
   });
 
   useEffect(() => {
     dispatch({
-      // have question
-      type: 'CHANGE_HEADER', payload: department.id === undefined ? 'Создание  департамента' : `Редактирование департамента`
+      type: 'CHANGE_HEADER', payload: user.id === undefined ? 'Создание  Пользователя' : 'Редактирование Пользователя'
     });
   }, []);
 
@@ -25,7 +24,7 @@ export default function EditUser({ user }) {
           <div className="border-t border-gray-200">
            <ul>
               <li className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 align-items-center">
-                <span className="text-sm font-medium text-gray-500">Название департамента</span>
+                <span className="text-sm font-medium text-gray-500">Имя </span>
                 <input
                   type="text"
                   value={data.name}
@@ -34,19 +33,19 @@ export default function EditUser({ user }) {
                 />
               </li>
               <li className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 align-items-center">
-                <span className="text-sm font-medium text-gray-500">Глава департамента</span>
+                <span className="text-sm font-medium text-gray-500">Почта</span>
                 <input
                   type="text"
-                  value={data.head}
+                  value={data.email}
                   onChange={(e) => setData('head', e.target.value)}
                   className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
                 />
               </li>
               <li className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 align-items-center">
-                <span className="text-sm font-medium text-gray-500">Название отдела</span>
+                <span className="text-sm font-medium text-gray-500">Телефон</span>
                 <input
                   type="text"
-                  value={data.parent}
+                  value={data.phone}
                   onChange={(e) => setData('parent', e.target.value)}
                   className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
                 />
@@ -57,9 +56,9 @@ export default function EditUser({ user }) {
                 type="button"
                 className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-3 sm:text-sm"
                 onClick={() => {
-                  if (department.id !== undefined) { post(route('admin.departments.edit', department.id), { data });
+                  if (user.id !== undefined) { post(route('admin.user.edit', user.id), { data });
                   } else {
-                    post(route('admin.departments.create'), {
+                    post(route('admin.user.create'), {
                       data, onSuccess: (res) => {
                         dispatch({
                           type: 'SHOW_NOTIFICATION',
@@ -67,7 +66,7 @@ export default function EditUser({ user }) {
                             position: 'bottom',
                             type: 'success',
                             header: 'Success!',
-                            message: 'New Department created!',
+                            message: 'New User created!',
                           }
                         });
                         setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
@@ -81,7 +80,7 @@ export default function EditUser({ user }) {
               <button
                 type="button"
                 className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
-                onClick={() => Inertia.get(route('admin.departments'))}
+                onClick={() => Inertia.get(route('admin.users'))}
               >
                 Отмена
               </button>

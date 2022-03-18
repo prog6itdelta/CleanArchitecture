@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Packages\Department\UseCases\DepartmentService;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
 use App\Models\Department;
 use App\Models\User;
-use Illuminate\Pagination\Paginator;
+use App\Packages\Common\Application\Services\DepartmentService;
 use Enforcer;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Http\Request;
 
 class AdminController extends BaseController
@@ -34,7 +34,7 @@ class AdminController extends BaseController
         }
         return Inertia::render('Admin/EditDepartment', compact('department'));
     }
-    
+
     public function saveEditedDepartment(Request $request, $id)
     {
         $changedFields = [];
@@ -51,14 +51,14 @@ class AdminController extends BaseController
             ['id' => $id],
             $changedFields
         );
-        return redirect()->route('admin.department')->with([
+        return redirect()->route('admin.departments')->with([
             'position' => 'bottom',
             'type' => 'success',
             'header' => 'Success!',
             'message' => 'department updated successfully!',
         ]);
     }
-    
+
     public function deleteDepartment(Request $request, $id)
     {
         Department::find($id)->delete();
@@ -101,18 +101,14 @@ class AdminController extends BaseController
 
         $user = [];
         if ($id !== null) {
-            // $user =
+            // $user = User::find($id)collect();
+            dd($user); 
         }
-        return Inertia::render('Admn/EditUser', compact('user'));
+        return Inertia::render('Admin/EditUser', compact('user'));
     }
-    // public function editDepartment($id = null)
-    // {
-    //     $department = [];
-    //     if ($id !== null) {
-    //         $department = DepartmentService::getDepartment($id)['department'];
-    //     }
-    //     return Inertia::render('Admin/EditDepartment', compact('department'));
-    // }
+
+
+
     public function createUser(Request $request)
     {
         $user = new User;

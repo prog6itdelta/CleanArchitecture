@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Packages\Department\Entities;
+namespace App\Packages\Common\Domain;
 
 class Department
 {

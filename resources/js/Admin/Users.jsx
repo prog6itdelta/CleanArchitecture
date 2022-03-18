@@ -56,7 +56,7 @@ export default function Users({ users }) {
             name: 'edit',
             type: 'edit',
             action: () => {
-              Inertia.get(route('admin.users.edit',  item.id));
+              Inertia.get(route('admin.user.edit',  item.id));
             },
             disabled: false,
           },
