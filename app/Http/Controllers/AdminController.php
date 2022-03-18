@@ -96,19 +96,6 @@ class AdminController extends BaseController
     
     }
 
-    public function editUser($id = null)
-    {
-
-        $user = [];
-        if ($id !== null) {
-            // $user = User::find($id)collect();
-            dd($user); 
-        }
-        return Inertia::render('Admin/EditUser', compact('user'));
-    }
-
-
-
     public function createUser(Request $request)
     {
         $user = new User;
@@ -131,5 +118,52 @@ class AdminController extends BaseController
             'message' => 'User created successfully!',
         ]);
     }
+
+    public function editUser($id = null)
+    {
+
+        $user = [];
+        if ($id !== null) {
+            $user = User::find($id);
+        }
+        return Inertia::render('Admin/EditUser', compact('user'));
+    }
+
+    public function saveEditedUser(Request $request, $id)
+    {
+        $path = 'empty';
+        $changedFields = [];
+        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
+            $avatarPath = '/' . $request->avatar->store('images/'. explode('.', $_SERVER['HTTP_HOST'])[0].'/avatars');
+            $changedFields['avatar'] = $avatarPath;
+        }
+        $input = $request->collect();
+        
+        foreach ($input as $key => $item) {
+            if ($key !== 'id' && strpos($key, 'avatar') === false && $item !== null) {
+                $changedFields[$key] = $item;
+            }
+        }
+
+        User::updateOrCreate(
+            ['id' => $id],
+            $changedFields
+        );
+
+        return redirect()->route('admin.users')->with([
+            'position' => 'bottom',
+            'type' => 'success',
+            'header' => 'Success!',
+            'message' => 'User updated successfully!',
+        ]);
+    }
+
+    public function deleteUser(Request $request, $id)
+    {
+        User::find($id)->delete();
+        return redirect()->route('admin.users');
+    }
+
+
 
 }

@@ -64,7 +64,7 @@ export default function Users({ users }) {
             name: 'delete',
             type: 'delete',
             action: () => {
-              Inertia.post(route('admin.users.delete',  item.id), {}, {
+              Inertia.post(route('admin.user.delete',  item.id), {}, {
                 onSuccess: () => {
                   dispatch({
                     type: 'SHOW_NOTIFICATION',
