@@ -98,21 +98,22 @@ export default function EditCourse({ course }) {
                 defaultValue={data.description}
               />
             </li>
-            <li className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <li className="bg-white px-4 py-5 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-6 ">
               <span className="text-sm font-medium text-gray-500">Изображение курса</span>
-              <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  <span className="w-full mb-4 flex justify-center rounded-md overflow-hidden bg-gray-100 col-span-2">
-                    <img src={courseImg} alt="course image"/>
-                  </span>
-                <input
-                  ref={courseImgInput}
-                  type="file"
-                  name="avatar"
-                  id="avatar"
-                  onChange={onCourseImgChange}
-                  className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 col-span-10 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                />
-              </div>
+                <div className="flex flex-col w-3/4">
+                  <div className="w-full mb-4 flex justify-center rounded-md overflow-hidden bg-gray-100 col-span-2">
+                      <img className="max-h-[340px] w-full object-cover shadow-lg rounded-lg" src={courseImg} alt="course image"/>
+                  </div>
+                  <div className="relative">
+                    <input
+                      ref={courseImgInput}
+                      type="file"
+                      name="avatar"
+                      id="avatar"
+                      onChange={onCourseImgChange}
+                    />
+                  </div>
+                </div>
             </li>
             <li className="bg-gray-50 px-4 py-5 sm:px-6">
               <span className="block text-sm font-medium text-gray-500 text-center">Параметры курса</span>
