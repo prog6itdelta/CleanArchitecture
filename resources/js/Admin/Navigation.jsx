@@ -68,7 +68,7 @@ export default function Navigation({ children }) {
       items: [
         {
           name: 'Курсы',
-          icon: AcademicCapIcon,
+          icon: null,
           href: route('admin.courses'),
           current: true,
           active: true,
@@ -81,7 +81,7 @@ export default function Navigation({ children }) {
         },
         {
           name: 'Программы обучения',
-          icon: TemplateIcon,
+          icon: null,
           href: route('admin.curriculums'),
           current: true,
           action: () => {
@@ -159,7 +159,8 @@ export default function Navigation({ children }) {
               }
               onClick={navItem.action}
             >
-              <navItem.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true"/>
+
+              {navItem.icon && <navItem.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true"/>}
               {navItem.name}
             </InertiaLink>
           );
