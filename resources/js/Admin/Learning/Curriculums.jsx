@@ -61,11 +61,11 @@ export default function Curriculums({ curriculums }) {
                       position: 'bottom',
                       type: 'success',
                       header: 'Success!',
-                      message: 'Department deleted!',
+                      message: 'Curriculum deleted!',
                     }
                   });
                   setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
-                  Inertia.get(route('admin.curriculums.',  item.id));
+                  Inertia.get(route('admin.curriculums',  item.id));
                 }
               });
             },
