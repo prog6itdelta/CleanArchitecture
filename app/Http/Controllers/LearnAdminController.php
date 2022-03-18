@@ -44,7 +44,7 @@ class LearnAdminController extends BaseController
 
     public function saveEditedCourse(Request $request, $id)
     {
-        dd(json_decode($request->users));
+        // TODO create accepted users handler
         $path = 'empty';
         $changedFields = [];
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -55,7 +55,7 @@ class LearnAdminController extends BaseController
         $input = $request->collect();
 
         foreach ($input as $key => $item) {
-            if ($key !== 'id' && strpos($key, 'image') === false && $item !== null) {
+            if ($key !== 'id' && $key !== 'users' && strpos($key, 'image') === false && $item !== null) {
                 $changedFields[$key] = $item;
             }
         }
