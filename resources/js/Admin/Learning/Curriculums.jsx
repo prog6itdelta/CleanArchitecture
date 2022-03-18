@@ -36,7 +36,7 @@ export default function Curriculums({ curriculums }) {
   ];
 
   const addActions = (items) => {
-    return  items.map((item, i) => {
+    return items.map((item, i) => {
       return {
         ...item,
         rowActions: [
@@ -44,7 +44,7 @@ export default function Curriculums({ curriculums }) {
             name: 'edit',
             type: 'edit',
             action: () => {
-              Inertia.get(route('admin.curriculums.edit',  item.id));
+              Inertia.get(route('admin.curriculum.edit',  item.id));
             },
             disabled: false,
           },
@@ -53,7 +53,7 @@ export default function Curriculums({ curriculums }) {
             type: 'delete',
             action: () => {
               Inertia.post(
-                route('admin.curriculums.delete',  item.id), {}, {
+                route('admin.curriculum.delete',  item.id), {}, {
                 onSuccess: () => {
                   dispatch({
                     type: 'SHOW_NOTIFICATION',
@@ -102,7 +102,7 @@ const [data, setData] = useState(addActions(curriculums));
               focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm
               bg-indigo-500 hover:bg-indigo-700"
           onClick={() => {
-            Inertia.get(route('admin.curriculums.create'));
+            Inertia.get(route('admin.curriculum.create'));
           }}
         >Add Сurriculum
         </button>

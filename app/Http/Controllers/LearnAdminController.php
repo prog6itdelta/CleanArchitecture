@@ -312,47 +312,44 @@ class LearnAdminController extends BaseController
         ]);
     }
 
-    public function saveEditedCurriculum(Request $request, $id)
+    public function curriculums()
     {
+        $curriculums = LearnService::getCurriculumsFullList();
+        $curriculums = array_values($curriculums);
+        return Inertia::render('Admin/Learning/Curriculums', compact('curriculums'));
+    }
+    
+    public function createCurriculum(Request $request)
+    {
+ 
         $changedFields = [];
         $input = $request->collect();
-
-
+ 
         foreach ($input as $key => $item) {
-            if ($key !== 'id' && strpos($key, 'image') === false && $item !== null) {
+            if ($key !== 'id' && $item !== null) {
                 $changedFields[$key] = $item;
             }
         }
-        Curriculum::updateOrCreate(
-            ['id' => $id],
-            $changedFields
-        );
-        LearnCurriculum::where('curriculum_id', $id)->delete();
-        $curr = Curriculum::find($id);
+ 
+        $curr = Curriculum::create($changedFields);
         foreach ($changedFields['courses'] as $item) {
             $curr->courses()->attach($item);
         }
         $curr->save();
-
+ 
+        // TODO create standalone access rights element instead of adding rules directly
+        Enforcer::addPolicy('AU', "LCU{$curr->id}", 'read');
+ 
         return redirect()->route('admin.curriculums')->with([
             'position' => 'bottom',
             'type' => 'success',
             'header' => 'Success!',
-            'message' => 'Curriculum updated successfully!',
+            'message' => 'Curriculums created successfully!',
         ]);
-
     }
 
-    public function curriculums()
-    {
-        $curriculums = LearnService::getCurriculumsFullList();
-    
-        return Inertia::render('Admin/Learning/Curriculums', compact('curriculums'));
-     }
-    
     public function editCurriculum($id = null)
     {
-        // add condition for status
         $all_courses = LearnService::getCourses();
         $all_courses = array_map(fn($item) => ["value" => $item->id, "label" => $item->name], $all_courses);
         $curriculum = [];
@@ -362,32 +359,41 @@ class LearnAdminController extends BaseController
         return Inertia::render('Admin/Learning/EditCurriculum', compact('curriculum','all_courses'));
     }
 
+    public function saveEditedCurriculum(Request $request, $id)
+    {
+        $changedFields = [];
+        $input = $request->collect();
+ 
+        foreach ($input as $key => $item) {
+            if ($key !== 'id' && $item !== null) {
+                $changedFields[$key] = $item;
+            }
+        }
+ 
+        Curriculum::updateOrCreate(
+            ['id' => $id],
+            $changedFields
+        );
+        LearnCurriculum::where('curriculum_id', $id)->delete();
+        $curr = Curriculum::find($id);
+        foreach ($changedFields['courses'] as $item) {
+            $curr->courses()->attach($item);
+        }
+ 
+        $curr->save();
+ 
+        return redirect()->route('admin.curriculums')->with([
+            'position' => 'bottom',
+            'type' => 'success',
+            'header' => 'Success!',
+            'message' => 'Curriculum updated successfully!',
+        ]);
+    }
+
     public function deleteCurriculum(Request $request, $id)
     {
         Curriculum::find($id)->delete();
         return redirect()->route('admin.curriculums');
     }
-
-    public function createCurriculum(Request $request)
-    {
-        $curriculum = new Curriculum;
-        $changedFields = [];
-
-        $input = $request->collect();
-
-        foreach ($input as $key => $item) {
-            if ($key !== 'id' && $item !== null) {
-                $curriculum->$key = $item;
-            }
-        }
-        $curriculum->save();
-        return redirect()->route('admin.curriculums')->with([
-            'position' => 'bottom',
-            'type' => 'success',
-            'header' => 'Success!',
-            'message' => 'Curriculums created successfully!',
-        ]);
-    }
     
-
 }
