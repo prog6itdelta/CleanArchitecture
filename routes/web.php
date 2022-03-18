@@ -83,7 +83,7 @@ Route::middleware(['auth'])->group(function () {
             ->name('admin.departments.delete');
 
 
-        // Learn packege
+        // Learn package
         Route::get('/', function () {
             return redirect()->route('admin.courses');
         })->name('admin.index');
@@ -177,6 +177,24 @@ Route::middleware(['auth'])->group(function () {
 
         Route::post('/curriculums/{id}/delete', [LearnAdminController::class, 'deleteCurriculum'])
             ->name('admin.curriculums.delete');
+
+        Route::get('/users', [AdminController::class, 'users'])
+            ->name('admin.users');
+
+        Route::get('/user/create', [AdminController::class, 'editUser'])
+            ->name('admin.user.create');
+
+        Route::post('/user/create', [AdminController::class, 'createUser'])
+            ->name('admin.user.create');
+
+        Route::get('/user/{id}', [AdminController::class, 'editUser'])
+            ->name('admin.user.edit');
+
+        Route::post('/user/{id}', [AdminController::class, 'saveEditedUser'])
+            ->name('admin.user.edit');
+
+        Route::post('/user/{id}/delete', [AdminController::class, 'deleteUser'])
+            ->name('admin.user.delete');
 
     });
 
