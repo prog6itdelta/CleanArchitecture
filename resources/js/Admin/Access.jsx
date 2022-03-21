@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Inertia } from '@inertiajs/inertia';
 
 /**
  * Props selectedUsers and setSelectedUsers comes from parents useState
@@ -13,35 +14,45 @@ export default function Access({ selectedUsers, setSelectedUsers }) {
       id: 1,
       current: true,
       shown: false,
-      search: false
+      search: false,
+      currentPage: 1,
+      isLastPage: false
     },
     {
       name: 'Positions',
       id: 2,
       current: false,
       shown: false,
-      search: false
+      search: false,
+      currentPage: 1,
+      isLastPage: false
     },
     {
       name: 'Departments',
       id: 3,
       current: false,
       shown: false,
-      search: false
+      search: false,
+      currentPage: 1,
+      isLastPage: false
     },
     {
       name: 'Working Groups',
       id: 4,
       current: false,
       shown: false,
-      search: false
+      search: false,
+      currentPage: 1,
+      isLastPage: false
     },
     {
       name: 'Others',
       id: 5,
       current: false,
       shown: false,
-      search: false
+      search: false,
+      currentPage: 1,
+      isLastPage: false
     }
   ]);
   const [searchString, setSearchString] = useState('');
@@ -81,20 +92,14 @@ export default function Access({ selectedUsers, setSelectedUsers }) {
       return [...prev];
     });
   };
-  const fetchUsers = () => {
+  const fetchUsers = (nextPage = false) => {
     const currentUserType = getCurrentUserType();
-    if (!currentUserType.shown || (searchString !== '' && currentUserType.search !== searchString) || (searchString === '' && currentUserType.search !== false)) {
-
-      setUserTypes((prev) => {
-        const idx = prev.findIndex((type) => type.current === true);
-        prev[idx].shown = true;
-        if (searchString !== '' && searchString !== prev[idx].search) {
-          prev[idx].search = searchString;
-        } else if (searchString === '') {
-          prev[idx].search = false;
-        }
-        return [...prev];
-      });
+    if (
+      !currentUserType.shown
+      || (searchString !== '' && currentUserType.search !== searchString)
+      || (searchString === '' && currentUserType.search !== false)
+      || nextPage
+    ) {
 
       let resource;
       switch (currentUserType.id) {
@@ -118,18 +123,36 @@ export default function Access({ selectedUsers, setSelectedUsers }) {
           break;
       }
       axios
-        .get(`/api/${resource}${searchString !== '' ? `?search=${searchString}` : ''}`)
+        .get(`/api/${resource}?page=${nextPage ? `${currentUserType.currentPage + 1}` : ''}${searchString !== '' ? `search=${searchString}` : ''}`)
         .then((resp) => {
-          const data = resp.data.map((item) => {
+          const {current_page: currentPage, last_page: lastPage} = resp.data;
+          console.log("-> resp.data", resp.data);
+          const data = resp.data.data.map((item) => {
             item.selected = !!selectedUsers.find((user) => user.type === currentUserType.id && user.id === item.id);
             item.type = currentUserType.id;
             item.searchedBy = searchString;
             return item;
           });
+
           setData((prev) => {
             const filteredPrev = prev.filter((item) => item.searchedBy === searchString);
             return [...filteredPrev, ...data];
           });
+
+          setUserTypes((prev) => {
+            const idx = prev.findIndex((type) => type.current === true);
+            prev[idx].shown = true;
+            if (searchString !== '' && searchString !== prev[idx].search) {
+              prev[idx].search = searchString;
+            } else if (searchString === '') {
+              prev[idx].search = false;
+            }
+            currentPage === lastPage
+              ? prev[idx].isLastPage = true
+              : prev[idx].isLastPage = false;
+            return [...prev];
+          });
+
         });
     }
   };
@@ -167,27 +190,38 @@ export default function Access({ selectedUsers, setSelectedUsers }) {
   const DataList = () => {
     return (
       <div className="w-full flex flex-wrap">
-        <ul role="list" className="divide-y divide-gray-200 bg-white w-full h-60 sm:w-1/2 overflow-y-auto">
-          {data.filter(item => item.type === getCurrentUserType().id).map((item) => {
-            return (
-              <li
-                key={item.id}
-                className={`py-2 pl-2 flex cursor-pointer ${item.selected ? 'bg-gray-50 font-extrabold' : ' hover:bg-gray-50'}`}
-                onClick={() => {
-                  if (item.selected === false) {
-                    selectUser({
-                      type: getCurrentUserType().id,
-                      id: item.id,
-                      name: item.name
-                    });
-                  } else {
-                    removeUser(item);
-                  }
-                }}
-              >{item.name}</li>
-            );
-          })}
-        </ul>
+        <div className="w-full h-60 sm:w-1/2 overflow-y-auto">
+          <ul role="list" className="divide-y divide-gray-200 bg-white">
+            {data.filter(item => item.type === getCurrentUserType().id).map((item) => {
+              return (
+                <li
+                  key={item.id}
+                  className={`py-2 pl-2 flex cursor-pointer ${item.selected ? 'bg-gray-50 font-extrabold' : ' hover:bg-gray-50'}`}
+                  onClick={() => {
+                    if (item.selected === false) {
+                      selectUser({
+                        type: getCurrentUserType().id,
+                        id: item.id,
+                        name: item.name
+                      });
+                    } else {
+                      removeUser(item);
+                    }
+                  }}
+                >{item.name}</li>
+              );
+            })}
+          </ul>
+          {!getCurrentUserType().isLastPage &&
+            <button
+              type="button"
+              className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
+              onClick={() => fetchUsers(true)}
+            >
+              Load more...
+            </button>
+          }
+        </div>
         <ul role="list" className="border-l p-1 bg-white w-full sm:w-1/2">
           {selectedUsers.map((item) => {
             return (

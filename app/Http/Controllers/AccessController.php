@@ -26,9 +26,9 @@ class AccessController extends BaseController
     {
         if ($request->has('search')) {
             $search = '%' . $request->search . '%';
-            $users = User::where('name', 'like', $search)->get()->take(10);
+            $users = User::where('name', 'like', $search)->paginate(10);
         } else {
-            $users = User::all()->take(10);
+            $users = User::paginate(10);
         }
 
         return json_encode($users);
@@ -38,9 +38,9 @@ class AccessController extends BaseController
     {
         if ($request->has('search')) {
             $search = '%' . $request->search . '%';
-            $departments = Department::where('name', 'like', $search)->get()->take(10);
+            $departments = Department::where('name', 'like', $search)->paginate(10);
         } else {
-            $departments = Department::all();
+            $departments = Department::paginate(10);
         }
 
         return json_encode($departments);
