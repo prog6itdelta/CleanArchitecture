@@ -122,8 +122,22 @@ export default function Access({ selectedUsers, setSelectedUsers }) {
           resource = 'users';
           break;
       }
+      console.log("-> nextPage", nextPage);
+      const params = [
+        nextPage ? `page=${currentUserType.currentPage + 1}` : '',
+        searchString !== '' ? `search=${searchString}` : ''
+      ];
+      const urlParams = params.reduce((str, el, idx) => {
+        if (el !== '') {
+          if (str !== '') {
+            return `${str}&${el}`;
+          }
+          return el;
+        }
+        return str;
+      }, '');
       axios
-        .get(`/api/${resource}?page=${nextPage ? `${currentUserType.currentPage + 1}` : ''}${searchString !== '' ? `search=${searchString}` : ''}`)
+        .get(`/api/${resource}?${urlParams}`)
         .then((resp) => {
           const {current_page: currentPage, last_page: lastPage} = resp.data;
           console.log("-> resp.data", resp.data);
