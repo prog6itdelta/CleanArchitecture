@@ -182,19 +182,19 @@ Route::middleware(['auth'])->group(function () {
             ->name('admin.curriculums');
 
         Route::get('/curriculums/create', [LearnAdminController::class, 'editCurriculum'])
-            ->name('admin.curriculums.create');
+            ->name('admin.curriculum.create');
 
         Route::post('/curriculums/create', [LearnAdminController::class, 'createCurriculum'])
-            ->name('admin.curriculums.create');
+            ->name('admin.curriculum.create');
 
         Route::get('/curriculums/{id}', [LearnAdminController::class, 'editCurriculum'])
-            ->name('admin.curriculums.edit');
+            ->name('admin.curriculum.edit');
 
         Route::post('/curriculums/{id}', [LearnAdminController::class, 'saveEditedCurriculum'])
-            ->name('admin.curriculums.edit');
+            ->name('admin.curriculum.edit');
 
         Route::post('/curriculums/{id}/delete', [LearnAdminController::class, 'deleteCurriculum'])
-            ->name('admin.curriculums.delete');
+            ->name('admin.curriculum.delete');
 
         Route::get('/users', [AdminController::class, 'users'])
             ->name('admin.users');
