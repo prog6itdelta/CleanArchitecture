@@ -29,11 +29,15 @@ class AdminController extends BaseController
 
     public function editDepartment($id = null)
     {
+        $allDepartaments = DepartmentService::getDepartments()->toArray();
+        $allDepartaments = array_map(fn($item) => ["value" => $item->id, "label" => $item->name], $allDepartaments['data']);
+        $allUsers = User::all()->toArray();
+        $allUsers = array_map(fn($item) => ["value" => $item['id'], "label" => $item['name']], $allUsers);
         $department = [];
         if ($id !== null) {
             $department = DepartmentService::getDepartment($id)['department'];
         }
-        return Inertia::render('Admin/EditDepartment', compact('department'));
+        return Inertia::render('Admin/EditDepartment', compact('department', 'allDepartaments', 'allUsers'));
     }
 
     public function saveEditedDepartment(Request $request, $id)

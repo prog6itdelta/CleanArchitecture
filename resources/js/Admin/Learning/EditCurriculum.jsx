@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch } from '@headlessui/react';
@@ -18,14 +18,14 @@ export default function editCurriculum({ curriculum, all_courses }) {
     courses: curriculum.courses === undefined ? [] : curriculum.courses.map(item => item.id),
   });
 
-
+console.log(data.courses);
   const handleInputChanges = (inputValue) => {
+    console.log(inputValue)
     setData('courses', inputValue.map(item => item.value));
   };
 
   useEffect(() => {
     dispatch({
-      // have question
       type: 'CHANGE_HEADER', payload: curriculum.id === undefined ? 'Создание  программы обучения' : `Редактирование программы обучения`
     });
   }, []);
