@@ -12,24 +12,26 @@ CREATE USER 'landlord'@'localhost' IDENTIFIED BY '123';
 GRANT ALL PRIVILEGES ON landlord.* TO 'landlord'@'localhost';  
 
 CREATE DATABASE db_tenant1 DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;  
+CREATE DATABASE db_tenant2 DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;  
 CREATE USER 'tenant_user'@'localhost' IDENTIFIED BY '123';  
-GRANT ALL PRIVILEGES ON db_tenant1.* TO 'tenant_user'@'localhost';  
+GRANT ALL PRIVILEGES ON db_tenant1.* TO 'tenant_user'@'localhost';
+GRANT ALL PRIVILEGES ON db_tenant2.* TO 'tenant_user'@'localhost';
 
 FLUSH PRIVILEGES;
 
 ##ENV
-DB_DATABASE_LANDLORD=Created landlord database
-DB_USERNAME_LANDLORD=Created landlord user
-DB_PASSWORD_LANDLORD=Password for landlord user
+DB_DATABASE_LANDLORD=Created landlord database  
+DB_USERNAME_LANDLORD=Created landlord user  
+DB_PASSWORD_LANDLORD=Password for landlord user  
 
 ##Laravel
 php artisan key:generate  
-php artisan migrate --path=database/migrations/landlord --database=landlord --seed
-php artisan tenants:artisan "migrate --database=tenant --seed"
-php artisan storage:link
+php artisan migrate --path=database/migrations/landlord --database=landlord --seed  
+php artisan tenants:artisan "migrate --database=tenant --seed"  
+php artisan storage:link  
 
-After migration and seeding user is:
-user@aa.com
+After migration and seeding user is:  
+user@aa.com  
 123
 
 ##Bitrix24
