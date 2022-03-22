@@ -2,59 +2,66 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Inertia } from '@inertiajs/inertia';
 
+const allUserTypes = [
+  {
+    name: 'Users',
+    id: 'U',
+    current: true,
+    shown: false,
+    search: false,
+    currentPage: 1,
+    isLastPage: false
+  },
+  {
+    name: 'Positions',
+    id: 'P',
+    current: false,
+    shown: false,
+    search: false,
+    currentPage: 1,
+    isLastPage: false
+  },
+  {
+    name: 'Departments',
+    id: 'DM',
+    current: false,
+    shown: false,
+    search: false,
+    currentPage: 1,
+    isLastPage: false
+  },
+  {
+    name: 'Working Groups',
+    id: 'WG',
+    current: false,
+    shown: false,
+    search: false,
+    currentPage: 1,
+    isLastPage: false
+  },
+  {
+    name: 'Others',
+    id: 'O',
+    current: false,
+    shown: false,
+    search: false,
+    currentPage: 1,
+    isLastPage: false
+  }
+];
+
 /**
  * Props selectedUsers and setSelectedUsers comes from parents useState
  * That allows Access component to be controlled by parent like controlled input
  */
-export default function Access({ selectedUsers, setSelectedUsers }) {
+export default function Access({ selectedUsers, setSelectedUsers, visibleTypes }) {
   // shown in userTypes is used for prevent unnecessary requests to server
-  const [userTypes, setUserTypes] = useState([
-    {
-      name: 'Users',
-      id: 1,
-      current: true,
-      shown: false,
-      search: false,
-      currentPage: 1,
-      isLastPage: false
-    },
-    {
-      name: 'Positions',
-      id: 2,
-      current: false,
-      shown: false,
-      search: false,
-      currentPage: 1,
-      isLastPage: false
-    },
-    {
-      name: 'Departments',
-      id: 3,
-      current: false,
-      shown: false,
-      search: false,
-      currentPage: 1,
-      isLastPage: false
-    },
-    {
-      name: 'Working Groups',
-      id: 4,
-      current: false,
-      shown: false,
-      search: false,
-      currentPage: 1,
-      isLastPage: false
-    },
-    {
-      name: 'Others',
-      id: 5,
-      current: false,
-      shown: false,
-      search: false,
-      currentPage: 1,
-      isLastPage: false
+  const [userTypes, setUserTypes] = useState(allUserTypes.reduce((types, type) => {
+    if (visibleTypes.includes(type.id)) {
+      types.push(type);
     }
-  ]);
+    return types;
+  }, []));
   const [searchString, setSearchString] = useState('');
   const getCurrentUserType = () => userTypes.find((type) => type.current === true);
   const setCurrentUserType = (id) => {
@@ -103,26 +110,25 @@ export default function Access({ selectedUsers, setSelectedUsers }) {
 
       let resource;
       switch (currentUserType.id) {
-        case 1:
+        case 'U':
           resource = 'users';
           break;
-        case 2:
+        case 'P':
           resource = 'positions';
           break;
-        case 3:
+        case 'DM':
           resource = 'departments';
           break;
-        case 4:
+        case 'WG':
           resource = 'working-groups';
           break;
-        case 5:
+        case 'O':
           resource = 'others';
           break;
         default:
           resource = 'users';
           break;
       }
-      console.log("-> nextPage", nextPage);
       const params = [
         nextPage ? `page=${currentUserType.currentPage + 1}` : '',
         searchString !== '' ? `search=${searchString}` : ''
@@ -140,7 +146,6 @@ export default function Access({ selectedUsers, setSelectedUsers }) {
         .get(`/api/${resource}?${urlParams}`)
         .then((resp) => {
           const {current_page: currentPage, last_page: lastPage} = resp.data;
-          console.log("-> resp.data", resp.data);
           const data = resp.data.data.map((item) => {
             item.selected = !!selectedUsers.find((user) => user.type === currentUserType.id && user.id === item.id);
             item.type = currentUserType.id;
@@ -188,7 +193,7 @@ export default function Access({ selectedUsers, setSelectedUsers }) {
                   `${userType.current
                     ? 'border-indigo-500 text-indigo-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}
-                  w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm cursor-pointer`
+                  w-full py-4 px-1 text-center border-b-2 font-medium text-sm cursor-pointer`
                 }
                 onClick={() => setCurrentUserType(userType.id)}
               >

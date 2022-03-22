@@ -143,7 +143,7 @@ export default function EditCourse({ course }) {
               />
             </li>
             <li className="bg-gray-50 px-4 py-5 sm:px-6">
-              <Access selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsersWrapper} />
+              <Access selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsersWrapper} visibleTypes={['U', 'DM']} />
             </li>
           </ul>
         </div>

@@ -45,7 +45,6 @@ class LearnAdminController extends BaseController
     public function saveEditedCourse(Request $request, $id)
     {
         // TODO create accepted users handler
-        $path = 'empty';
         $changedFields = [];
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $imagePath = '/' . $request->image->store('images/' . explode('.', $_SERVER['HTTP_HOST'])[0] . '/course_images');
@@ -80,8 +79,6 @@ class LearnAdminController extends BaseController
     public function createCourse(Request $request)
     {
         $course = new Course;
-        $path = 'empty';
-        $changedFields = [];
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $imagePath = '/' . $request->image->store('images/' . explode('.', $_SERVER['HTTP_HOST'])[0] . '/course_images');
             $course->image = $imagePath;
