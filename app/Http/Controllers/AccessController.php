@@ -11,38 +11,46 @@ use Enforcer;
 
 class AccessController extends BaseController
 {
-    /**
-     * Get departments.
-     *
-     * @param int $id
-     * @return \Inertia\Response
-     */
     public function index()
     {
         return Inertia::render('Admin/Access');
     }
 
-    public function users(Request $request)
+    public function getAllUsers(Request $request)
     {
         if ($request->has('search')) {
             $search = '%' . $request->search . '%';
-            $users = User::where('name', 'like', $search)->paginate(10);
+            $users = User::where('name', 'like', $search)->select('id', 'name')->paginate(10);
         } else {
-            $users = User::paginate(10);
+            $users = User::select('id', 'name')->paginate(10);
         }
 
         return json_encode($users);
     }
 
-    public function departments(Request $request)
+    public function getAllDepartments(Request $request)
     {
         if ($request->has('search')) {
             $search = '%' . $request->search . '%';
-            $departments = Department::where('name', 'like', $search)->paginate(10);
+            $departments = Department::where('name', 'like', $search)->select('id', 'name')->paginate(10);
         } else {
-            $departments = Department::paginate(10);
+            $departments = Department::select('id', 'name')->paginate(10);
         }
-
         return json_encode($departments);
+    }
+
+    /**
+     * request should have 'resource' and 'actions' fields
+    */
+    public function getResourceUsers(Request $request)
+    {
+        // TODO transform this plug into working function
+        $resource = $request->resource;
+        $actions = json_decode($request->actions);
+        $response = [
+            Department::select('id', 'name')->first(),
+            User::select('id', 'name')->first()
+        ];
+        return json_encode($response);
     }
 }

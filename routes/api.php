@@ -21,5 +21,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-Route::get('/users', [AccessController::class, 'users']);
-Route::get('/departments', [AccessController::class, 'departments']);
+Route::get('/users', [AccessController::class, 'getAllUsers'])->name('access.getAllUsers');
+Route::get('/departments', [AccessController::class, 'getAllDepartments'])-> name('access.getAllDepartments');
+Route::get('/resource-users', [AccessController::class, 'getResourceUsers'])->name('access.getResourceUsers');

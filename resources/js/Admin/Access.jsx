@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Inertia } from '@inertiajs/inertia';
 
+// hardcoded presets of user types
 const allUserTypes = [
   {
     name: 'Users',
@@ -54,7 +55,13 @@ const allUserTypes = [
  * Props selectedUsers and setSelectedUsers comes from parents useState
  * That allows Access component to be controlled by parent like controlled input
  */
-export default function Access({ selectedUsers, setSelectedUsers, visibleTypes }) {
+export default function Access({
+  selectedUsers,
+  setSelectedUsers,
+  visibleTypes = ['U', 'DM'],
+  currentResource = false, // e. g. LC1
+  actions = ['read']
+}) {
   // shown in userTypes is used for prevent unnecessary requests to server
   const [userTypes, setUserTypes] = useState(allUserTypes.reduce((types, type) => {
     if (visibleTypes.includes(type.id)) {
@@ -63,6 +70,9 @@ export default function Access({ selectedUsers, setSelectedUsers, visibleTypes }
     return types;
   }, []));
   const [searchString, setSearchString] = useState('');
+  const [searchStringBuffer, setSearchStringBuffer] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isResourceUsersFetched, setIsResourceUsersFetched] = useState(false);
   const getCurrentUserType = () => userTypes.find((type) => type.current === true);
   const setCurrentUserType = (id) => {
     setUserTypes((prev) => {
@@ -101,62 +111,55 @@ export default function Access({ selectedUsers, setSelectedUsers, visibleTypes }
   };
   const fetchUsers = (nextPage = false) => {
     const currentUserType = getCurrentUserType();
-    if (
+    if ((
       !currentUserType.shown
       || (searchString !== '' && currentUserType.search !== searchString)
       || (searchString === '' && currentUserType.search !== false)
-      || nextPage
+      || nextPage) && !isLoading
     ) {
 
+      // url for request
       let resource;
       switch (currentUserType.id) {
         case 'U':
-          resource = 'users';
+          resource = route('access.getAllUsers');
           break;
         case 'P':
-          resource = 'positions';
+          resource = 'positions'; // WARN replace when endpoint will be created
           break;
         case 'DM':
-          resource = 'departments';
+          resource = route('access.getAllDepartments');
           break;
         case 'WG':
-          resource = 'working-groups';
+          resource = 'working-groups'; // WARN replace when endpoint will be created
           break;
         case 'O':
-          resource = 'others';
+          resource = 'others'; // WARN replace when endpoint will be created
           break;
         default:
-          resource = 'users';
+          resource = route('access.getAllUsers');
           break;
       }
+
+      // url params for request
       const params = [
         nextPage ? `page=${currentUserType.currentPage + 1}` : '',
         searchString !== '' ? `search=${searchString}` : ''
-      ];
-      const urlParams = params.reduce((str, el, idx) => {
-        if (el !== '') {
-          if (str !== '') {
-            return `${str}&${el}`;
+      ]
+        .reduce((str, el, idx) => {
+          if (el !== '') {
+            if (str !== '') {
+              return `${str}&${el}`;
+            }
+            return el;
           }
-          return el;
-        }
-        return str;
-      }, '');
-      axios
-        .get(`/api/${resource}?${urlParams}`)
-        .then((resp) => {
-          const {current_page: currentPage, last_page: lastPage} = resp.data;
-          const data = resp.data.data.map((item) => {
-            item.selected = !!selectedUsers.find((user) => user.type === currentUserType.id && user.id === item.id);
-            item.type = currentUserType.id;
-            item.searchedBy = searchString;
-            return item;
-          });
+          return str;
+        }, '');
 
-          setData((prev) => {
-            const filteredPrev = prev.filter((item) => item.searchedBy === searchString);
-            return [...filteredPrev, ...data];
-          });
+      axios
+        .get(`${resource}?${params}`)
+        .then((allDataResp) => {
+          const {current_page: currentPage, last_page: lastPage} = allDataResp.data;
 
           setUserTypes((prev) => {
             const idx = prev.findIndex((type) => type.current === true);
@@ -172,13 +175,56 @@ export default function Access({ selectedUsers, setSelectedUsers, visibleTypes }
             return [...prev];
           });
 
+          let data;
+          if (currentResource !== false && !isResourceUsersFetched) {
+            axios
+              .get(`${route('access.getResourceUsers')}?resource=${currentResource}&actions=${JSON.stringify(actions)}`)
+              .then((selectedUsersResp) => {
+                const receivedSelectedUsers = selectedUsersResp.data;
+
+                setSelectedUsers((prev) =>[...prev, ...receivedSelectedUsers]);
+
+                setIsResourceUsersFetched(true);
+
+                data = allDataResp.data.data.map((item) => {
+                  item.selected = !!receivedSelectedUsers.find((user) => user.type === currentUserType.id && user.id === item.id);
+                  item.searchedBy = searchString;
+                  return item;
+                });
+
+                setData((prev) => {
+                  const filteredPrev = prev.filter((item) => item.searchedBy === searchString);
+                  return [...filteredPrev, ...data];
+                });
+                setIsLoading(false);
+              })
+          } else {
+            data = allDataResp.data.data.map((item) => {
+              item.selected = !!selectedUsers.find((user) => user.type === currentUserType.id && user.id === item.id);
+              item.searchedBy = searchString;
+              return item;
+            });
+
+            setData((prev) => {
+              const filteredPrev = prev.filter((item) => item.searchedBy === searchString);
+              return [...filteredPrev, ...data];
+            });
+            setIsLoading(false);
+          }
+
         });
     }
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchUsers();
   }, [userTypes, searchString]);
+
+  useEffect(() => {
+    if (!isLoading) { setSearchString(searchStringBuffer); }
+  }, [isLoading, searchStringBuffer]);
+
 
   const UserGroupSelector = () => {
     return (
@@ -235,7 +281,10 @@ export default function Access({ selectedUsers, setSelectedUsers, visibleTypes }
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm"
-              onClick={() => fetchUsers(true)}
+              onClick={() => {
+                setIsLoading(true);
+                fetchUsers(true);
+              }}
             >
               Load more...
             </button>
@@ -275,8 +324,8 @@ export default function Access({ selectedUsers, setSelectedUsers, visibleTypes }
         type="text"
         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300"
         placeholder="Search"
-        value={searchString}
-        onChange={(e) => setSearchString(e.target.value)}
+        value={searchStringBuffer}
+        onChange={(e) => setSearchStringBuffer(e.target.value)}
       />
       <DataList/>
     </>

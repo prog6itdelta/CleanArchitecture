@@ -15,9 +15,23 @@ class Department extends Model
         'parent'
     ];
 
+    protected $appends = [
+        'type'
+    ];
+
+    /**
+     * Define casbin type.
+     *
+     * @return string
+     */
+    public function getTypeAttribute()
+    {
+        return 'DM';
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class);
     }
-    
+
 }
