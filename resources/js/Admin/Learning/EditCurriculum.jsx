@@ -18,7 +18,6 @@ export default function editCurriculum({ curriculum, all_courses }) {
     courses: curriculum.courses === undefined ? [] : curriculum.courses.map(item => item.id),
   });
 
-console.log(data.courses);
   const handleInputChanges = (inputValue) => {
     console.log(inputValue)
     setData('courses', inputValue.map(item => item.value));

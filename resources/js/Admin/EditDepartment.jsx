@@ -1,17 +1,18 @@
 import React, { useEffect, useContext } from 'react';
 import { Inertia } from '@inertiajs/inertia';
-import { useForm } from '@inertiajs/inertia-react';
+import { useForm, usePage } from '@inertiajs/inertia-react';
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
 import { AdminContext } from './reducer.jsx';
-import { entries } from 'lodash';
 
 
 export default function EditDepartments({ department, allDepartaments, allUsers }) {
   const { state, dispatch } = useContext(AdminContext);
+  
+  const { auth } = usePage().props
 
   const { data, setData, post } = useForm({
-    head: department.head ?? '',
+    head: department.head ?? auth.user.id,
     name: department.name ?? '',
     parent: department.parent ?? '',
   });
@@ -24,7 +25,17 @@ export default function EditDepartments({ department, allDepartaments, allUsers 
     setData('parent', department.parent ?? '');
   }
 
-  console.log(allUsers)
+  const handleHeadChange = (inputValue) => {
+    setData('head', inputValue && inputValue.value);
+  };
+
+  const clearHead = () => {
+    setData('head', auth.user.id);
+  }
+
+  console.log(auth);
+  console.log(data);
+
   useEffect(() => {
     dispatch({
       type: 'CHANGE_HEADER', payload: department.id === undefined ? 'Создание  департамента' : `Редактирование департамента`
@@ -49,17 +60,26 @@ export default function EditDepartments({ department, allDepartaments, allUsers 
                   <Select 
                     className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
                     options={allUsers}
-                    defaultValue={department.parent}
-                    isClearable={clearParent}
-                    onChange={handleParentChange}
+                    defaultValue={{value: data.head, label: allUsers.find((item) => item.value === data.head).label}}
+                    isClearable={clearHead}
+                    onChange={handleHeadChange}
                     />
               </li>
               <li className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 align-items-center">
                 <span className="text-sm font-medium text-gray-500">Родительский департамент</span>
+                {console.log('dParent', data.parent)}
                   <Select 
                     className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
                     options={allDepartaments}
-                    defaultValue={department.parent}
+                    placeholder='Это департамент верхнего уровня'
+                    defaultValue={
+                      data.parent === '' || data.parent === null 
+                        ? null 
+                        : {
+                          value: data.parent, 
+                          label:allDepartaments.find((item) => item.value === data.parent).label
+                        }
+                    }
                     isClearable={clearParent}
                     onChange={handleParentChange}
                     />
