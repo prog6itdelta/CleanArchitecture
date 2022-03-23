@@ -45,6 +45,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = [
+        'type'
+    ];
+
+    /**
+     * Define casbin type.
+     *
+     * @return string
+     */
+    public function getTypeAttribute()
+    {
+        return 'U';
+    }
+
     public function portals()
     {
         return $this->belongsToMany(Portal::class);

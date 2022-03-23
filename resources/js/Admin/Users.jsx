@@ -2,9 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import Table from '../Components/Table.jsx';
 import ActionsCell from '../Components/ActionsCell.jsx';
+import NameCell from '../Components/NameCell.jsx';
 import { AdminContext } from './reducer.jsx';
 
-export default function Departments({ departments }) {
+
+export default function Users({ users }) {
   const { state: { navigation: nav }, dispatch } = useContext(AdminContext);
 
   const columns =  [
@@ -15,17 +17,24 @@ export default function Departments({ departments }) {
     },
     {
       Header: 'Name',
-      accessor: 'name',
+      accessor: (row) => {
+        return {
+          name: row.name,
+          last_name: row.last_name,
+          image: row.avatar,
+        }
+      },
+      Filter: '',
+      Cell: NameCell
+    },
+    {
+      Header: 'email',
+      accessor: 'email',
       Filter: '',
     },
     {
-      Header: 'Head',
-      accessor: 'head',
-      Filter: '',
-    },
-    {
-      Header: 'Parent',
-      accessor: 'parent',
+      Header: 'phone',
+      accessor: 'phone',
       Filter: '',
     },
     {
@@ -46,7 +55,7 @@ export default function Departments({ departments }) {
             name: 'edit',
             type: 'edit',
             action: () => {
-              Inertia.get(route('admin.departments.edit',  item.id));
+              Inertia.get(route('admin.user.edit',  item.id));
             },
             disabled: false,
           },
@@ -54,7 +63,7 @@ export default function Departments({ departments }) {
             name: 'delete',
             type: 'delete',
             action: () => {
-              Inertia.post(route('admin.departments.delete',  item.id), {}, {
+              Inertia.post(route('admin.user.delete',  item.id), {}, {
                 onSuccess: () => {
                   dispatch({
                     type: 'SHOW_NOTIFICATION',
@@ -62,11 +71,11 @@ export default function Departments({ departments }) {
                       position: 'bottom',
                       type: 'success',
                       header: 'Success!',
-                      message: 'Department deleted!',
+                      message: 'Users deleted!',
                     }
                   });
                   setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
-                  Inertia.get(route('admin.departments',  item.id));
+                  Inertia.get(route('admin.users',  item.id));
                 }
               });
             },
@@ -77,15 +86,15 @@ export default function Departments({ departments }) {
     })
   };
 
-  const [data, setData] = useState(addActions(departments.data));
+  const [data, setData] = useState(addActions(users.data));
 
   useEffect(() => {
-    setData(addActions(departments.data));
+    setData(addActions(users.data));
   }, [nav]);
 
   useEffect(() => {
     dispatch({
-      type: 'CHANGE_HEADER', payload: 'Департаменты'
+      type: 'CHANGE_HEADER', payload: 'Пользователи'
     });
   }, []);
 
@@ -101,9 +110,9 @@ export default function Departments({ departments }) {
               focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm
               bg-indigo-500 hover:bg-indigo-700"
           onClick={() => {
-            Inertia.get(route('admin.departments.create'));
+            Inertia.get(route('admin.user.create'));
           }}
-        >Add Department
+        >Add User
         </button>
       </main>
   );

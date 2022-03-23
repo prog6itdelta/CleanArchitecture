@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch } from '@headlessui/react';
@@ -18,14 +18,13 @@ export default function editCurriculum({ curriculum, all_courses }) {
     courses: curriculum.courses === undefined ? [] : curriculum.courses.map(item => item.id),
   });
 
-
   const handleInputChanges = (inputValue) => {
+    console.log(inputValue)
     setData('courses', inputValue.map(item => item.value));
   };
 
   useEffect(() => {
     dispatch({
-      // have question
       type: 'CHANGE_HEADER', payload: curriculum.id === undefined ? 'Создание  программы обучения' : `Редактирование программы обучения`
     });
   }, []);
@@ -115,9 +114,11 @@ export default function editCurriculum({ curriculum, all_courses }) {
                 type="button"
                 className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-3 sm:text-sm"
                 onClick={() => {
-                  if (curriculum.id !== undefined) { post(route('admin.curriculums.edit', curriculum.id), { data });
+                  if (curriculum.id !== undefined) { 
+                    console.log(data);
+                    post(route('admin.curriculum.edit', curriculum.id), { data });
                   } else {
-                    post(route('admin.curriculums.create'), {
+                    post(route('admin.curriculum.create'), {
                       data, onSuccess: (res) => {
                         dispatch({
                           type: 'SHOW_NOTIFICATION',

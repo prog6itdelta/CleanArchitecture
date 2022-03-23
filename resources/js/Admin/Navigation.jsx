@@ -6,7 +6,11 @@ import {
   CalendarIcon, ClipboardListIcon,
   HomeIcon,
   MenuAlt2Icon, QuestionMarkCircleIcon,
-  XIcon
+  XIcon,
+  UsersIcon,
+  TemplateIcon,
+  LibraryIcon,
+  BriefcaseIcon
 } from '@heroicons/react/outline';
 import { SearchIcon } from '@heroicons/react/solid';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
@@ -64,7 +68,7 @@ export default function Navigation({ children }) {
       items: [
         {
           name: 'Курсы',
-          icon: AcademicCapIcon,
+          icon: null,
           href: route('admin.courses'),
           current: true,
           active: true,
@@ -75,23 +79,23 @@ export default function Navigation({ children }) {
             })
           },
         },
+        {
+          name: 'Программы обучения',
+          icon: null,
+          href: route('admin.curriculums'),
+          current: true,
+          action: () => {
+            dispatch({
+              type: 'CHANGE_HEADER',
+              payload: 'Программы обучения'
+            })
+          },
+        },
       ],
     },
     {
-      name: 'Программы обучения',
-      icon: HomeIcon,
-      href: route('admin.curriculums'),
-      current: true,
-      action: () => {
-        dispatch({
-          type: 'CHANGE_HEADER',
-          payload: 'Программы обучения'
-        })
-      },
-    },
-    {
       name: 'Департаменты',
-      icon: HomeIcon,
+      icon:  LibraryIcon,
       href: route('admin.departments'),
       current: true,
       action: () => {
@@ -102,17 +106,17 @@ export default function Navigation({ children }) {
       },
     },
     {
-      name: 'Права доступа',
-      icon: HomeIcon,
-      href: route('admin.access'),
+      name: 'Пользователи',
+      icon: UsersIcon,
+      href: route('admin.users'),
       current: true,
       action: () => {
         dispatch({
           type: 'CHANGE_HEADER',
-          payload: 'Права доступа'
+          payload: 'Пользователи'
         })
       },
-    }
+    },
 
   ];
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -155,7 +159,8 @@ export default function Navigation({ children }) {
               }
               onClick={navItem.action}
             >
-              <navItem.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true"/>
+
+              {navItem.icon && <navItem.icon className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300" aria-hidden="true"/>}
               {navItem.name}
             </InertiaLink>
           );

@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import React, { Fragment } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import {XIcon} from '@heroicons/react/outline';
 
 export default function Modal({open, onClose, children}) {
 
@@ -32,7 +33,8 @@ export default function Modal({open, onClose, children}) {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full sm:p-6">
+            <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full sm:p-6 relative">
+              <XIcon className="w-5 h-5 cursor-pointer absolute -right-5 -top-5 text-white" onClick={onClose} />
               {children}
             </div>
           </Transition.Child>

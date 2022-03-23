@@ -3,6 +3,7 @@ import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-react';
 import { Switch } from '@headlessui/react';
 import { AdminContext } from '../reducer.jsx';
+import Access from '../Access';
 
 export default function EditCourse({ course }) {
   const { state, dispatch } = useContext(AdminContext);
@@ -14,13 +15,24 @@ export default function EditCourse({ course }) {
   }, []);
   const [courseImg, setCourseImg] = useState(course.image ?? '');
   const courseImgInput = useRef();
-  const { data, setData, post } = useForm({
+  const { data, setData, transform, post } = useForm({
     name: course.name ?? '',
     active: course.active ?? '',
     description: course.description ?? '',
     image: course.image ?? '',
-    options: course.options ?? null
+    options: course.options ?? null,
+    users: null
   });
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  /**
+  * I use this wrapper because setData isn't work properly like useState with Access component,
+  * and I have no idea how to fix it
+  */
+  const setSelectedUsersWrapper = (callback) => {
+    const callbackResult = callback(selectedUsers)
+    setSelectedUsers(callbackResult);
+    setData('users', JSON.stringify(callbackResult))
+  };
 
   const onCourseImgChange = (e) => {
     setData('image', e.target.files[0]);
@@ -131,6 +143,17 @@ export default function EditCourse({ course }) {
                 className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
               />
             </li>
+            <li className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <span className="text-sm font-medium text-gray-500 flex items-center sm:block">Курс доступен для</span>
+              <span className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <Access
+                  selectedUsers={selectedUsers}
+                  setSelectedUsers={setSelectedUsersWrapper}
+                  visibleTypes={['U', 'DM']}
+                  resource={`LC${course.id}`}
+                />
+              </span>
+            </li>
           </ul>
         </div>
       </div>
@@ -177,4 +200,3 @@ export default function EditCourse({ course }) {
       </div>
     </>);
 };
-  
