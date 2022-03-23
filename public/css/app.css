@@ -1718,13 +1718,13 @@ select {
 	--tw-border-opacity: 1;
 	border-color: rgba(99, 102, 241, var(--tw-border-opacity));
 }
-.border-blue-500 {
-	--tw-border-opacity: 1;
-	border-color: rgba(59, 130, 246, var(--tw-border-opacity));
-}
 .border-red-300 {
 	--tw-border-opacity: 1;
 	border-color: rgba(252, 165, 165, var(--tw-border-opacity));
+}
+.border-blue-500 {
+	--tw-border-opacity: 1;
+	border-color: rgba(59, 130, 246, var(--tw-border-opacity));
 }
 .border-indigo-200 {
 	--tw-border-opacity: 1;
@@ -2327,11 +2327,11 @@ select {
 .opacity-100 {
 	opacity: 1;
 }
-.opacity-30 {
-	opacity: 0.3;
-}
 .opacity-50 {
 	opacity: 0.5;
+}
+.opacity-30 {
+	opacity: 0.3;
 }
 .opacity-25 {
 	opacity: 0.25;
