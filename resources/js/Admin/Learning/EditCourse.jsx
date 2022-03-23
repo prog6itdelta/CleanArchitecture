@@ -142,13 +142,16 @@ export default function EditCourse({ course }) {
                 className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 border-gray-300 rounded-md"
               />
             </li>
-            <li className="bg-gray-50 px-4 py-5 sm:px-6">
-              <Access
-                selectedUsers={selectedUsers}
-                setSelectedUsers={setSelectedUsersWrapper}
-                visibleTypes={['U', 'DM']}
-                resource={`LC${course.id}`}
-              />
+            <li className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <span className="text-sm font-medium text-gray-500 flex items-center sm:block">Курс доступен для</span>
+              <span className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <Access
+                  selectedUsers={selectedUsers}
+                  setSelectedUsers={setSelectedUsersWrapper}
+                  visibleTypes={['U', 'DM']}
+                  resource={`LC${course.id}`}
+                />
+              </span>
             </li>
           </ul>
         </div>

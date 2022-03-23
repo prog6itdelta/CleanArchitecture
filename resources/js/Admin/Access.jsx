@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Inertia } from '@inertiajs/inertia';
+import Modal from '../Components/Modal.jsx';
 
 // hardcoded presets of user types
 const allUserTypes = [
@@ -73,6 +73,7 @@ export default function Access({
   const [searchStringBuffer, setSearchStringBuffer] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isResourceUsersFetched, setIsResourceUsersFetched] = useState(false);
+  const [showAccessModal, setShowAccessModal] = useState(false);
   const getCurrentUserType = () => userTypes.find((type) => type.current === true);
   const setCurrentUserType = (id) => {
     setUserTypes((prev) => {
@@ -110,114 +111,124 @@ export default function Access({
     });
   };
   const fetchUsers = (nextPage = false) => {
-    const currentUserType = getCurrentUserType();
-    if ((
-      !currentUserType.shown
-      || (searchString !== '' && currentUserType.search !== searchString)
-      || (searchString === '' && currentUserType.search !== false)
-      || nextPage) && !isLoading
-    ) {
+    setIsLoading(true);
+    const loading = isLoading; // to prevent access to isLoading from closure
+    new Promise((resolve, reject) => {
+      const currentUserType = getCurrentUserType();
+      if ((
+        !currentUserType.shown
+        || (searchString !== '' && currentUserType.search !== searchString)
+        || (searchString === '' && currentUserType.search !== false)
+        || nextPage) && !loading
+      ) {
 
-      // url for request
-      let resource;
-      switch (currentUserType.id) {
-        case 'U':
-          resource = route('access.getAllUsers');
-          break;
-        case 'P':
-          resource = 'positions'; // WARN replace when endpoint will be created
-          break;
-        case 'DM':
-          resource = route('access.getAllDepartments');
-          break;
-        case 'WG':
-          resource = 'working-groups'; // WARN replace when endpoint will be created
-          break;
-        case 'O':
-          resource = 'others'; // WARN replace when endpoint will be created
-          break;
-        default:
-          resource = route('access.getAllUsers');
-          break;
-      }
+        // url for request
+        let resource;
+        switch (currentUserType.id) {
+          case 'U':
+            resource = route('access.getAllUsers');
+            break;
+          case 'P':
+            resource = 'positions'; // WARN replace when endpoint will be created
+            break;
+          case 'DM':
+            resource = route('access.getAllDepartments');
+            break;
+          case 'WG':
+            resource = 'working-groups'; // WARN replace when endpoint will be created
+            break;
+          case 'O':
+            resource = 'others'; // WARN replace when endpoint will be created
+            break;
+          default:
+            resource = route('access.getAllUsers');
+            break;
+        }
 
-      // url params for request
-      const params = [
-        nextPage ? `page=${currentUserType.currentPage + 1}` : '',
-        searchString !== '' ? `search=${searchString}` : ''
-      ]
-        .reduce((str, el, idx) => {
-          if (el !== '') {
-            if (str !== '') {
-              return `${str}&${el}`;
+        // url params for request
+        const params = [
+          nextPage ? `page=${currentUserType.currentPage + 1}` : '',
+          searchString !== '' ? `search=${searchString}` : ''
+        ]
+          .reduce((str, el, idx) => {
+            if (el !== '') {
+              if (str !== '') {
+                return `${str}&${el}`;
+              }
+              return el;
             }
-            return el;
-          }
-          return str;
-        }, '');
+            return str;
+          }, '');
 
-      axios
-        .get(`${resource}?${params}`)
-        .then((allDataResp) => {
-          const {current_page: currentPage, last_page: lastPage} = allDataResp.data;
+        axios
+          .get(`${resource}?${params}`)
+          .then((allDataResp) => {
+            const {current_page: currentPage, last_page: lastPage} = allDataResp.data;
 
-          setUserTypes((prev) => {
-            const idx = prev.findIndex((type) => type.current === true);
-            prev[idx].shown = true;
-            if (searchString !== '' && searchString !== prev[idx].search) {
-              prev[idx].search = searchString;
-            } else if (searchString === '') {
-              prev[idx].search = false;
+            setUserTypes((prev) => {
+              const idx = prev.findIndex((type) => type.current === true);
+              prev[idx].shown = true;
+              if (searchString !== '' && searchString !== prev[idx].search) {
+                prev[idx].search = searchString;
+              } else if (searchString === '') {
+                prev[idx].search = false;
+              }
+              currentPage === lastPage
+                ? prev[idx].isLastPage = true
+                : prev[idx].isLastPage = false;
+              return [...prev];
+            });
+
+            let data;
+            if (currentResource !== false && !isResourceUsersFetched) {
+              axios
+                .get(`${route('access.getResourceUsers')}?resource=${currentResource}&actions=${JSON.stringify(actions)}`)
+                .then((selectedUsersResp) => {
+                  const receivedSelectedUsers = selectedUsersResp.data;
+
+                  setSelectedUsers((prev) =>[...prev, ...receivedSelectedUsers]);
+
+                  setIsResourceUsersFetched(true);
+
+                  data = allDataResp.data.data.map((item) => {
+                    item.selected = !!receivedSelectedUsers.find((user) => user.type === currentUserType.id && user.id === item.id);
+                    item.searchedBy = searchString;
+                    return item;
+                  });
+
+                  setData((prev) => {
+                    const filteredPrev = prev.filter((item) => item.searchedBy === searchString);
+                    return [...filteredPrev, ...data];
+                  });
+                });
+              resolve();
+            } else {
+              data = allDataResp.data.data.map((item) => {
+                item.selected = !!selectedUsers.find((user) => user.type === currentUserType.id && user.id === item.id);
+                item.searchedBy = searchString;
+                return item;
+              });
+
+              setData((prev) => {
+                const filteredPrev = prev.filter((item) => item.searchedBy === searchString);
+                return [...filteredPrev, ...data];
+              });
+              resolve();
             }
-            currentPage === lastPage
-              ? prev[idx].isLastPage = true
-              : prev[idx].isLastPage = false;
-            return [...prev];
           });
-
-          let data;
-          if (currentResource !== false && !isResourceUsersFetched) {
-            axios
-              .get(`${route('access.getResourceUsers')}?resource=${currentResource}&actions=${JSON.stringify(actions)}`)
-              .then((selectedUsersResp) => {
-                const receivedSelectedUsers = selectedUsersResp.data;
-
-                setSelectedUsers((prev) =>[...prev, ...receivedSelectedUsers]);
-
-                setIsResourceUsersFetched(true);
-
-                data = allDataResp.data.data.map((item) => {
-                  item.selected = !!receivedSelectedUsers.find((user) => user.type === currentUserType.id && user.id === item.id);
-                  item.searchedBy = searchString;
-                  return item;
-                });
-
-                setData((prev) => {
-                  const filteredPrev = prev.filter((item) => item.searchedBy === searchString);
-                  return [...filteredPrev, ...data];
-                });
-                setIsLoading(false);
-              })
-          } else {
-            data = allDataResp.data.data.map((item) => {
-              item.selected = !!selectedUsers.find((user) => user.type === currentUserType.id && user.id === item.id);
-              item.searchedBy = searchString;
-              return item;
-            });
-
-            setData((prev) => {
-              const filteredPrev = prev.filter((item) => item.searchedBy === searchString);
-              return [...filteredPrev, ...data];
-            });
-            setIsLoading(false);
-          }
-
-        });
-    }
+      } else {
+        reject();
+      }
+    })
+      .then(()=> {
+        setIsLoading(false);
+      })
+      .catch(()=> {
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
-    setIsLoading(true);
     fetchUsers();
   }, [userTypes, searchString]);
 
@@ -319,15 +330,29 @@ export default function Access({
 
   return (
     <>
+      <button
+        type="button"
+        className="mt-3 sm:mt-0 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
+        onClick={()=>setShowAccessModal(true)}
+      >
+        Назначить пользователей
+      </button>
+      <Modal
+        open={showAccessModal}
+        onClose={()=>setShowAccessModal(false)}
+      >
       <UserGroupSelector/>
       <input
         type="text"
         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300"
         placeholder="Search"
         value={searchStringBuffer}
-        onChange={(e) => setSearchStringBuffer(e.target.value)}
+        onChange={(e) => {
+          setSearchStringBuffer(e.target.value);
+        }}
       />
       <DataList/>
+      </Modal>
     </>
   );
 }
