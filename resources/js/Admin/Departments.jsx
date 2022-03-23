@@ -46,7 +46,7 @@ export default function Departments({ departments }) {
             name: 'edit',
             type: 'edit',
             action: () => {
-              Inertia.get(route('admin.departments.edit',  item.id));
+              Inertia.get(route('admin.department.edit',  item.id));
             },
             disabled: false,
           },
@@ -54,7 +54,7 @@ export default function Departments({ departments }) {
             name: 'delete',
             type: 'delete',
             action: () => {
-              Inertia.post(route('admin.departments.delete',  item.id), {}, {
+              Inertia.post(route('admin.department.delete',  item.id), {}, {
                 onSuccess: () => {
                   dispatch({
                     type: 'SHOW_NOTIFICATION',
@@ -101,7 +101,7 @@ export default function Departments({ departments }) {
               focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm
               bg-indigo-500 hover:bg-indigo-700"
           onClick={() => {
-            Inertia.get(route('admin.departments.create'));
+            Inertia.get(route('admin.department.create'));
           }}
         >Add Department
         </button>

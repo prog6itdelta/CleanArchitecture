@@ -68,19 +68,19 @@ Route::middleware(['auth'])->group(function () {
             ->name('admin.departments');
 
         Route::get('/departments/create', [AdminController::class, 'editDepartment'])
-            ->name('admin.departments.create');
+            ->name('admin.department.create');
 
         Route::post('/departments/create', [AdminController::class, 'createDepartment'])
-            ->name('admin.departments.create');
+            ->name('admin.department.create');
 
         Route::get('/departments/{id}', [AdminController::class, 'editDepartment'])
-            ->name('admin.departments.edit');
+            ->name('admin.department.edit');
 
         Route::post('/departments/{id}', [AdminController::class, 'saveEditedDepartment'])
-            ->name('admin.departments.edit');
+            ->name('admin.department.edit');
 
         Route::post('/departments/{id}/delete', [AdminController::class, 'deleteDepartment'])
-            ->name('admin.departments.delete');
+            ->name('admin.department.delete');
 
 
         // Learn package
