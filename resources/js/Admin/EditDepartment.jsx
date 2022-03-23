@@ -33,9 +33,6 @@ export default function EditDepartments({ department, allDepartaments, allUsers 
     setData('head', auth.user.id);
   }
 
-  console.log(auth);
-  console.log(data);
-
   useEffect(() => {
     dispatch({
       type: 'CHANGE_HEADER', payload: department.id === undefined ? 'Создание  департамента' : `Редактирование департамента`
@@ -92,7 +89,7 @@ export default function EditDepartments({ department, allDepartaments, allUsers 
                 onClick={() => {
                   if (department.id !== undefined) { post(route('admin.departments.edit', department.id), { data });
                   } else {
-                    post(route('admin.departments.create'), {
+                    post(route('admin.department.create'), {
                       data, onSuccess: (res) => {
                         dispatch({
                           type: 'SHOW_NOTIFICATION',

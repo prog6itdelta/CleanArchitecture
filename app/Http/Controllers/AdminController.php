@@ -24,7 +24,7 @@ class AdminController extends BaseController
     {
         $departments = DepartmentService::getDepartments();
 
-        return Inertia::render('Admin/Department', compact('departments'));
+        return Inertia::render('Admin/Departments', compact('departments'));
     }
 
     public function editDepartment($id = null)
