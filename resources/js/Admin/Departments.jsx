@@ -20,12 +20,12 @@ export default function Departments({ departments }) {
     },
     {
       Header: 'Head',
-      accessor: 'head',
+      accessor: 'head_name',
       Filter: '',
     },
     {
       Header: 'Parent',
-      accessor: 'parent',
+      accessor: 'parent_name',
       Filter: '',
     },
     {

@@ -16,7 +16,9 @@ class Department extends Model
     ];
 
     protected $appends = [
-        'type'
+        'type',
+        'head_name',
+        'parent_name'
     ];
 
     /**
@@ -27,6 +29,16 @@ class Department extends Model
     public function getTypeAttribute()
     {
         return 'DM';
+    }
+
+    public function getHeadNameAttribute()
+    {
+        return User::find($this->head)->first()->name;
+    }
+
+    public function getParentNameAttribute()
+    {
+        return Department::find($this->parent)->first()->name;
     }
 
     public function users()
