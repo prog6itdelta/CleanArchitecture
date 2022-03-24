@@ -2,13 +2,14 @@ import React from 'react';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import { Disclosure, Transition } from '@headlessui/react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 export default function List({ listItems, type, ...props }) {
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
   }
-
   const disclousureListClasses = 'mx-auto space-y-3';
   const disclosureClasses = 'overflow-hidden bg-indigo-100 rounded-lg';
   // const disclosureButtonClasses = 'text-left w-full flex justify-between items-start text-gray-400';
@@ -25,15 +26,42 @@ export default function List({ listItems, type, ...props }) {
           <li key={listItem.id} >
             <div className="space-y-4">
               <InertiaLink href={route('course', listItem.id)}>
-                <div className="aspect-w-3 aspect-h-2">
-                  <img className="object-cover shadow-lg rounded-lg"
-                    src={
-                      listItem.image
-                        ? listItem.image
-                        : '/img/noimage.jpg'
-                    }
-                    alt={listItem.name}
-                  />
+                <div className=" relative">
+                  <div className='aspect-w-3 aspect-h-2'>
+                    <img className="object-cover shadow-lg rounded-lg"
+                      src={
+                        listItem.image
+                          ? listItem.image
+                          : '/img/noimage.jpg'
+                      }
+                      alt={listItem.name}
+                    />
+                  </div>
+                  <div className='absolute bottom-0 right-0 w-16 h-16 bg-white p-2 rounded-lg opacity-[90%] text-xl'>
+                    <CircularProgressbar 
+                    value={listItem.progress} 
+                    text={`${listItem.progress}%`} 
+                    strokeWidth={11}
+                    styles={{
+                      text: {
+                        fontSize: '26px',
+                        fontWeight: '900',
+                        fill: listItem.progress < 25 
+                          ?  '#dc2626' 
+                          :  listItem.progress < 75 
+                            ? '#f59e0b'
+                            : '#10b981'
+                      },   
+                      path: {
+                        stroke: listItem.progress < 25 
+                        ?  '#dc2626' 
+                        :  listItem.progress < 75 
+                          ? '#f59e0b'
+                          : '#10b981'
+                      }
+                    }}
+                    />
+                  </div>
                 </div>
 
                 <div className="text-lg leading-6 font-medium py-3">

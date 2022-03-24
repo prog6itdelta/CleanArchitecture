@@ -6,6 +6,7 @@ use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\SortScope;
+use Illuminate\Support\Facades\Auth;
 
 class Lesson extends Model
 {
@@ -20,6 +21,11 @@ class Lesson extends Model
         'detail_text',
         'options',
     ];
+
+    public function journalLessonForCurrentUser()
+    {
+        return $this->hasOne(JournalLesson::class)->where('user_id', Auth::user()->id);
+    }
 
     public function courses()
     {
