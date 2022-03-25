@@ -204,7 +204,10 @@ class LearnService implements LearnServiceInterface
     {
         $rep = new LessonRepository();
         $lessons = $rep->all();
-        return $lessons;
+        foreach($lessons as $lesson) {
+            $lesson->courses = $rep->courses($lesson->id);
+        }
+        return $lessons->toArray();
     }
 
     public static function getAllQuestions()

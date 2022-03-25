@@ -110,6 +110,13 @@ class LearnAdminController extends BaseController
         return Inertia::render('Admin/Learning/Lessons', compact('lessons'));
     }
 
+    public function lessonsAll(Request $request)
+    {
+        $lessons = LearnService::getLessons();
+        $lessons = array_values($lessons);
+        return Inertia::render('Admin/Learning/LessonsAll', compact('lessons'));
+    }
+
     public function editLesson(Request $request, $cid, $lid = null)
     {
         $lesson = [];

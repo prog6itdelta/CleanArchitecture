@@ -109,6 +109,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get( '/courses/{cid}/lessons', [LearnAdminController::class, 'lessons'])
             ->name('admin.lessons');
 
+        Route::get( '/lessons', [LearnAdminController::class, 'lessonsAll'])
+            ->name('admin.lessons.all');
+
         Route::get('/courses/{cid}/lessons/create', [LearnAdminController::class, 'editLesson'])
             ->name('admin.lesson.create');
 
