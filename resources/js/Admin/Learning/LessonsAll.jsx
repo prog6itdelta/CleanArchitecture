@@ -25,6 +25,13 @@ export default function Lessons({ lessons }) {
       Cell: StatusCell,
     },
     {
+      Header: 'Courses',
+      accessor: (row) => row.courses.map((item) => item.name).join(', '),
+      Filter: '',
+      width: 250,
+      Cell: OneLineCell,
+    },
+    {
       Header: 'ACTIONS',
       accessor: 'rowActions',
       disableFilters: true,
