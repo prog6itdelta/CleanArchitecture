@@ -41,7 +41,7 @@ export default function Answers({ answers }) {
             name: 'edit',
             type: 'edit',
             action: () => {
-              Inertia.get(route('admin.answer.edit', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id, item.id]));
+              Inertia.get(route('admin.answer.edit', [nav.currentLesson.id, nav.currentQuestion.id, item.id]));
             },
             disabled: false,
           },
@@ -49,7 +49,7 @@ export default function Answers({ answers }) {
             name: 'delete',
             type: 'delete',
             action: () => {
-              Inertia.post(route('admin.answer.delete', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id, item.id]), {}, {
+              Inertia.post(route('admin.answer.delete', [nav.currentLesson.id, nav.currentQuestion.id, item.id]), {}, {
                 onSuccess: () => {
                   dispatch({
                     type: 'SHOW_NOTIFICATION',
@@ -96,7 +96,7 @@ export default function Answers({ answers }) {
             focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm
             bg-indigo-500 hover:bg-indigo-700"
         onClick={() => {
-          Inertia.get(route('admin.answer.create', [nav.currentCourse.id, nav.currentLesson.id, nav.currentQuestion.id]));
+          Inertia.get(route('admin.answer.create', [nav.currentLesson.id, nav.currentQuestion.id]));
         }}
       >Add Answer
       </button>

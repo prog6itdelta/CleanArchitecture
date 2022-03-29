@@ -103,33 +103,23 @@ class LearnAdminController extends BaseController
         ]);
     }
 
-    public function lessons(Request $request, $cid)
-    {
-        $course = LearnService::getCourse($cid);
-        $lessons = array_values($course->lessons);
-        return Inertia::render('Admin/Learning/Lessons', compact('lessons'));
-    }
-
-    public function lessonsAll(Request $request)
+    public function lessons(Request $request)
     {
         $lessons = LearnService::getLessons();
         $lessons = array_values($lessons);
         return Inertia::render('Admin/Learning/LessonsAll', compact('lessons'));
     }
 
-    public function editLesson(Request $request, $cid, $lid = null)
+    public function editLesson(Request $request, $lid = null)
     {
         $lesson = [];
         if ($lid !== null) {
-            $course = LearnService::getCourse($cid);
-            $lesson = array_values(array_filter( $course->lessons, function ($item) use ($lid) {
-                return $item->id === (int) $lid;
-            }))[0];
+            $lesson = (array)LearnService::getLesson($lid);
         }
         return Inertia::render('Admin/Learning/EditLesson', compact('lesson'));
     }
 
-    public function saveEditedLesson(Request $request, $cid, $lid)
+    public function saveEditedLesson(Request $request, $lid)
     {
         $changedFields = [];
         $input = $request->collect();
@@ -143,7 +133,7 @@ class LearnAdminController extends BaseController
             ['id' => $lid],
             $changedFields
         );
-        return redirect()->route('admin.lessons', [$cid])->with([
+        return redirect()->route('admin.lessons')->with([
             'position' => 'bottom',
             'type' => 'success',
             'header' => 'Success!',
@@ -151,15 +141,14 @@ class LearnAdminController extends BaseController
         ]);
     }
 
-    public function deleteLesson(Request $request, $cid, $lid)
+    public function deleteLesson(Request $request, $lid)
     {
         Lesson::find($lid)->delete();
-        return redirect()->route('admin.lessons', [$cid]);
+        return redirect()->route('admin.lessons');
     }
 
-    public function createLesson(Request $request, $cid)
+    public function createLesson(Request $request)
     {
-        $course = Course::find($cid);
         $lesson = new Lesson;
 
         $input = $request->collect();
@@ -170,10 +159,12 @@ class LearnAdminController extends BaseController
             }
         }
 
-        $course->lessons()->save($lesson);
+        $lesson->save();
+
+//        $course->lessons()->save($lesson);
         // TODO create standalone access rights element instead of adding rules directly
         Enforcer::addPolicy('AU', "LL{$lesson->id}", 'read');
-        return redirect()->route('admin.lessons', [$cid])->with([
+        return redirect()->route('admin.lessons')->with([
             'position' => 'bottom',
             'type' => 'success',
             'header' => 'Success!',
@@ -181,13 +172,13 @@ class LearnAdminController extends BaseController
         ]);
     }
 
-    public function questions(Request $request, $cid, $lid)
+    public function questions(Request $request, $lid)
     {
         $questions = Question::where('lesson_id', $lid)->get();
         return Inertia::render('Admin/Learning/Questions', compact('questions'));
     }
 
-    public function editQuestion(Request $request, $cid, $lid, $qid = null)
+    public function editQuestion(Request $request, $lid, $qid = null)
     {
         $question = [];
         if ($qid !== null) {
@@ -199,7 +190,7 @@ class LearnAdminController extends BaseController
         return Inertia::render('Admin/Learning/EditQuestion', compact('question'));
     }
 
-    public function saveEditedQuestion(Request $request, $cid, $lid, $qid)
+    public function saveEditedQuestion(Request $request, $lid, $qid)
     {
         $changedFields = [];
         $input = $request->collect();
@@ -213,7 +204,7 @@ class LearnAdminController extends BaseController
             ['id' => $qid],
             $changedFields
         );
-        return redirect()->route('admin.questions', [$cid, $lid])->with([
+        return redirect()->route('admin.questions', [$lid])->with([
             'position' => 'bottom',
             'type' => 'success',
             'header' => 'Success!',
@@ -221,13 +212,13 @@ class LearnAdminController extends BaseController
         ]);
     }
 
-    public function deleteQuestion(Request $request, $cid, $lid, $qid)
+    public function deleteQuestion(Request $request, $lid, $qid)
     {
         Question::find($qid)->delete();
-        return redirect()->route('admin.questions', [$cid, $lid]);
+        return redirect()->route('admin.questions', [$lid]);
     }
 
-    public function createQuestion(Request $request, $cid, $lid)
+    public function createQuestion(Request $request, $lid)
     {
         $lesson = Lesson::find($lid);
         $question = new Question;
@@ -241,7 +232,7 @@ class LearnAdminController extends BaseController
         }
 
         $lesson->questions()->save($question);
-        return redirect()->route('admin.questions', [$cid, $lid])->with([
+        return redirect()->route('admin.questions', [$lid])->with([
             'position' => 'bottom',
             'type' => 'success',
             'header' => 'Success!',
@@ -249,13 +240,13 @@ class LearnAdminController extends BaseController
         ]);
     }
 
-    public function answers(Request $request, $cid, $lid, $qid)
+    public function answers(Request $request, $lid, $qid)
     {
         $answers = Answer::where('question_id', $qid)->get();
         return Inertia::render('Admin/Learning/Answers', compact('answers'));
     }
 
-    public function editAnswer(Request $request, $cid, $lid, $qid, $aid = null)
+    public function editAnswer(Request $request, $lid, $qid, $aid = null)
     {
         $answer = [];
         if ($aid !== null) {
@@ -267,7 +258,7 @@ class LearnAdminController extends BaseController
         return Inertia::render('Admin/Learning/EditAnswer', compact('answer'));
     }
 
-    public function saveEditedAnswer(Request $request, $cid, $lid, $qid, $aid)
+    public function saveEditedAnswer(Request $request, $lid, $qid, $aid)
     {
         $changedFields = [];
         $input = $request->collect();
@@ -281,7 +272,7 @@ class LearnAdminController extends BaseController
             ['id' => $aid],
             $changedFields
         );
-        return redirect()->route('admin.answers', [$cid, $lid, $qid])->with([
+        return redirect()->route('admin.answers', [$lid, $qid])->with([
             'position' => 'bottom',
             'type' => 'success',
             'header' => 'Success!',
@@ -289,13 +280,13 @@ class LearnAdminController extends BaseController
         ]);
     }
 
-    public function deleteAnswer(Request $request, $cid, $lid, $qid, $aid)
+    public function deleteAnswer(Request $request, $lid, $qid, $aid)
     {
         Answer::find($aid)->delete();
-        return redirect()->route('admin.answers', [$cid, $lid, $qid]);
+        return redirect()->route('admin.answers', [$lid, $qid]);
     }
 
-    public function createAnswer(Request $request, $cid, $lid, $qid)
+    public function createAnswer(Request $request, $lid, $qid)
     {
         $question = Question::find($qid);
         $answer = new Answer;
@@ -309,7 +300,7 @@ class LearnAdminController extends BaseController
         }
 
         $question->answers()->save($answer);
-        return redirect()->route('admin.answers', [$cid, $lid, $qid])->with([
+        return redirect()->route('admin.answers', [$lid, $qid])->with([
             'position' => 'bottom',
             'type' => 'success',
             'header' => 'Success!',

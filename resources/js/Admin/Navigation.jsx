@@ -94,7 +94,7 @@ export default function Navigation({ children }) {
         {
           name: 'Уроки',
           icon: null,
-          href: route('admin.lessons.all'),
+          href: route('admin.lessons'),
           current: true,
           action: () => {
             dispatch({

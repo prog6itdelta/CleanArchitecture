@@ -149,9 +149,9 @@ export default function EditQuestion({ question }) {
           className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-3 sm:text-sm"
           onClick={() => {
             if (question.id !== undefined) {
-              post(route('admin.question.edit', [nav.currentCourse.id, nav.currentLesson.id, question.id]), { data });
+              post(route('admin.question.edit', [nav.currentLesson.id, question.id]), { data });
             } else {
-              post(route('admin.question.create', [nav.currentCourse.id, nav.currentLesson.id]),
+              post(route('admin.question.create', nav.currentLesson.id),
                 {
                   data, onSuccess: () => {
                     dispatch(
@@ -177,7 +177,7 @@ export default function EditQuestion({ question }) {
           <button
             type="button"
             className="mt-3 sm:mt-0 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
-            onClick={() => Inertia.get(route('admin.answers', [nav.currentCourse.id, nav.currentLesson.id, question.id]))}
+            onClick={() => Inertia.get(route('admin.answers', [nav.currentLesson.id, question.id]))}
           >
             Показать ответы
           </button>
@@ -186,7 +186,7 @@ export default function EditQuestion({ question }) {
           type="button"
           className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
           onClick={() => {
-            Inertia.get(route('admin.questions', [nav.currentCourse.id, nav.currentLesson.id]));
+            Inertia.get(route('admin.questions', [nav.currentLesson.id]));
           }}
         >
           Отмена

@@ -49,7 +49,7 @@ export default function Lessons({ lessons }) {
             name: 'edit',
             type: 'edit',
             action: () => {
-              Inertia.get(route('admin.lesson.edit', [nav.currentCourse.id, item.id]));
+              Inertia.get(route('admin.lesson.edit', item.id));
             },
             disabled: false,
           },
@@ -57,7 +57,7 @@ export default function Lessons({ lessons }) {
             name: 'delete',
             type: 'delete',
             action: () => {
-              Inertia.post(route('admin.lesson.delete', [nav.currentCourse.id, item.id]), {}, {
+              Inertia.post(route('admin.lesson.delete', [item.id]), {}, {
                 onSuccess: () => {
                   dispatch({
                     type: 'SHOW_NOTIFICATION',
@@ -69,7 +69,7 @@ export default function Lessons({ lessons }) {
                     }
                   });
                   setTimeout(() => dispatch({ type: 'HIDE_NOTIFICATION' }), 3000);
-                  Inertia.get(route('admin.lessons', nav.currentCourse.id));
+                  Inertia.get(route('admin.lessons'));
                 }
               });
             },
@@ -104,7 +104,7 @@ export default function Lessons({ lessons }) {
             focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm
             bg-indigo-500 hover:bg-indigo-700"
         onClick={() => {
-          Inertia.get(route('admin.lesson.create', nav.currentCourse.id));
+          Inertia.get(route('admin.lesson.create'));
         }}
       >Add Lesson
       </button>
