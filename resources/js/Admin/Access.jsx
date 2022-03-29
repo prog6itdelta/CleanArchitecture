@@ -126,13 +126,13 @@ export default function Access({
         let resource;
         switch (currentUserType.id) {
           case 'U':
-            resource = route('access.getAllUsers');
+            resource = route('getAllUsers');
             break;
           case 'P':
             resource = 'positions'; // WARN replace when endpoint will be created
             break;
           case 'DM':
-            resource = route('access.getAllDepartments');
+            resource = route('getAllDepartments');
             break;
           case 'WG':
             resource = 'working-groups'; // WARN replace when endpoint will be created
@@ -141,7 +141,7 @@ export default function Access({
             resource = 'others'; // WARN replace when endpoint will be created
             break;
           default:
-            resource = route('access.getAllUsers');
+            resource = route('getAllUsers');
             break;
         }
 
