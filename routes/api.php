@@ -27,3 +27,5 @@ Route::get('/resource-users', [AccessController::class, 'getResourceUsers'])->na
 // routes to provide search results
 Route::get('/users', [SearchController::class, 'getAllUsers'])->name('getAllUsers');
 Route::get('/departments', [SearchController::class, 'getAllDepartments'])-> name('getAllDepartments');
+Route::get('/courses', [SearchController::class, 'getAllCourses'])-> name('getAllCourses');
+Route::get('/lessons', [SearchController::class, 'getAllLessons'])-> name('getAllLessons');
