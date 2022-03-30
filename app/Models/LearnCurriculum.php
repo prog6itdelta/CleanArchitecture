@@ -11,6 +11,10 @@ class LearnCurriculum extends Model
 
     protected $table = 'learn_course_curriculum';
 
+    protected $fillable = [
+        'order'
+    ];
+
     public function course()
     {
         return $this->hasMany(Curriculum::class);
