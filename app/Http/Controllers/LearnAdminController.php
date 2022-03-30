@@ -373,8 +373,9 @@ class LearnAdminController extends BaseController
         );
         LearnCurriculum::where('curriculum_id', $id)->delete();
         $curr = Curriculum::find($id);
-        foreach ($changedFields['courses'] as $item) {
-            $curr->courses()->attach($item);
+
+        foreach ($changedFields['courses'] as $index => $item) {
+            $curr->courses()->attach([$item => ['order' => $index + 1]]);
         }
 
         $curr->save();
