@@ -33,7 +33,7 @@ class CreateLearnTables extends Migration
             $table->json('options')->nullable();
             $table->timestamps();
 
-            $table->foreign('course_group_id')->references('id')->on('learn_course_group')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('course_group_id')->references('id')->on('learn_course_group')->onDelete('set null')->onUpdate('cascade');
         });
 
         Schema::create('learn_lessons', function (Blueprint $table) {
@@ -113,14 +113,13 @@ class CreateLearnTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('learn_course_group');
-        Schema::dropIfExists('learn_courses');
-        Schema::dropIfExists('learn_lessons');
-        Schema::dropIfExists('learn_course_lesson');
-        Schema::dropIfExists('learn_questions');
         Schema::dropIfExists('learn_answers');
+        Schema::dropIfExists('learn_questions');
+        Schema::dropIfExists('learn_course_lesson');
+        Schema::dropIfExists('learn_lessons');
+        Schema::dropIfExists('learn_course_curriculum');
+        Schema::dropIfExists('learn_courses');
+        Schema::dropIfExists('learn_course_group');
         Schema::dropIfExists('learn_curriculums');
-        Schema::dropIfExists('learn_course_curriculums');
-
     }
 }

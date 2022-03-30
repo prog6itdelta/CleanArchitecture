@@ -1,4 +1,4 @@
-#Installation
+# Installation
 
 composer install
 yarn
@@ -7,7 +7,7 @@ yarn watch
 add to /etc/hosts   
 127.0.0.1 tenant1.localhost
 
-##Database
+## Database
 
 CREATE DATABASE landlord DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;  
 CREATE USER 'landlord'@'localhost' IDENTIFIED BY '123';  
@@ -21,7 +21,7 @@ GRANT ALL PRIVILEGES ON db_tenant2.* TO 'tenant_user'@'localhost';
 
 FLUSH PRIVILEGES;
 
-##Laravel
+## Laravel
 
 php artisan key:generate  
 php artisan migrate --path=database/migrations/landlord --database=landlord --seed  
@@ -29,19 +29,22 @@ php artisan tenants:artisan "migrate --database=tenant --seed"
 php artisan storage:link  
 
 
-##Bitrix24
+## Bitrix24
 
-for local dev, add to .env (from Paroler)
+**for local dev**, add to .env (from Paroler)
 BITRIX24_CLIENT_ID='client_id_here'
 BITRIX24_CLIENT_SECRET='secret_here'
 
-for prod, add to landlord database, table 'tenants':
-{"integration":
-  {"type": "bitrix24", "endpoint": null, "redirect": null, "client_id": null, "client_secret": null}
-}
+**for prod**, add to landlord database, table 'tenants':
+{"integration":  
+  {  "type": "bitrix24",  
+  "endpoint": null,  
+  "redirect": null,  
+  "client_id": null,  
+  "client_secret": null }}   
 Needed data from clients B24
 
-php artisan serve --port=8002
-User:
-user@aa.com  
+php artisan serve --port=8002  
+User:  
+user@aa.com   
 123

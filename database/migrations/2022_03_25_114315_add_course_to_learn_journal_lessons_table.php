@@ -13,10 +13,10 @@ class AddCourseToLearnJournalLessonsTable extends Migration
      */
     public function up()
     {
-        Schema::table('learn_journal_lessons', function (Blueprint $table) {
-            $table->unsignedBigInteger('course_id')->after('user_id');
-            $table->foreign('course_id')->references('id')->on('learn_courses')->onDelete('cascade')->onUpdate('cascade');
-        });
+        // Schema::table('learn_journal_lessons', function (Blueprint $table) {
+        //     $table->unsignedBigInteger('course_id')->after('user_id');
+        //     $table->foreign('course_id')->references('id')->on('learn_courses')->onDelete('cascade')->onUpdate('cascade');
+        // });
     }
 
     /**
@@ -26,8 +26,8 @@ class AddCourseToLearnJournalLessonsTable extends Migration
      */
     public function down()
     {
-        Schema::table('learn_journal_lessons', function (Blueprint $table) {
-            $table->dropColumn('course_id');
-        });
+        // Schema::table('learn_journal_lessons', function (Blueprint $table) {
+        //     $table->dropColumn('course_id');
+        // });
     }
 }
