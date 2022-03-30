@@ -201,7 +201,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Bitrix24 integration
-//Route::get('/bitrix24', fn() => Socialite::driver('bitrix24')->redirect())
+// Route::get('/bitrix24', fn() => Socialite::driver('bitrix24')->redirect())
 //    ->name('bitrix24');
 Route::get('/auth/bitrix24/callback', function (Request $request) {
     \App\Packages\Common\Infrastructure\Integrations\IntegrationService::setConfig();
@@ -226,4 +226,3 @@ Route::get('/auth/bitrix24/callback', function (Request $request) {
 
 
 require __DIR__ . '/auth.php';
-
