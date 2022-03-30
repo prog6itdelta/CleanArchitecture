@@ -2,6 +2,7 @@
 /public/js/app.*
 /public/css/app.*
 /public/storage
+/public/images
 /storage/*.key
 /vendor
 .env
