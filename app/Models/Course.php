@@ -27,6 +27,8 @@ class Course extends Model
         'progress'
     ];
 
+    //note: now getProgressAttribute() counts progress all lessons even lesson is hidden
+
     public function getProgressAttribute()
     {
         $all_lessons = $this->lessons()->with('journalLessonForCurrentUser')->get();
