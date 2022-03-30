@@ -196,6 +196,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/user/{id}/delete', [AdminController::class, 'deleteUser'])
             ->name('admin.user.delete');
 
+        Route::get('/respondents_answers/list', [LearnAdminController::class, 'showAllRespondentsAnswersList'])
+            ->name('admin.respondents_answers.list');
+
     });
 
 });
