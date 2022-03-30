@@ -17,8 +17,28 @@ class Curriculum extends Model
         'description'
     ];
 
+    protected $appends = [
+        'progress'
+    ];
+
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'learn_course_curriculum');
     }
+
+    // Note: now getProgressAttribute() counts progress even course is hidden
+
+    public function getProgressAttribute()
+    {
+        $all_courses = $this->courses()->get();
+        $total = 0;
+        $course_progress = 0;
+        foreach ($all_courses as $course)
+        {
+            $course_progress += $course->progress;
+            $total += 100;
+        }
+        return intval(floatval($course_progress / $total) * 100);
+    }
+
 }
