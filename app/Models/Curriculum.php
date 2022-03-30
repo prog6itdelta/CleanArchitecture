@@ -23,7 +23,7 @@ class Curriculum extends Model
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'learn_course_curriculum');
+        return $this->belongsToMany(Course::class, 'learn_course_curriculum')->orderBy('order')->withPivot('order', 'id');
     }
 
     // Note: now getProgressAttribute() counts progress even course is hidden

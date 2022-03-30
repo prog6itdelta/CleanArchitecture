@@ -359,6 +359,7 @@ class LearnAdminController extends BaseController
     {
         $changedFields = [];
         $input = $request->collect();
+        $order = $request->get('order');
 
         foreach ($input as $key => $item) {
             if ($key !== 'id' && $item !== null) {
@@ -372,11 +373,20 @@ class LearnAdminController extends BaseController
         );
         LearnCurriculum::where('curriculum_id', $id)->delete();
         $curr = Curriculum::find($id);
-        foreach ($changedFields['courses'] as $item) {
-            $curr->courses()->attach($item);
+
+        foreach ($changedFields['courses'] as $index => $item) {
+            $curr->courses()->attach([$item => ['order' => $index + 1]]);
         }
 
         $curr->save();
+
+        foreach ($order as $item) {
+            $currPivot = LearnCurriculum::where('curriculum_id', $item['curriculum_id'])
+                                        ->where('course_id', $item['course_id'])
+                                        ->first();
+            $currPivot->order = $item['order'];
+            $currPivot->save();
+        }
 
         return redirect()->route('admin.curriculums')->with([
             'position' => 'bottom',
