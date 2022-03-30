@@ -393,12 +393,28 @@ class LearnAdminController extends BaseController
         return redirect()->route('admin.curriculums');
     }
 
-    /**
-     * Выводит список ответов всех респондентов
-     */
-    public function showAllRespondentsAnswersList()
+    public function respondentsAnswers()
     {
-        $rows = JournalLesson::all();
-        return Inertia::render('Admin/Learning/RespondentsAnswers', compact('rows','journal_lesson_rows'));
+        $answers = JournalLesson::where('status', 'pending')->get();
+        $respondents = [];
+         foreach ($answers as $answer) {
+           $respondents[] = [
+               'user' => [
+                   'id' => $answer->user->id,
+                   'name' => $answer->user->name,
+               ],
+               'course' => [
+                   'id' => $answer->course->id,
+                   'name' => $answer->course->name,
+               ],
+               'lesson' => [
+                   'id' => $answer->lesson->id,
+                   'name' => $answer->lesson->name,
+               ],
+               'created_at' => $answer->created_at->toDateString(),
+           ];
+       }
+        return Inertia::render('Admin/Learning/RespondentsAnswers', compact('respondents'));
     }
+    
 }

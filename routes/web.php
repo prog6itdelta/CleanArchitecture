@@ -196,8 +196,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/user/{id}/delete', [AdminController::class, 'deleteUser'])
             ->name('admin.user.delete');
 
-        Route::get('/respondents_answers/list', [LearnAdminController::class, 'showAllRespondentsAnswersList'])
-            ->name('admin.respondents_answers.list');
+        Route::get('/respondent-answers', [LearnAdminController::class, 'respondentsAnswers'])
+            ->name('admin.respondent.answers');
+
+        // Route::get('/respondent-answer/{id}', [LearnAdminController::class, 'respondentAnswer'])
+        //     ->name('admin.respondent.answer.');
 
     });
 

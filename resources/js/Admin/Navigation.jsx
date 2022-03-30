@@ -103,6 +103,18 @@ export default function Navigation({ children }) {
             })
           },
         },
+        {
+          name: 'Ответы учеников',
+          icon: null,
+          href: route('admin.respondent.answers'),
+          current: true,
+          action: () => {
+            dispatch({
+              type: 'CHANGE_HEADER',
+              payload: 'Ответы учеников'
+            })
+          },
+        },
       ],
     },
     {

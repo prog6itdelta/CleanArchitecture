@@ -1,5 +1,4 @@
 import React from 'react';
-import { Inertia } from '@inertiajs/inertia';
 
 const ButtonCell = ({ value: {onClick} }) => {
   return (
@@ -9,7 +8,7 @@ const ButtonCell = ({ value: {onClick} }) => {
             focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm
             bg-indigo-500 hover:bg-indigo-700"
         onClick={onClick}
-    >Check Answers
+    >Check
   </button>
   );
 };
