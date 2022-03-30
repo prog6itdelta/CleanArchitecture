@@ -84,7 +84,7 @@ class LearnController extends BaseController
 
     public function checkLesson(Request $request, $cid, $id)
     {
-        $result = LearnService::checkLesson($id, $request->all());
+        $result = LearnService::checkLesson($cid, $id, $request->all());
 
         if ($result) {
             $nextLesson = LearnService::nextLesson($cid, $id);

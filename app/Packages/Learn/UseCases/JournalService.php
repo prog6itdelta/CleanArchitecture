@@ -53,10 +53,11 @@ class JournalService
 
     /**
      * Store answers for a lesson
+     * @param int $cid
      * @param int $lid
      * @param \stdClass $answers
      */
-    public static function storeAnswers(int $lid, array $answers): void
+    public static function storeAnswers(int $cid, int $lid, array $answers): void
     {
         $rec = self::getLesson($lid);
         $user_id = auth()->user()->id;
@@ -64,6 +65,7 @@ class JournalService
 
         $data = [
             'user_id' => $user_id,
+            'course_id' => $cid,
             'lesson_id' => $lid,
             'tries' => $tries,
             'answers' => json_encode($answers),
