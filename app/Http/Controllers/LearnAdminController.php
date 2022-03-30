@@ -9,6 +9,7 @@ use App\Models\Question;
 use App\Models\Answer;
 use App\Models\Curriculum;
 use App\Models\LearnCurriculum;
+use App\Models\JournalLesson;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
@@ -392,4 +393,12 @@ class LearnAdminController extends BaseController
         return redirect()->route('admin.curriculums');
     }
 
+    /**
+     * Выводит список ответов всех респондентов
+     */
+    public function showAllRespondentsAnswersList()
+    {
+        $rows = JournalLesson::all();
+        return Inertia::render('Admin/Learning/RespondentsAnswers', compact('rows','journal_lesson_rows'));
+    }
 }
