@@ -65,7 +65,7 @@ class LearnService implements LearnServiceInterface
 
         return $list;
     }
-    
+
     public static function getCurriculum(int $id): Curriculum
     {
         $rep = new CurriculumRepository();
@@ -107,11 +107,12 @@ class LearnService implements LearnServiceInterface
 
     /**
      * Check the answers of the question and
+     * @param int $cid
      * @param int $id
      * @param $data
      * @return bool|void
      */
-    public static function checkLesson(int $id, $data)
+    public static function checkLesson(int $cid, int $id, $data)
     {
         // check permissions
         $self = LearnService::getInstance();
@@ -161,7 +162,7 @@ class LearnService implements LearnServiceInterface
         }
 
         if ($result == 'done' && $pending) $result = 'pending';
-        JournalService::storeAnswers($id, $data);
+        JournalService::storeAnswers($cid, $id, $data);
         JournalService::setLessonStatus($id, $result);
 
         return ($result == 'done') || ($result == 'pending');

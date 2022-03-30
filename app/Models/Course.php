@@ -23,6 +23,29 @@ class Course extends Model
         'options',
     ];
 
+    protected $appends = [
+        'progress'
+    ];
+
+    public function getProgressAttribute()
+    {
+        $all_lessons = $this->lessons()->with('journalLessonForCurrentUser')->get();
+        $done = 0;
+        $all = 0;
+        $percent = 0;
+        foreach ($all_lessons as $lesson) {
+            if(count($lesson->journalLessonForCurrentUser()->where('status', 'done')->get())) {
+                $done++;
+            }
+            $all++;
+        }
+        if ($all !== 0 && $done !== 0) 
+        {
+            $percent = intval(floatval($done / $all) * 100);
+        }
+        return $percent;
+    }
+
     public function lessons()
     {
         return $this->belongsToMany(Lesson::class, 'learn_course_lesson');
