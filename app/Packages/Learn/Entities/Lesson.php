@@ -2,7 +2,7 @@
 
 namespace App\Packages\Learn\Entities;
 
-//use App\Packages\Learn\Infrastructure\Repositories\LessonRepository;
+use App\Packages\Learn\Infrastructure\Repositories\LessonRepository;
 
 class Lesson
 {
@@ -26,6 +26,7 @@ class Lesson
 
     public $questions;
 
+    public $courses;
 
     /**
      * @param $prop
@@ -35,6 +36,11 @@ class Lesson
         foreach ($prop as $key => $value) {
             $this->{$key} = $value;
         }
+    }
+
+    function fetchCourses() {
+        $rep = new LessonRepository();
+        $this->courses = $rep->courses($this->id);
     }
 
 //    function fetchQuestions() {

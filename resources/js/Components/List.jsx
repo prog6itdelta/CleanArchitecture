@@ -3,6 +3,7 @@ import { InertiaLink } from '@inertiajs/inertia-react';
 import { Disclosure, Transition } from '@headlessui/react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
 import { CircularProgressbar } from 'react-circular-progressbar';
+import {ProgressBarLine} from 'react-progressbar-line'
 import 'react-circular-progressbar/dist/styles.css';
 
 export default function List({ listItems, type, ...props }) {
@@ -63,7 +64,6 @@ export default function List({ listItems, type, ...props }) {
                     />
                   </div>
                 </div>
-
                 <div className="text-lg leading-6 font-medium py-3">
                   <h3 className="hover:text-gray-500">
                     {listItem.id} - {listItem.name}
@@ -91,15 +91,46 @@ export default function List({ listItems, type, ...props }) {
           <Disclosure as="li" key={listItem.id} className={disclosureClasses}>
             {({ open }) => (
               <>
-                <div className="text-lg">
+                <div className="text-lg flex">
                   <Disclosure.Button className={disclosureButtonClasses}>
-                    <span>{listItem.name}</span>
-                    <span className="ml-6 h-7 flex items-center">
-                      <ChevronDownIcon
-                        className={classNames(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform')}
-                        aria-hidden="true"
-                      />
-                    </span>
+                    <div className='w-full flex flex-col'>
+                      <div className="w-full flex justify-between">
+                        <span>{listItem.name}</span>
+                        <span className="ml-6 h-7 flex items-center">
+                          <ChevronDownIcon
+                            className={classNames(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform')}
+                            aria-hidden="true"
+                            />
+                        </span>
+                      </div>
+                      <div className='w-full'>
+                        <ProgressBarLine
+                          value={listItem.progress}
+                          max={100}
+                          strokeWidth={0.25}
+                          trailWidth={0.25}
+                          styles={{
+                            path: {
+                              stroke: listItem.progress < 25 
+                              ?  '#dc2626' 
+                              :  listItem.progress < 75 
+                                ? '#f59e0b'
+                                : '#10b981',
+                                height: '10px',
+                            },
+                            trail: {
+                              stroke: '#ffffff',
+                              borderRadius: '4px',
+                              width: '10px'
+                            },
+                            text: {
+                              textAlign: 'center',
+                              fontSize: '0'
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
                   </Disclosure.Button>
                 </div>
                 <Transition

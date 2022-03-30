@@ -65,7 +65,7 @@ class LearnService implements LearnServiceInterface
 
         return $list;
     }
-    
+
     public static function getCurriculum(int $id): Curriculum
     {
         $rep = new CurriculumRepository();
@@ -204,7 +204,15 @@ class LearnService implements LearnServiceInterface
     {
         $rep = new LessonRepository();
         $lessons = $rep->all();
-        return $lessons;
+        foreach($lessons as $lesson) {
+            $lesson->courses = $rep->courses($lesson->id);
+        }
+        return $lessons->toArray();
+    }
+
+    public static function getLesson(int $id): Lesson
+    {
+        return (new LessonRepository())->find($id);
     }
 
     public static function getAllQuestions()

@@ -4,6 +4,7 @@ import Table from '../../Components/Table.jsx';
 import ActionsCell from '../../Components/ActionsCell.jsx';
 import StatusCell from '../../Components/StatusCell.jsx';
 import { AdminContext } from '../reducer.jsx';
+import OneLineCell from '../../Components/OneLineCell';
 
 export default function Curriculums({ curriculums }) {
   const { state: { navigation: nav }, dispatch } = useContext(AdminContext);
@@ -13,11 +14,14 @@ export default function Curriculums({ curriculums }) {
       Header: 'ID',
       accessor: 'id',
       Filter: '',
+      width: 50,
     },
     {
       Header: 'Name',
       accessor: 'name',
       Filter: '',
+      width: 300,
+      Cell: OneLineCell,
     },
     {
       Header: 'Status',

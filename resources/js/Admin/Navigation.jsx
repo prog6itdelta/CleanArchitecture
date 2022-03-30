@@ -67,6 +67,18 @@ export default function Navigation({ children }) {
       name: 'Learning Center',
       items: [
         {
+          name: 'Программы обучения',
+          icon: null,
+          href: route('admin.curriculums'),
+          current: true,
+          action: () => {
+            dispatch({
+              type: 'CHANGE_HEADER',
+              payload: 'Программы обучения'
+            })
+          },
+        },
+        {
           name: 'Курсы',
           icon: null,
           href: route('admin.courses'),
@@ -80,14 +92,14 @@ export default function Navigation({ children }) {
           },
         },
         {
-          name: 'Программы обучения',
+          name: 'Уроки',
           icon: null,
-          href: route('admin.curriculums'),
+          href: route('admin.lessons'),
           current: true,
           action: () => {
             dispatch({
               type: 'CHANGE_HEADER',
-              payload: 'Программы обучения'
+              payload: 'Уроки'
             })
           },
         },

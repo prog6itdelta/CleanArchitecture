@@ -33,12 +33,20 @@ class Department extends Model
 
     public function getHeadNameAttribute()
     {
-        return User::find($this->head)->first()->name;
+        $head = User::find($this->head);
+        if (is_null($head)) {
+            return $this->first()->name;
+        }
+        return '';
     }
 
     public function getParentNameAttribute()
     {
-        return Department::find($this->parent)->first()->name;
+        $parent = Department::find($this->parent);
+        if (is_null($parent)) {
+            return $this->first()->name;
+        }
+        return '';
     }
 
     public function users()
