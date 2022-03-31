@@ -169,12 +169,6 @@ export default function EditLesson({ lesson, all_questions }) {
             </li>
             <li className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <span className="text-sm font-medium text-gray-500 flex items-center sm:block">Список Вопросов:</span>
-              <AsyncSelect 
-                options={all_questions}
-                isMulti
-                defaultValue={all_questions.filter((item) => data.questions.find((questionId) => questionId === item.value) )}
-                onChange={handleInputChanges}
-              />
               <SortableList items={data.order} onSortEnd={onSortEnd} />
             </li>
           </ul>
