@@ -10,6 +10,7 @@ use App\Models\Answer;
 use App\Models\Curriculum;
 use App\Models\LearnCourseLesson;
 use App\Models\LearnCurriculum;
+use App\Models\JournalLesson;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
@@ -442,4 +443,28 @@ class LearnAdminController extends BaseController
         return redirect()->route('admin.curriculums');
     }
 
+    public function respondentsAnswers()
+    {
+        $answers = JournalLesson::where('status', 'pending')->get();
+        $respondents = [];
+         foreach ($answers as $answer) {
+           $respondents[] = [
+               'user' => [
+                   'id' => $answer->user->id,
+                   'name' => $answer->user->name,
+               ],
+               'course' => [
+                   'id' => $answer->course->id,
+                   'name' => $answer->course->name,
+               ],
+               'lesson' => [
+                   'id' => $answer->lesson->id,
+                   'name' => $answer->lesson->name,
+               ],
+               'created_at' => $answer->created_at->toDateString(),
+           ];
+       }
+        return Inertia::render('Admin/Learning/RespondentsAnswers', compact('respondents'));
+    }
+    
 }

@@ -18,6 +18,7 @@ class JournalService extends Migration
         Schema::create('learn_journal_lessons', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('course_id');
             $table->unsignedBigInteger('lesson_id');
             $table->unsignedInteger('tries')->default(0);
             $table->enum('status', ['new', 'pending', 'fail', 'done', 'blocked'])->default('new');
@@ -27,6 +28,7 @@ class JournalService extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('course_id')->references('id')->on('learn_courses')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('lesson_id')->references('id')->on('learn_lessons')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('instructor_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
         });

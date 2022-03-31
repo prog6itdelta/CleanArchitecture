@@ -83,7 +83,11 @@ export default function List({ listItems, type, ...props }) {
   const Curriculums = () => {
     return (
       <ul className={disclousureListClasses}>
-        {listItems.map((listItem) => (
+        {listItems.map((listItem) => {
+          if (props.sort.find((course) => course.course_group_id === listItem.id) === undefined) {
+            return false;
+          } 
+          return(
           <Disclosure as="li" key={listItem.id} className={disclosureClasses}>
             {({ open }) => (
               <>
@@ -139,7 +143,10 @@ export default function List({ listItems, type, ...props }) {
                 >
                   <Disclosure.Panel as="div" className={disclosurePanelClasses}>
                     <List
-                      listItems={listItem.courses}
+                      listItems={
+                        listItem.courses  &&
+                        props.sort.filter((course) => course.course_group_id === listItem.id)
+                      }
                       type="courses"
                     />
                   </Disclosure.Panel>
@@ -147,7 +154,8 @@ export default function List({ listItems, type, ...props }) {
               </>
             )}
           </Disclosure>
-        ))}
+          )
+      })}
       </ul>
     );
   };
@@ -157,6 +165,9 @@ export default function List({ listItems, type, ...props }) {
       <ul className={disclousureListClasses}>
         {listItems.map((listItem) => {
           if (props.courses.find((course) => course.course_group_id === listItem.id) === undefined) {
+            return false;
+          }
+          if (props.sort.find((course) => course.course_group_id === listItem.id) === undefined) {
             return false;
           }
           return (
@@ -185,8 +196,9 @@ export default function List({ listItems, type, ...props }) {
                     <Disclosure.Panel as="div" className={disclosurePanelClasses}>
                       <List
                         listItems={
-                          props.courses
-                            .filter((course) => course.course_group_id === listItem.id)
+                          props.courses.filter((course) => course.course_group_id === listItem.id) &&
+                          props.sort.filter((course) => course.course_group_id === listItem.id)
+                          
                         }
                         type="courses"
                       />
@@ -198,7 +210,8 @@ export default function List({ listItems, type, ...props }) {
           );
         })}
         {
-          props.courses.find((course) => course.course_group_id === null) !== undefined
+          props.courses.find((course) => course.course_group_id === null) !== undefined &&
+          props.sort.find((course) => course.course_group_id === null) !== undefined
           && <Disclosure as="li" key="ungroupped" className={disclosureClasses} defaultOpen={true} >
             {({ open }) => (
               <>

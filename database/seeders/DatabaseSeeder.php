@@ -22,10 +22,9 @@ class DatabaseSeeder extends Seeder
 
     public function runTenantSpecificSeeders()
     {
-//         \App\Models\User::factory(10)->create();
+
         $this->call([
-            UserSeeder::class,
-            AuthorizationRulesSeeder::class,
+            UserSeeder::class
         ]);
 
         /*
@@ -41,6 +40,11 @@ class DatabaseSeeder extends Seeder
         DB::table('department_user')->insert([
             'department_id' => 1,
             'user_id' => 1,
+        ]);
+
+        $this->call([
+            OrgBoardSeeder::class,
+            AuthorizationRulesSeeder::class,
         ]);
 
         /*

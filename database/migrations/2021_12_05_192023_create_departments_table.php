@@ -43,9 +43,6 @@ class CreateDepartmentsTable extends Migration
      */
     public function down()
     {
-//        $table->dropForeign(['portal_id', 'head', 'parent']);
-        Schema::dropIfExists('departments');
-        Schema::dropIfExists('department_user');
-
+        Schema::dropIfExists('department_user');        Schema::dropIfExists('departments');
     }
 }
