@@ -69,9 +69,9 @@ export default function EditCourse({ course, all_lessons }) {
   const handleInputChanges = (inputValue) => {
     console.log('inputVal', inputValue);
     const newVal = inputValue.find((item) => data.order.findIndex((oItem) => oItem.lesson_id === item.value) === -1);
-    const newOrder = data.order;
+    const newOrder = data?.order;
     if (newVal === undefined) {
-      const oldVal = data.order.findIndex((oItem) => inputValue.findIndex((item) => oItem.lesson_id === item.value) === -1);
+      const oldVal = data?.order.findIndex((oItem) => inputValue.findIndex((item) => oItem.lesson_id === item.value) === -1);
       newOrder.splice(oldVal, 1);
       newOrder.forEach((item, idx) => {
         item.order = idx + 1;
@@ -82,7 +82,7 @@ export default function EditCourse({ course, all_lessons }) {
         course_id: course.id,
         lesson_id: newVal.value,
         name: newVal.label,
-        order: data.order[data.order.length - 1].order + 1,
+        order: data?.order.length >= 1 ? data?.order[data?.order.length - 1]?.order + 1 : 1,
       });
     }
     setData('order', newOrder);
