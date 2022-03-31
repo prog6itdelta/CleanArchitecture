@@ -42,7 +42,7 @@ export default function EditCourse({ course, all_lessons }) {
       type: 'CHANGE_HEADER', payload: course.id === undefined ? 'Создание курса' : `Редактирование курса`
     });
   }, []);
-  const [courseImg, setCourseImg] = useState(course.image ?? '');
+  const [courseImg, setCourseImg] = useState(course.image ?? '/img/noimage.jpg');
   const courseImgInput = useRef();
   const { data, setData, transform, post } = useForm({
     name: course.name ?? '',
