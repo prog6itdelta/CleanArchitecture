@@ -19,6 +19,6 @@ class Curriculum extends Model
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'learn_course_curriculum')->orderBy('order')->withPivot('order', 'id');
+        return $this->belongsToMany(Course::class, 'learn_course_curriculum')->orderBy('order')->withPivot('order', 'id')->withTimestamps();
     }
 }

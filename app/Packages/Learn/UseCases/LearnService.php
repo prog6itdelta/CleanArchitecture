@@ -212,7 +212,10 @@ class LearnService implements LearnServiceInterface
 
     public static function getLesson(int $id): Lesson
     {
-        return (new LessonRepository())->find($id);
+        $rep = new LessonRepository();
+        $lesson = $rep->find($id);
+        $lesson->questions = $rep->questions($id);
+        return $lesson;
     }
 
     public static function getAllQuestions()

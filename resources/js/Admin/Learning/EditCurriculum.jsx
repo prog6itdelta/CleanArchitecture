@@ -13,7 +13,7 @@ const SortableList = SortableContainer(({items}) => {
   return (
     <ul className="list-reset flex flex-col sm:col-span-2 w-full">
       {items.map((value, index) => (
-        <SortableItem key={`item-${value.id}`} index={value.order} value={value.name} />
+        <SortableItem key={`item-${value.course_id}`} index={value.order} value={value.name} />
       ))}
     </ul>
   );
@@ -30,7 +30,6 @@ export default function editCurriculum({ curriculum, all_courses }) {
 
   const courseOrder = curriculum.courses.map((item) => {
     return {
-      id: item.pivot.id,
       course_id: item.pivot.course_id,
       curriculum_id: item.pivot.curriculum_id,
       name: item.name,
@@ -65,7 +64,25 @@ export default function editCurriculum({ curriculum, all_courses }) {
   };
 
   const handleInputChanges = (inputValue) => {
-    console.log(inputValue)
+    console.log('inputVal', inputValue);
+    const newVal = inputValue.find((item) => data.order.findIndex((oItem) => oItem.course_id === item.value) === -1);
+    const newOrder = data.order;
+    if (newVal === undefined) {
+      const oldVal = data.order.findIndex((oItem) => inputValue.findIndex((item) => oItem.course_id === item.value) === -1);
+      newOrder.splice(oldVal, 1);
+      newOrder.forEach((item, idx) => {
+        item.order = idx + 1;
+      });
+    } else {
+      newOrder
+      .push({
+        curriculum_id: curriculum.id,
+        course_id: newVal.value,
+        name: newVal.label,
+        order: data.order[data.order.length - 1].order + 1,
+      });
+    }
+    setData('order', newOrder);
     setData('courses', inputValue.map(item => item.value));
   };
 
