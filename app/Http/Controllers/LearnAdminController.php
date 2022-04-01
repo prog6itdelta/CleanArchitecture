@@ -492,6 +492,7 @@ class LearnAdminController extends BaseController
             'user_answers' => $answer->answers,
             'created_at' => $answer->created_at->toDateString(),
         ];
-        return $resp
+        
+        return $resp;
     }
 }
