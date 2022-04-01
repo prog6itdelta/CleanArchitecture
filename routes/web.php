@@ -199,8 +199,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/respondent-answers', [LearnAdminController::class, 'respondentsAnswers'])
             ->name('admin.respondent.answers');
 
-        // Route::get('/respondent-answer/{id}', [LearnAdminController::class, 'respondentAnswer'])
-        //     ->name('admin.respondent.answer.');
+        Route::get('/respondent-answer/{lid}', [LearnAdminController::class, 'checkRespondentAnswer'])
+            ->name('admin.respondent.answer.');
 
     });
 

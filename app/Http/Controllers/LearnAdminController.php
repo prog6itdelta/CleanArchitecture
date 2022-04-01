@@ -451,7 +451,7 @@ class LearnAdminController extends BaseController
            $respondents[] = [
                'user' => [
                    'id' => $answer->user->id,
-                   'name' => $answer->user->name,
+                   'name' => $answer->user->name . $answer->user->last_name,
                ],
                'course' => [
                    'id' => $answer->course->id,
@@ -467,4 +467,31 @@ class LearnAdminController extends BaseController
         return Inertia::render('Admin/Learning/RespondentsAnswers', compact('respondents'));
     }
     
+    public function checkRespondentAnswer(int $lid)
+    {
+        $answer = JournalLesson::find($lid);
+        $questionResp = [];
+
+        foreach ($answer->lesson->questions->where('type', 'text') as $question) {
+            $questionResp[] = [
+                'id' => $question->id,
+                'question' => $question->name,
+            ];
+        }
+
+        $resp = [
+            'user' => [
+                'id' => $answer->user->id,
+                'name' => $answer->user->name . $answer->user->last_name,
+            ],
+            'lesson' => [
+                'id' => $answer->lesson->id,
+                'name' => $answer->lesson->name,
+            ],
+            'questions' => $questionResp,
+            'user_answers' => $answer->answers,
+            'created_at' => $answer->created_at->toDateString(),
+        ];
+        return $resp
+    }
 }
